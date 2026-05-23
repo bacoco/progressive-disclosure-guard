@@ -18,6 +18,8 @@ It reveals work in layers:
 
 The readable name is **PDG - Progressive Disclosure Guard**. The stable skill slug is `progressive-disclosure-guard`.
 
+PDG is intentionally bounded. It should stay silent for typo-only edits, formatting-only edits, read-only lookups, one-command status checks, or low-risk changes with no handoff, behavior, contract, source-of-truth, install, generated-output, or verification risk.
+
 ## Why It Exists
 
 AI coding agents often fail by adding too much too early:
@@ -66,6 +68,13 @@ Then it turns ambiguity into constraints:
 - `MUST NOT replace ...`
 - `MUST NOT create a parallel engine/pipeline/store/router ...`
 - `MUST NOT remove working code unless the replacement is wired and verified end-to-end ...`
+
+The pass now has four explicit guard sections:
+
+- `Invariants`: always/never rules for source of truth, preserved behavior, generated files, and real verification.
+- `Fallbacks`: bounded responses for ambiguous triggers, missing sources, blocked verification, no second reviewer, and generated drift.
+- `Examples`: concrete triggered and non-triggered inputs.
+- `Final Checklist`: the short receipt that prevents silent weakening before final output.
 
 ## Install With One Prompt
 

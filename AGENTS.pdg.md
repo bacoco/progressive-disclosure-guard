@@ -10,6 +10,8 @@ Installed skill path:
 
 Use it especially when work touches more than 3 files, changes a public route/API contract, introduces a store/pipeline/state machine, or modifies behavior other modules depend on.
 
+Do not invoke PDG for typo-only edits, formatting-only edits, read-only lookups, one-command status checks, or low-risk changes with no handoff, behavior, contract, source-of-truth, install, generated-output, or verification risk.
+
 Expected output section:
 
 ```text

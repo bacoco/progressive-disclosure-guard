@@ -10,20 +10,26 @@ const forbidden = [
   ["Implementer", "Guard"].join(" "),
   ["Implementer", "Pass"].join(" ")
 ];
+const requiredSections = [
+  "## Invariants",
+  "## Fallbacks",
+  "## Examples",
+  "## Final Checklist"
+];
 
 execFileSync(process.execPath, ["scripts/generate-skills.mjs"], {
   cwd: repoRoot,
   stdio: "inherit"
 });
 
-await assertSkill("pdg.skill.md");
-await assertSkill("pdg.codex.skill.md");
-await assertSkill("pdg.claude.skill.md");
+await assertSkill("pdg.skill.md", { generated: false });
+await assertSkill("pdg.codex.skill.md", { generated: true, target: "codex" });
+await assertSkill("pdg.claude.skill.md", { generated: true, target: "claude", claudeFrontmatter: true });
 await assertNoForbiddenWords(repoRoot);
 
 console.log("PDG checks passed.");
 
-async function assertSkill(relativePath) {
+async function assertSkill(relativePath, options) {
   const content = await readFile(path.join(repoRoot, relativePath), "utf8");
   if (!content.startsWith("---\n")) {
     throw new Error(`${relativePath} must start with YAML frontmatter.`);
@@ -36,6 +42,34 @@ async function assertSkill(relativePath) {
   }
   if (!content.includes("## Output")) {
     throw new Error(`${relativePath} must include the output contract.`);
+  }
+  for (const section of requiredSections) {
+    if (!content.includes(section)) {
+      throw new Error(`${relativePath} must include ${section}.`);
+    }
+  }
+  if (options.generated) {
+    for (const marker of [
+      "GENERATED FILE - DO NOT EDIT DIRECTLY",
+      "source: pdg.skill.md",
+      "source_hash:",
+      `target: ${options.target}`
+    ]) {
+      if (!content.includes(marker)) {
+        throw new Error(`${relativePath} generated marker is missing: ${marker}`);
+      }
+    }
+  }
+  if (options.claudeFrontmatter) {
+    if (!/^allowed-tools:\n(?:  - .+\n)+/m.test(content)) {
+      throw new Error(`${relativePath} must include Claude allowed-tools frontmatter.`);
+    }
+    if (!/^context:\n(?:  - .+\n)+/m.test(content)) {
+      throw new Error(`${relativePath} must include Claude context frontmatter.`);
+    }
+  }
+  if (options.target === "codex" && (content.includes("\nallowed-tools:\n") || content.includes("\ncontext:\n"))) {
+    throw new Error(`${relativePath} must not include Claude-specific frontmatter.`);
   }
 }
 

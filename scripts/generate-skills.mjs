@@ -41,7 +41,8 @@ const outputs = Object.entries(targets).map(([target, mechanics]) => {
       body: parsed.body,
       sourceHash: sha256(source),
       target,
-      mechanics
+      mechanics,
+      extraFrontmatter: target === "claude" ? parsed.claudeFrontmatter : []
     })
   };
 });
@@ -87,7 +88,11 @@ function parseSkill(content) {
   const body = match[2].trim();
   const name = readScalar(frontmatter, "name");
   const description = readScalar(frontmatter, "description");
-  return { name, description, body };
+  const claudeFrontmatter = [
+    ...readBlock(frontmatter, "allowed-tools"),
+    ...readBlock(frontmatter, "context")
+  ];
+  return { name, description, claudeFrontmatter, body };
 }
 
 function readScalar(frontmatter, key) {
@@ -99,11 +104,29 @@ function readScalar(frontmatter, key) {
   return match[1].trim();
 }
 
-function renderGeneratedSkill({ name, description, body, sourceHash, target, mechanics }) {
+function readBlock(frontmatter, key) {
+  const lines = frontmatter.split(/\r?\n/);
+  const start = lines.findIndex((line) => line === `${key}:`);
+  if (start < 0) {
+    return [];
+  }
+
+  const block = [lines[start]];
+  for (const line of lines.slice(start + 1)) {
+    if (/^\S/.test(line)) {
+      break;
+    }
+    block.push(line);
+  }
+  return block;
+}
+
+function renderGeneratedSkill({ name, description, body, sourceHash, target, mechanics, extraFrontmatter }) {
   return [
     "---",
     `name: ${name}`,
     `description: ${description}`,
+    ...extraFrontmatter,
     "---",
     "",
     "<!--",

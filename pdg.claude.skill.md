@@ -1,12 +1,20 @@
 ---
 name: progressive-disclosure-guard
-description: Use before finalizing specs, plans, implementation prompts, architecture reviews, UX critiques, handoff docs, code reviews, install/migration instructions, or after substantial code changes. Forces ambiguity removal, progressive disclosure across docs, specs, plans, code, APIs, prompts, tests, reviews, and verification, plus regression proof from a low-context implementer perspective.
+description: Use before finalizing specs, plans, implementation prompts, architecture reviews, UX critiques, handoff docs, code reviews, install/migration instructions, or after substantial code changes. Stay silent for typos, formatting-only edits, read-only lookups, one-command status checks, or low-risk changes with no handoff, behavior, or source-of-truth risk.
+allowed-tools:
+  - Read
+  - Grep
+  - Glob
+  - Bash
+context:
+  - Read source-of-truth files before relying on memory.
+  - Keep checks bounded; do not recursively invoke PDG on PDG itself.
 ---
 
 <!--
 GENERATED FILE - DO NOT EDIT DIRECTLY
 source: pdg.skill.md
-source_hash: 7fd3466892fc7590713c9258809a34a9cc73a80eafc74453b6d529e0b28e6927
+source_hash: 3b2dfd834dac0ce0a41e21e1569fbfbe36950f07cad31c3490df7e080a77c969
 generated_by: pdg generate-skills
 target: claude
 -->
@@ -20,15 +28,60 @@ target: claude
 - Do not run parallel agents on the same files.
 - Do not mark a risky Claude implementation as reviewed by the same Claude context.
 
-Use this skill before finalizing work that another human, Claude, Codex, or third reviewer will execute, and after substantial code changes before polish or "done".
+Use this skill before finalizing specs, plans, implementation prompts, architecture reviews, UX critiques, handoff docs, code reviews, install/migration instructions, or substantial code changes.
+
+Do not invoke PDG for typo-only edits, formatting-only edits, read-only lookups, one-command status checks, or low-risk changes that do not affect handoff text, behavior, contracts, source of truth, install steps, verification claims, or generated outputs.
+
+A substantial code change touches more than 3 files, changes a public route or API contract, introduces a store/pipeline/state machine, changes persistence, or modifies behavior other modules depend on.
 
 Assume the next implementer is low-context, literal, rushed, and able to satisfy the words while damaging the product.
 
-A substantial code change is one that touches more than 3 files, changes a public route or API contract, introduces a store/pipeline/state machine, or modifies behavior other modules depend on.
+## Invariants
+
+Always:
+
+- read the named source-of-truth files before giving constraints;
+- name the existing behavior, files, callbacks, routes, stores, pipelines, generated outputs, and install paths that must be preserved;
+- convert dangerous wording into explicit `MUST` / `MUST NOT` constraints;
+- require verification through a real command, public route, install path, or product entry path;
+- label same-agent review as `PDG self-check, not independent review`.
+
+Never:
+
+- replace a working route, store, hook, pipeline, state machine, prompt path, persistence contract, or install flow without end-to-end verification;
+- create a parallel engine, store, router, workflow, generator, or doctrine file when an existing one should be extended;
+- claim `verified`, `done`, or `safe` without naming the command, route, or workflow checked;
+- treat generated files as canonical when a source file and generator exist;
+- bulk-load full catalogs, doctrines, folders, fixtures, or skill trees when a focused source will answer.
+
+## Trigger Boundary
+
+Invoke PDG when any of these are true:
+
+- another human, Claude, Codex, or reviewer will execute the output;
+- the work is a spec, plan, handoff, review, install or migration instruction;
+- the diff changes behavior, public contracts, generated outputs, install steps, verification claims, or more than 3 files;
+- wording could let a rushed implementer satisfy the text while breaking the intended behavior.
+
+Stay silent when all of these are true:
+
+- the task is typo-only, formatting-only, read-only lookup, one-command status, or similarly low-risk;
+- no handoff, install instruction, behavior, contract, source-of-truth, generated output, or verification claim changes;
+- no final answer needs to assert safety beyond the command or fact just observed.
+
+If the boundary is ambiguous, run only a two-line trigger check: `PDG triggered: yes/no` and `reason: ...`. Continue with a full PDG pass only when the answer is yes.
+
+## Workflow
+
+1. Decide whether PDG triggers; if not, say why in one line and stop the PDG pass.
+2. Classify known knowns, known unknowns, unknown knowns, and unknown unknowns.
+3. Name preserved behavior and source-of-truth files.
+4. Red-team dangerous wording such as `refactor`, `simplify`, `wire`, `reuse`, `support`, `migrate`, `install`, `generate`, `verified`, or `done`.
+5. Convert ambiguity into `MUST`, `MUST NOT`, non-goals, and forbidden shortcuts.
+6. Require regression proof through the real workflow, not only isolated helper existence.
+7. If review is same-agent, label it as self-check and request human validation for risky work.
 
 ## Known/Unknown Pass
-
-Classify the handoff or diff before adding instructions:
 
 - **Known knowns:** explicit requirements, existing behavior, named files, routes, callbacks, contracts, tests, constraints, and sources already covered.
 - **Known unknowns:** decisions still required before implementation; convert them into phase gates, required decisions, or explicit deferrals.
@@ -37,113 +90,28 @@ Classify the handoff or diff before adding instructions:
 
 Bias toward uncertainty. If an item could fit multiple quadrants, classify it as unknown rather than known.
 
-## Preserve Existing Behavior
-
-List the behavior that must remain true:
-
-- user-visible workflows;
-- files and directories that must stay authoritative;
-- routes, stores, hooks, queues, pipelines, and state machines that must not be replaced;
-- external contracts such as GitHub checks, Linear issue states, APIs, or generated skill metadata;
-- verification commands and real user paths that prove the old behavior still works.
-
 ## Enforce Progressive Disclosure Everywhere
-
-Progressive disclosure applies to implementation, not only documentation.
 
 - Docs/specs/plans: use an index or top-level plan that points to phase, decision, domain, or implementation files when the topic is broad.
 - Code: expose a narrow entry point first, then split orchestration, domain logic, IO, state, persistence, rendering, prompt construction, and validation by responsibility.
-- New code files should normally stay under roughly 200 lines; split or justify larger files, and do not hide unrelated responsibilities in a large `utils`, `service`, `manager`, or `handler`.
-- Runtime flows: fetch or compute summaries/lists first, then expand details only when the real path needs them. Do not bulk-load full catalogs, doctrines, corpora, graph payloads, fixture sets, or prompt context by default.
+- New code files should normally stay under roughly 200 lines; split or justify larger files, and do not hide unrelated responsibilities in broad `utils`, `service`, `manager`, `handler`, `core`, `engine`, or `processor` dumps.
+- Runtime flows: fetch or compute summaries/lists first, then expand details only when the real path needs them.
 - APIs/search/discovery: expose summary/list endpoints first and detail endpoints only on explicit demand.
 - UI work: implement the smallest real workflow surface first, then reveal advanced controls or secondary panels only after the main path works.
 - Prompts/agents: select targeted domains or capabilities before injecting detailed doctrine.
-- Skills: choose one primary skill from name/description first, then load additional skills or references only when the current task requires their specific procedure.
-- Tests/verification: start with narrow contract checks and the shortest real workflow, then broaden only according to risk. State what was checked and what remains unverified.
+- Skills: choose one primary skill from name/description first, then load extra skills or references only when the task requires their specific procedure.
+- Tests/verification: start with narrow contract checks and the shortest real workflow, then broaden according to named risk. State what was checked and what remains unverified.
 - Reviews: read root context first, then expand only into files that evidence a risk.
 
 A solution that works by dumping all knowledge, all domains, all tests, all UI, or all doctrine into one large artifact is a failed implementation unless explicitly requested.
 
-## Skill Progressive Disclosure
+## Fallbacks
 
-When multiple skills may apply, do not bulk-load skill folders, catalogs, references, or every plausible skill.
-
-Use this sequence:
-
-1. Select one primary skill from the available skill names and descriptions.
-2. Read only that skill's `SKILL.md`.
-3. Load a second skill only when the task needs that second skill's specific workflow.
-4. Load referenced files only when the selected skill says they are needed for the current task.
-5. Do not create a wrapper, router, or sub-skill unless real duplication or repeated failure proves the split is needed.
-
-For PDG repository changes, run one bounded `PDG self-check`, not recursive PDG passes. The self-check covers the canonical source, generated outputs, trigger blocks, install docs, and verification commands.
-
-## Red-Team The Wording
-
-Flag dangerous phrases:
-
-- refactor;
-- simplify;
-- wire;
-- orchestrate;
-- reuse;
-- clean up;
-- improve;
-- support;
-- migrate;
-- install;
-- generate.
-
-For each phrase, state the damaging interpretation an implementer could choose while still claiming compliance.
-
-## Convert Ambiguity Into Constraints
-
-Replace vague wording with hard requirements:
-
-- `MUST preserve ...`
-- `MUST call/use ...`
-- `MUST NOT replace ...`
-- `MUST NOT create a parallel engine/store/router/hook/workflow/pipeline ...`
-- `MUST NOT remove working code unless the replacement is wired and verified end-to-end ...`
-- `MUST stop and ask when the source of truth is missing ...`
-
-## Add Non-Goals
-
-State what is outside the task.
-
-Include forbidden changes for:
-
-- product code;
-- working routes;
-- stores;
-- hooks;
-- workflows;
-- generated files;
-- agent rule files;
-- docs cleanup unrelated to the task.
-
-## Require Regression Proof
-
-Acceptance criteria must prove the real workflow, not only isolated components.
-
-Require:
-
-- the public or product entry path;
-- command output or CI evidence;
-- review receipt;
-- verification receipt;
-- archived evidence for the next agent.
-
-## Single-Agent Fallback
-
-When only one AI agent is available, do not pretend the post-code check is independent review.
-
-Use this rule:
-
-- the author AI may run a `PDG self-check`;
-- the author AI must label it `self-check, not independent review`;
-- risky work still needs either human approval, another AI/session review, or an explicit `Ready for human validation` status;
-- the human validation request must be short enough to act on in one message.
+- Ambiguous trigger boundary: do the two-line trigger check and stop unless PDG clearly triggers.
+- Source of truth missing: write `Unknown`, ask for the source, or inspect a named file; do not proceed from memory as if it were fact.
+- Verification blocked: report the exact blocked command or route, why it is blocked, and the narrower check that was still possible.
+- No second reviewer: label the result `PDG self-check, not independent review`; provide the human validation card.
+- Generated output drift: update only the canonical source or generator, regenerate, and do not hand-edit generated variants.
 
 Human validation card:
 
@@ -151,42 +119,24 @@ Human validation card:
 - real workflow or command to inspect:
 - expected result:
 - risk the human is accepting:
-- exact approval sentence:
+- exact approval sentence: `Approved after human validation.`
 
-The exact approval sentence must be:
+## Examples
 
-```text
-Approved after human validation.
-```
+Input: `Refactor auth flow and clean up callbacks.`
+PDG output: triggered. MUST preserve current login/logout routes, session storage, callbacks, and tests. MUST NOT create a parallel auth pipeline. Required proof: run the real login workflow or named auth test.
 
-## Post-Code Check
+Input: `Install PDG here for Codex.`
+PDG output: triggered. MUST start with audit only, report exact files, preserve existing `AGENTS.md`, install `.agents/skills/progressive-disclosure-guard/SKILL.md`, merge the trigger block only after approval, and verify the installed path.
 
-When code has changed, inspect the actual diff and answer:
-
-- Did the change expose a Known/Unknown mismatch?
-- Did it create a parallel engine, pipeline, store, router, hook, prompt path, state machine, persistence contract, or UI workflow instead of extending the existing one?
-- Did any existing public route, callback, endpoint, storage key, or runtime flow stop being used?
-- Did the code preserve progressive disclosure by keeping entry points thin, responsibilities split, and summary/detail expansion explicit?
-- Do tests or verification exercise the real product path instead of isolated helper existence?
-- Are skipped or blocked verification steps explicitly reported?
-
-## Review Mode
-
-When reviewing a PR, actively look for:
-
-- duplicate engines, stores, queues, routers, or state machines;
-- callbacks kept in signatures but ignored;
-- old behavior hidden behind renamed props or unused branches;
-- tests that assert existence without exercising the real workflow;
-- skipped tests that hide regressions;
-- implementation that passes local checks while bypassing the product path.
-- over-broad files or prompts that load whole catalogs, doctrines, folders, test corpora, or UI surfaces instead of targeted summaries and details;
-- new files exceeding roughly 200 lines without a split or explicit justification.
+Input: `Fix README typo.`
+PDG output: not triggered unless the edit changes install instructions, handoff text, verification claims, or generated output.
 
 ## Output
 
 Add a section named `PDG pass` with:
 
+- trigger decision;
 - known knowns;
 - known unknowns;
 - unknown knowns;
@@ -196,3 +146,14 @@ Add a section named `PDG pass` with:
 - existing behavior that must be preserved;
 - forbidden implementation shortcuts;
 - regression proof required.
+
+## Final Checklist
+
+- trigger boundary checked;
+- source of truth read or marked `Unknown`;
+- preserved behavior named;
+- dangerous wording constrained with `MUST` / `MUST NOT`;
+- non-goals and forbidden shortcuts stated;
+- real verification path required or blocked verification reported;
+- generated files treated as generated;
+- same-agent review labeled `PDG self-check, not independent review`.
