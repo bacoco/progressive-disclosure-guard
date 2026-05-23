@@ -1,6 +1,12 @@
 # PDG - Progressive Disclosure Guard
 
-Invoke the `progressive-disclosure-guard` skill before finalizing specs, plans, implementation prompts, architecture reviews, UX critiques, handoff docs, code reviews, install/migration instructions, or substantial code changes.
+Invoke the `progressive-disclosure-guard` skill, not a lighter inline summary, before finalizing specs, plans, implementation prompts, architecture reviews, UX critiques, handoff docs, code reviews, install/migration instructions, or substantial code changes.
+
+Installed skill path:
+
+```text
+.claude/skills/progressive-disclosure-guard/SKILL.md
+```
 
 Use it especially when work touches more than 3 files, changes a public route/API contract, introduces a store/pipeline/state machine, or modifies behavior other modules depend on.
 

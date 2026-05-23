@@ -32,6 +32,12 @@ Should I install PDG for Codex only, Claude only, or both?
 
 Do not infer mode from missing Claude or Codex credentials alone.
 
+Default install scope:
+
+- install the selected skill file;
+- merge the matching PDG trigger block into `AGENTS.md` and/or `CLAUDE.md`;
+- skip trigger files only when the human explicitly asks for a skill-only install.
+
 ## Non-Negotiable Contract
 
 - Treat the current working directory as the target repository.
@@ -42,6 +48,7 @@ Do not infer mode from missing Claude or Codex credentials alone.
 - Ask before writing files.
 - Preserve existing `AGENTS.md`, `CLAUDE.md`, skills, workflows, docs, and config.
 - If a target skill already exists with different content, stop and report the conflict.
+- If `AGENTS.md` or `CLAUDE.md` already contains a PDG block, update it instead of duplicating it.
 - If evidence is missing, write `Unknown`, verify, ask the human, or stop.
 
 ## Get PDG
@@ -102,7 +109,7 @@ Report these facts to the human:
 - existing `.claude/skills`;
 - exact files PDG wants to create;
 - exact existing files PDG will preserve;
-- whether a small PDG trigger block should be added to `AGENTS.md` or `CLAUDE.md`;
+- exact `AGENTS.md` and/or `CLAUDE.md` PDG trigger block changes;
 - any conflict that blocks writing;
 - exact command or copy operation you want to run next.
 
@@ -132,7 +139,7 @@ For `dual-agent`, run both copy blocks.
 
 ## Add Trigger Rules
 
-A skill file alone may not be enough in every project. Add the matching PDG trigger block when the human approves it.
+A skill file alone is not enough in every project. By default, add the matching PDG trigger block after the human approves the write list.
 
 Codex:
 
@@ -146,7 +153,12 @@ Claude Code:
 cat "$PDG_DIR/CLAUDE.pdg.md"
 ```
 
-If `AGENTS.md` or `CLAUDE.md` already exists, append or merge the block without removing existing rules. If the file does not exist, ask before creating it.
+Rules:
+
+- If the selected instruction file exists, merge the block without removing existing rules.
+- If it already contains `progressive-disclosure-guard` or a `PDG - Progressive Disclosure Guard` section, update that section instead of duplicating it.
+- If the selected instruction file does not exist, create it only after the human approves the write list.
+- If the human explicitly requested skill-only install, do not edit `AGENTS.md` or `CLAUDE.md`.
 
 Do not write GitHub workflows, Linear templates, broad governance files, or product docs. PDG installation is only the skill plus the small trigger rule.
 
@@ -160,18 +172,28 @@ case "<codex-only|claude-only|dual-agent>" in
   codex-only)
     test -f .agents/skills/progressive-disclosure-guard/SKILL.md
     grep -q "name: progressive-disclosure-guard" .agents/skills/progressive-disclosure-guard/SKILL.md
+    test -f AGENTS.md
+    grep -q "progressive-disclosure-guard" AGENTS.md
     ;;
   claude-only)
     test -f .claude/skills/progressive-disclosure-guard/SKILL.md
     grep -q "name: progressive-disclosure-guard" .claude/skills/progressive-disclosure-guard/SKILL.md
+    test -f CLAUDE.md
+    grep -q "progressive-disclosure-guard" CLAUDE.md
     ;;
   dual-agent)
     test -f .agents/skills/progressive-disclosure-guard/SKILL.md
     test -f .claude/skills/progressive-disclosure-guard/SKILL.md
     grep -q "target: codex" .agents/skills/progressive-disclosure-guard/SKILL.md
     grep -q "target: claude" .claude/skills/progressive-disclosure-guard/SKILL.md
+    test -f AGENTS.md
+    test -f CLAUDE.md
+    grep -q "progressive-disclosure-guard" AGENTS.md
+    grep -q "progressive-disclosure-guard" CLAUDE.md
     ;;
 esac
 ```
+
+For explicit skill-only installs, skip the `AGENTS.md` and `CLAUDE.md` checks and report that trigger rules were intentionally not installed.
 
 Report the commands run and any blocked verification.

@@ -73,28 +73,29 @@ Use one of these prompts inside the repository where you want PDG installed.
 Codex:
 
 ```text
-Install PDG - Progressive Disclosure Guard here for Codex. Read https://github.com/bacoco/progressive-disclosure-guard/blob/main/INSTALL.md, start with audit only, report the exact files you will write, and ask before writing.
+Install PDG - Progressive Disclosure Guard here for Codex. Read https://github.com/bacoco/progressive-disclosure-guard/blob/main/INSTALL.md, start with audit only, then install the skill and merge the PDG trigger block into AGENTS.md. Report the exact files you will write and ask before writing.
 ```
 
 Claude Code:
 
 ```text
-Install PDG - Progressive Disclosure Guard here for Claude Code. Read https://github.com/bacoco/progressive-disclosure-guard/blob/main/INSTALL.md, start with audit only, report the exact files you will write, and ask before writing.
+Install PDG - Progressive Disclosure Guard here for Claude Code. Read https://github.com/bacoco/progressive-disclosure-guard/blob/main/INSTALL.md, start with audit only, then install the skill and merge the PDG trigger block into CLAUDE.md. Report the exact files you will write and ask before writing.
 ```
 
 Both:
 
 ```text
-Install PDG - Progressive Disclosure Guard here for both Codex and Claude Code. Read https://github.com/bacoco/progressive-disclosure-guard/blob/main/INSTALL.md, start with audit only, report the exact files you will write, and ask before writing.
+Install PDG - Progressive Disclosure Guard here for both Codex and Claude Code. Read https://github.com/bacoco/progressive-disclosure-guard/blob/main/INSTALL.md, start with audit only, then install both skills and merge the PDG trigger blocks into AGENTS.md and CLAUDE.md. Report the exact files you will write and ask before writing.
 ```
 
-PDG installs the selected skill file and can also add a small trigger block to the matching agent instruction file:
+Default PDG installation writes two things for each selected agent:
 
 - Codex: `.agents/skills/progressive-disclosure-guard/SKILL.md`
 - Claude Code: `.claude/skills/progressive-disclosure-guard/SKILL.md`
-- Both: both files
 - Codex trigger block: `AGENTS.md`
 - Claude Code trigger block: `CLAUDE.md`
+
+Use a skill-only install only when the human explicitly says not to edit agent instruction files.
 
 It does not install broad project governance, GitHub workflows, Linear templates, or Claude/Codex collaboration workflows.
 
