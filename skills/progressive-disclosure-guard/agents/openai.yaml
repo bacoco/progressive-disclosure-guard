@@ -1,0 +1,3 @@
+display_name: PDG - Progressive Disclosure Guard
+short_description: Force staged plans, scoped code, real-path verification, and safe handoffs.
+default_prompt: Run a PDG pass on this plan, diff, review, install instruction, or handoff.
