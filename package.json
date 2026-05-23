@@ -4,10 +4,23 @@
   "private": false,
   "description": "PDG progressive disclosure guardrails for AI coding agents.",
   "type": "module",
+  "files": [
+    "pdg.skill.md",
+    "pdg.codex.skill.md",
+    "pdg.claude.skill.md",
+    "AGENTS.pdg.md",
+    "CLAUDE.pdg.md",
+    "README.md",
+    "INSTALL.md",
+    "scripts/generate-skills.mjs",
+    "scripts/check.mjs",
+    "scripts/pdg-check.js"
+  ],
   "scripts": {
     "generate": "node scripts/generate-skills.mjs --write",
-    "check": "node scripts/check.mjs",
-    "test": "node scripts/check.mjs"
+    "eval": "node evidence/phase-1-static-guard/run-eval.js",
+    "check": "node scripts/check.mjs && node scripts/pdg-check.js",
+    "test": "node scripts/check.mjs && node evidence/phase-1-static-guard/pdg-check.test.js"
   },
   "engines": {
     "node": ">=20"

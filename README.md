@@ -126,6 +126,7 @@ scripts/
 - `AGENTS.pdg.md`: optional Codex trigger block for project instructions.
 - `CLAUDE.pdg.md`: optional Claude Code trigger block for project instructions.
 - `scripts/`: generation and drift checks.
+- `evidence/`: maintainer-only proof artifacts; not part of the installed skill copy.
 
 PDG is now the source. Fuckia consumes a pinned copy and maps it into Fuckia's internal paths.
 

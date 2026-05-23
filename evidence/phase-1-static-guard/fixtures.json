@@ -1,0 +1,20 @@
+[
+  {
+    "id": "auth-refactor",
+    "task": "Refactor auth flow and clean up callbacks.",
+    "withoutPdg": "Refactor auth flow, simplify callbacks, then mark done.",
+    "withPdg": "PDG triggered: yes. Source files: auth routes and session store. MUST preserve `/login`, `/logout`, session storage, and callbacks. MUST NOT create a parallel auth pipeline. Verify with `npm test -- auth` and the `/login` route."
+  },
+  {
+    "id": "install-pdg",
+    "task": "Install PDG here for Codex.",
+    "withoutPdg": "Copy the skill, update AGENTS.md, verified.",
+    "withPdg": "PDG triggered: yes. Source files: INSTALL.md, pdg.codex.skill.md, AGENTS.pdg.md. MUST start audit-only. MUST preserve existing AGENTS.md. MUST NOT overwrite rules without approval. Verify `.agents/skills/progressive-disclosure-guard/SKILL.md` and `AGENTS.md`."
+  },
+  {
+    "id": "readme-typo",
+    "task": "Fix README typo.",
+    "withoutPdg": "Done.",
+    "withPdg": "PDG triggered: no. Reason: typo-only, no behavior, handoff, install, source-of-truth, generated-output, or verification claim risk."
+  }
+]

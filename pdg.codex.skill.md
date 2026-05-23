@@ -6,7 +6,7 @@ description: Use before finalizing specs, plans, implementation prompts, archite
 <!--
 GENERATED FILE - DO NOT EDIT DIRECTLY
 source: pdg.skill.md
-source_hash: 3b2dfd834dac0ce0a41e21e1569fbfbe36950f07cad31c3490df7e080a77c969
+source_hash: 3465c41b42f0bc87a79d1f3515b88ced076fd6436b487d513030c152c26cc07b
 generated_by: pdg generate-skills
 target: codex
 -->
@@ -38,12 +38,15 @@ Always:
 - convert dangerous wording into explicit `MUST` / `MUST NOT` constraints;
 - require verification through a real command, public route, install path, or product entry path;
 - label same-agent review as `PDG self-check, not independent review`.
+- for any new file over 200 lines, require `PDG-LARGE-FILE-JUSTIFICATION:` with why the file must stay dense;
+- for any broad `service`, `utils`, `manager`, or `handler` file, require `PDG-BROAD-FILE-JUSTIFICATION:` with the single responsibility it owns.
 
 Never:
 
 - replace a working route, store, hook, pipeline, state machine, prompt path, persistence contract, or install flow without end-to-end verification;
 - create a parallel engine, store, router, workflow, generator, or doctrine file when an existing one should be extended;
 - claim `verified`, `done`, or `safe` without naming the command, route, or workflow checked;
+- treat "roughly 200 lines" as permission to exceed 200 lines without an explicit justification marker;
 - treat generated files as canonical when a source file and generator exist;
 - bulk-load full catalogs, doctrines, folders, fixtures, or skill trees when a focused source will answer.
 
@@ -87,7 +90,8 @@ Bias toward uncertainty. If an item could fit multiple quadrants, classify it as
 
 - Docs/specs/plans: use an index or top-level plan that points to phase, decision, domain, or implementation files when the topic is broad.
 - Code: expose a narrow entry point first, then split orchestration, domain logic, IO, state, persistence, rendering, prompt construction, and validation by responsibility.
-- New code files should normally stay under roughly 200 lines; split or justify larger files, and do not hide unrelated responsibilities in broad `utils`, `service`, `manager`, `handler`, `core`, `engine`, or `processor` dumps.
+- New files must stay at or below 200 lines unless they include `PDG-LARGE-FILE-JUSTIFICATION:`.
+- Broad `service`, `utils`, `manager`, or `handler` files must include `PDG-BROAD-FILE-JUSTIFICATION:` and state their single responsibility.
 - Runtime flows: fetch or compute summaries/lists first, then expand details only when the real path needs them.
 - APIs/search/discovery: expose summary/list endpoints first and detail endpoints only on explicit demand.
 - UI work: implement the smallest real workflow surface first, then reveal advanced controls or secondary panels only after the main path works.
