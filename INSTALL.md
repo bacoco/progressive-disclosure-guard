@@ -81,8 +81,10 @@ test -d .claude/skills && find .claude/skills -maxdepth 2 -type f | sort || true
 Then check the source files you would install:
 
 ```bash
-test -f "$PDG_DIR/kit/generated-skills/codex-progressive-disclosure-guard.md"
-test -f "$PDG_DIR/kit/generated-skills/claude-progressive-disclosure-guard.md"
+test -f "$PDG_DIR/pdg.codex.skill.md"
+test -f "$PDG_DIR/pdg.claude.skill.md"
+test -f "$PDG_DIR/AGENTS.pdg.md"
+test -f "$PDG_DIR/CLAUDE.pdg.md"
 ```
 
 These commands are read-only.
@@ -100,6 +102,7 @@ Report these facts to the human:
 - existing `.claude/skills`;
 - exact files PDG wants to create;
 - exact existing files PDG will preserve;
+- whether a small PDG trigger block should be added to `AGENTS.md` or `CLAUDE.md`;
 - any conflict that blocks writing;
 - exact command or copy operation you want to run next.
 
@@ -113,7 +116,7 @@ Codex:
 
 ```bash
 mkdir -p "$target_dir/.agents/skills/progressive-disclosure-guard"
-cp "$PDG_DIR/kit/generated-skills/codex-progressive-disclosure-guard.md" \
+cp "$PDG_DIR/pdg.codex.skill.md" \
   "$target_dir/.agents/skills/progressive-disclosure-guard/SKILL.md"
 ```
 
@@ -121,13 +124,31 @@ Claude Code:
 
 ```bash
 mkdir -p "$target_dir/.claude/skills/progressive-disclosure-guard"
-cp "$PDG_DIR/kit/generated-skills/claude-progressive-disclosure-guard.md" \
+cp "$PDG_DIR/pdg.claude.skill.md" \
   "$target_dir/.claude/skills/progressive-disclosure-guard/SKILL.md"
 ```
 
 For `dual-agent`, run both copy blocks.
 
-Do not write `AGENTS.md`, `CLAUDE.md`, GitHub workflows, Linear templates, or project docs. PDG is only the skill.
+## Add Trigger Rules
+
+A skill file alone may not be enough in every project. Add the matching PDG trigger block when the human approves it.
+
+Codex:
+
+```bash
+cat "$PDG_DIR/AGENTS.pdg.md"
+```
+
+Claude Code:
+
+```bash
+cat "$PDG_DIR/CLAUDE.pdg.md"
+```
+
+If `AGENTS.md` or `CLAUDE.md` already exists, append or merge the block without removing existing rules. If the file does not exist, ask before creating it.
+
+Do not write GitHub workflows, Linear templates, broad governance files, or product docs. PDG installation is only the skill plus the small trigger rule.
 
 ## Verify Installation
 

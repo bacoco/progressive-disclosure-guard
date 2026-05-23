@@ -5,20 +5,21 @@ description: Use before finalizing specs, plans, implementation prompts, archite
 
 <!--
 GENERATED FILE - DO NOT EDIT DIRECTLY
-source: kit/skills-src/shared/progressive-disclosure-guard.skill.md
+source: pdg.skill.md
 source_hash: 24990d5767df45412d9477592a6441777bcfb63ab8c536f26659ec0a4fd96f57
-generated_by: fuckia generate-skills
-target: claude
+generated_by: pdg generate-skills
+target: codex
 -->
 
 # PDG - Progressive Disclosure Guard
 
-## Claude Mechanics
+## Codex Mechanics
 
-- Use Claude planning tools for task tracking.
-- Use Claude subagents only when file ownership is disjoint.
+- Use `rg` for repository inventory.
+- Use `apply_patch` for manual file edits.
+- Use Codex subagents only when file ownership is disjoint.
 - Do not run parallel agents on the same files.
-- Do not mark a risky Claude implementation as reviewed by the same Claude context.
+- Do not mark a risky Codex implementation as reviewed by the same Codex context.
 
 Use this skill before finalizing work that another human, Claude, Codex, or third reviewer will execute, and after substantial code changes before polish or "done".
 

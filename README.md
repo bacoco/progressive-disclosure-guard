@@ -88,29 +88,35 @@ Both:
 Install PDG - Progressive Disclosure Guard here for both Codex and Claude Code. Read https://github.com/bacoco/progressive-disclosure-guard/blob/main/INSTALL.md, start with audit only, report the exact files you will write, and ask before writing.
 ```
 
-PDG writes only the selected skill file:
+PDG installs the selected skill file and can also add a small trigger block to the matching agent instruction file:
 
 - Codex: `.agents/skills/progressive-disclosure-guard/SKILL.md`
 - Claude Code: `.claude/skills/progressive-disclosure-guard/SKILL.md`
 - Both: both files
+- Codex trigger block: `AGENTS.md`
+- Claude Code trigger block: `CLAUDE.md`
 
-It does not install project governance, GitHub workflows, Linear templates, or collaboration rules.
+It does not install broad project governance, GitHub workflows, Linear templates, or Claude/Codex collaboration workflows.
 
 ## Files
 
 ```text
-kit/skills-src/shared/progressive-disclosure-guard.skill.md
-kit/generated-skills/codex-progressive-disclosure-guard.md
-kit/generated-skills/claude-progressive-disclosure-guard.md
+pdg.skill.md
+pdg.codex.skill.md
+pdg.claude.skill.md
+AGENTS.pdg.md
+CLAUDE.pdg.md
 scripts/
 ```
 
-- `kit/skills-src/shared/progressive-disclosure-guard.skill.md`: copied source skill.
-- `kit/generated-skills/codex-progressive-disclosure-guard.md`: Codex install variant.
-- `kit/generated-skills/claude-progressive-disclosure-guard.md`: Claude Code install variant.
+- `pdg.skill.md`: canonical shared source.
+- `pdg.codex.skill.md`: Codex install file.
+- `pdg.claude.skill.md`: Claude Code install file.
+- `AGENTS.pdg.md`: optional Codex trigger block for project instructions.
+- `CLAUDE.pdg.md`: optional Claude Code trigger block for project instructions.
 - `scripts/`: generation and drift checks.
 
-The skill files were copied from Fuckia so PDG does not fork into a second behavior. Repository docs and install instructions are the only standalone wrapper around that copied skill.
+PDG is now the source. Fuckia consumes a pinned copy and maps it into Fuckia's internal paths.
 
 ## Single-Agent Validation
 
@@ -141,7 +147,7 @@ Use PDG alone when you only need progressive disclosure. Use Fuckia when you wan
 Source direction:
 
 - PDG owns the `progressive-disclosure-guard` skill.
-- Fuckia consumes a pinned copy.
+- Fuckia consumes `pdg.skill.md`, then generates its own Claude and Codex outputs.
 - Fuckia-specific workflows must not be added to the PDG skill.
 
 ## Maintainers
@@ -151,4 +157,4 @@ npm test
 npm run generate
 ```
 
-Generated skill files must stay in sync with `skills/progressive-disclosure-guard/SKILL.md`.
+Generated skill files must stay in sync with `pdg.skill.md`.

@@ -16,9 +16,9 @@ execFileSync(process.execPath, ["scripts/generate-skills.mjs"], {
   stdio: "inherit"
 });
 
-await assertSkill("kit/skills-src/shared/progressive-disclosure-guard.skill.md");
-await assertSkill("kit/generated-skills/codex-progressive-disclosure-guard.md");
-await assertSkill("kit/generated-skills/claude-progressive-disclosure-guard.md");
+await assertSkill("pdg.skill.md");
+await assertSkill("pdg.codex.skill.md");
+await assertSkill("pdg.claude.skill.md");
 await assertNoForbiddenWords(repoRoot);
 
 console.log("PDG checks passed.");
