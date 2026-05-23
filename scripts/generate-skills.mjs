@@ -5,7 +5,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const sourcePath = "skills/progressive-disclosure-guard/SKILL.md";
+const sourcePath = "kit/skills-src/shared/progressive-disclosure-guard.skill.md";
 const writeMode = process.argv.includes("--write");
 
 const targets = {
@@ -31,7 +31,7 @@ const targets = {
 const source = await readFile(path.join(repoRoot, sourcePath), "utf8");
 const parsed = parseSkill(source);
 const outputs = Object.entries(targets).map(([target, mechanics]) => {
-  const output = `generated/${target}/progressive-disclosure-guard/SKILL.md`;
+  const output = `kit/generated-skills/${target}-progressive-disclosure-guard.md`;
   return {
     target,
     output,
@@ -110,7 +110,7 @@ function renderGeneratedSkill({ name, description, body, sourceHash, target, mec
     "GENERATED FILE - DO NOT EDIT DIRECTLY",
     `source: ${sourcePath}`,
     `source_hash: ${sourceHash}`,
-    "generated_by: pdg generate-skills",
+    "generated_by: fuckia generate-skills",
     `target: ${target}`,
     "-->",
     "",

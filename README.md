@@ -96,20 +96,21 @@ PDG writes only the selected skill file:
 
 It does not install project governance, GitHub workflows, Linear templates, or collaboration rules.
 
-## Repository Layout
+## Files
 
 ```text
-skills/progressive-disclosure-guard/SKILL.md
-generated/codex/progressive-disclosure-guard/SKILL.md
-generated/claude/progressive-disclosure-guard/SKILL.md
-examples/pdg-pass/
+kit/skills-src/shared/progressive-disclosure-guard.skill.md
+kit/generated-skills/codex-progressive-disclosure-guard.md
+kit/generated-skills/claude-progressive-disclosure-guard.md
 scripts/
 ```
 
-- `skills/.../SKILL.md` is the source skill.
-- `generated/codex/...` adds Codex-specific mechanics.
-- `generated/claude/...` adds Claude-specific mechanics.
-- `examples/pdg-pass/` shows the expected shape of a PDG pass.
+- `kit/skills-src/shared/progressive-disclosure-guard.skill.md`: copied source skill.
+- `kit/generated-skills/codex-progressive-disclosure-guard.md`: Codex install variant.
+- `kit/generated-skills/claude-progressive-disclosure-guard.md`: Claude Code install variant.
+- `scripts/`: generation and drift checks.
+
+The skill files were copied from Fuckia so PDG does not fork into a second behavior. Repository docs and install instructions are the only standalone wrapper around that copied skill.
 
 ## Single-Agent Validation
 
@@ -136,6 +137,12 @@ PDG is the standalone product.
 Fuckia is a larger optional governance and collaboration kit for repositories that use Claude Code, Codex, GitHub, Linear, review separation, and stricter workflow checks. Fuckia vendors PDG, but PDG does not depend on Fuckia.
 
 Use PDG alone when you only need progressive disclosure. Use Fuckia when you want the full collaboration and governance layer around it.
+
+Source direction:
+
+- PDG owns the `progressive-disclosure-guard` skill.
+- Fuckia consumes a pinned copy.
+- Fuckia-specific workflows must not be added to the PDG skill.
 
 ## Maintainers
 

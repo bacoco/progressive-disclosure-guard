@@ -1,24 +1,19 @@
 ---
 name: progressive-disclosure-guard
 description: Use before finalizing specs, plans, implementation prompts, architecture reviews, UX critiques, handoff docs, code reviews, install/migration instructions, or after substantial code changes. Forces ambiguity removal, progressive disclosure across docs, specs, plans, code, APIs, prompts, tests, reviews, and verification, plus regression proof from a low-context implementer perspective.
+targets:
+  - claude
+  - codex
+constitution:
+  - progressive-disclosure-before-detail
+  - evidence-before-claim
+  - source-of-truth-before-memory
+  - preserve-working-systems
+  - separated-authority
+  - real-verification-before-done
 ---
 
-<!--
-GENERATED FILE - DO NOT EDIT DIRECTLY
-source: skills/progressive-disclosure-guard/SKILL.md
-source_hash: ae562ea281ee6c341f0c7c2ac612adafa525074a0fc47371dba5ec7870a99796
-generated_by: pdg generate-skills
-target: claude
--->
-
 # PDG - Progressive Disclosure Guard
-
-## Claude Mechanics
-
-- Use Claude planning tools for task tracking.
-- Use Claude subagents only when file ownership is disjoint.
-- Do not run parallel agents on the same files.
-- Do not mark a risky Claude implementation as reviewed by the same Claude context.
 
 Use this skill before finalizing work that another human, Claude, Codex, or third reviewer will execute, and after substantial code changes before polish or "done".
 
@@ -44,7 +39,7 @@ List the behavior that must remain true:
 - user-visible workflows;
 - files and directories that must stay authoritative;
 - routes, stores, hooks, queues, pipelines, and state machines that must not be replaced;
-- external contracts such as GitHub checks, issue states, APIs, or generated skill metadata;
+- external contracts such as GitHub checks, Linear issue states, APIs, or generated skill metadata;
 - verification commands and real user paths that prove the old behavior still works.
 
 ## Enforce Progressive Disclosure Everywhere
@@ -164,7 +159,7 @@ When reviewing a PR, actively look for:
 - old behavior hidden behind renamed props or unused branches;
 - tests that assert existence without exercising the real workflow;
 - skipped tests that hide regressions;
-- implementation that passes local checks while bypassing the product path;
+- implementation that passes local checks while bypassing the product path.
 - over-broad files or prompts that load whole catalogs, doctrines, folders, test corpora, or UI surfaces instead of targeted summaries and details;
 - new files exceeding roughly 200 lines without a split or explicit justification.
 

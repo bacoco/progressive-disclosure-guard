@@ -3,7 +3,23 @@ name: progressive-disclosure-guard
 description: Use before finalizing specs, plans, implementation prompts, architecture reviews, UX critiques, handoff docs, code reviews, install/migration instructions, or after substantial code changes. Forces ambiguity removal, progressive disclosure across docs, specs, plans, code, APIs, prompts, tests, reviews, and verification, plus regression proof from a low-context implementer perspective.
 ---
 
+<!--
+GENERATED FILE - DO NOT EDIT DIRECTLY
+source: kit/skills-src/shared/progressive-disclosure-guard.skill.md
+source_hash: 24990d5767df45412d9477592a6441777bcfb63ab8c536f26659ec0a4fd96f57
+generated_by: fuckia generate-skills
+target: codex
+-->
+
 # PDG - Progressive Disclosure Guard
+
+## Codex Mechanics
+
+- Use `rg` for repository inventory.
+- Use `apply_patch` for manual file edits.
+- Use Codex subagents only when file ownership is disjoint.
+- Do not run parallel agents on the same files.
+- Do not mark a risky Codex implementation as reviewed by the same Codex context.
 
 Use this skill before finalizing work that another human, Claude, Codex, or third reviewer will execute, and after substantial code changes before polish or "done".
 
@@ -29,7 +45,7 @@ List the behavior that must remain true:
 - user-visible workflows;
 - files and directories that must stay authoritative;
 - routes, stores, hooks, queues, pipelines, and state machines that must not be replaced;
-- external contracts such as GitHub checks, issue states, APIs, or generated skill metadata;
+- external contracts such as GitHub checks, Linear issue states, APIs, or generated skill metadata;
 - verification commands and real user paths that prove the old behavior still works.
 
 ## Enforce Progressive Disclosure Everywhere
@@ -149,7 +165,7 @@ When reviewing a PR, actively look for:
 - old behavior hidden behind renamed props or unused branches;
 - tests that assert existence without exercising the real workflow;
 - skipped tests that hide regressions;
-- implementation that passes local checks while bypassing the product path;
+- implementation that passes local checks while bypassing the product path.
 - over-broad files or prompts that load whole catalogs, doctrines, folders, test corpora, or UI surfaces instead of targeted summaries and details;
 - new files exceeding roughly 200 lines without a split or explicit justification.
 

@@ -81,8 +81,8 @@ test -d .claude/skills && find .claude/skills -maxdepth 2 -type f | sort || true
 Then check the source files you would install:
 
 ```bash
-test -f "$PDG_DIR/generated/codex/progressive-disclosure-guard/SKILL.md"
-test -f "$PDG_DIR/generated/claude/progressive-disclosure-guard/SKILL.md"
+test -f "$PDG_DIR/kit/generated-skills/codex-progressive-disclosure-guard.md"
+test -f "$PDG_DIR/kit/generated-skills/claude-progressive-disclosure-guard.md"
 ```
 
 These commands are read-only.
@@ -113,7 +113,7 @@ Codex:
 
 ```bash
 mkdir -p "$target_dir/.agents/skills/progressive-disclosure-guard"
-cp "$PDG_DIR/generated/codex/progressive-disclosure-guard/SKILL.md" \
+cp "$PDG_DIR/kit/generated-skills/codex-progressive-disclosure-guard.md" \
   "$target_dir/.agents/skills/progressive-disclosure-guard/SKILL.md"
 ```
 
@@ -121,7 +121,7 @@ Claude Code:
 
 ```bash
 mkdir -p "$target_dir/.claude/skills/progressive-disclosure-guard"
-cp "$PDG_DIR/generated/claude/progressive-disclosure-guard/SKILL.md" \
+cp "$PDG_DIR/kit/generated-skills/claude-progressive-disclosure-guard.md" \
   "$target_dir/.claude/skills/progressive-disclosure-guard/SKILL.md"
 ```
 
