@@ -43,6 +43,7 @@ Progressive disclosure is not only a documentation rule.
 | Code | Keep entry points thin and split orchestration, domain logic, IO, state, prompts, and validation. |
 | Files | Avoid broad `utils`, `service`, or `manager` dumps when a smaller responsibility exists. |
 | APIs and prompts | Fetch or inject summaries first, then expand details only when needed. |
+| Skills | Select one primary skill first, then load additional skills or references only when the task requires them. |
 | Tests | Start with the smallest contract check, then prove the real workflow. |
 | Verification | Report the actual command, route, or user path checked, plus what remains unverified. |
 

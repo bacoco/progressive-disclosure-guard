@@ -6,7 +6,7 @@ description: Use before finalizing specs, plans, implementation prompts, archite
 <!--
 GENERATED FILE - DO NOT EDIT DIRECTLY
 source: pdg.skill.md
-source_hash: 24990d5767df45412d9477592a6441777bcfb63ab8c536f26659ec0a4fd96f57
+source_hash: 7fd3466892fc7590713c9258809a34a9cc73a80eafc74453b6d529e0b28e6927
 generated_by: pdg generate-skills
 target: claude
 -->
@@ -58,10 +58,25 @@ Progressive disclosure applies to implementation, not only documentation.
 - APIs/search/discovery: expose summary/list endpoints first and detail endpoints only on explicit demand.
 - UI work: implement the smallest real workflow surface first, then reveal advanced controls or secondary panels only after the main path works.
 - Prompts/agents: select targeted domains or capabilities before injecting detailed doctrine.
+- Skills: choose one primary skill from name/description first, then load additional skills or references only when the current task requires their specific procedure.
 - Tests/verification: start with narrow contract checks and the shortest real workflow, then broaden only according to risk. State what was checked and what remains unverified.
 - Reviews: read root context first, then expand only into files that evidence a risk.
 
 A solution that works by dumping all knowledge, all domains, all tests, all UI, or all doctrine into one large artifact is a failed implementation unless explicitly requested.
+
+## Skill Progressive Disclosure
+
+When multiple skills may apply, do not bulk-load skill folders, catalogs, references, or every plausible skill.
+
+Use this sequence:
+
+1. Select one primary skill from the available skill names and descriptions.
+2. Read only that skill's `SKILL.md`.
+3. Load a second skill only when the task needs that second skill's specific workflow.
+4. Load referenced files only when the selected skill says they are needed for the current task.
+5. Do not create a wrapper, router, or sub-skill unless real duplication or repeated failure proves the split is needed.
+
+For PDG repository changes, run one bounded `PDG self-check`, not recursive PDG passes. The self-check covers the canonical source, generated outputs, trigger blocks, install docs, and verification commands.
 
 ## Red-Team The Wording
 
