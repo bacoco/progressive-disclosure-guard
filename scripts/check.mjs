@@ -48,6 +48,7 @@ await assertSkill("pdg.claude.skill.md", { generated: true, target: "claude", cl
 await assertReleaseMetadata();
 await assertTriggerTemplates();
 await assertInstallMergeContract();
+await assertReadmeOperatingPrinciple();
 await assertNoForbiddenWords(repoRoot);
 
 console.log("PDG checks passed.");
@@ -143,6 +144,20 @@ async function assertInstallMergeContract() {
   ]) {
     if (!content.includes(phrase)) {
       throw new Error(`INSTALL.md must preserve merge/update trigger behavior: ${phrase}`);
+    }
+  }
+}
+
+async function assertReadmeOperatingPrinciple() {
+  const content = await readFile(path.join(repoRoot, "README.md"), "utf8");
+  for (const phrase of [
+    "Treat my requests as objectives under constraints",
+    "Respect my explicit request first",
+    "distinguish what is known, unknown, and assumed",
+    "Be free in method, but faithful to the objective"
+  ]) {
+    if (!content.includes(phrase)) {
+      throw new Error(`README.md must include objective-under-constraints principle: ${phrase}`);
     }
   }
 }
