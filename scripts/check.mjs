@@ -46,6 +46,8 @@ await assertSkill("pdg.skill.md", { generated: false });
 await assertSkill("pdg.codex.skill.md", { generated: true, target: "codex" });
 await assertSkill("pdg.claude.skill.md", { generated: true, target: "claude", claudeFrontmatter: true });
 await assertReleaseMetadata();
+await assertTriggerTemplates();
+await assertInstallMergeContract();
 await assertNoForbiddenWords(repoRoot);
 
 console.log("PDG checks passed.");
@@ -112,6 +114,35 @@ async function assertReleaseMetadata() {
   for (const entry of ["evidence/", "scripts/health.mjs", "scripts/install-audit.mjs"]) {
     if (!pkg.files.includes(entry)) {
       throw new Error(`package.json files must include ${entry}.`);
+    }
+  }
+}
+
+async function assertTriggerTemplates() {
+  for (const relativePath of ["AGENTS.pdg.md", "CLAUDE.pdg.md"]) {
+    const content = await readFile(path.join(repoRoot, relativePath), "utf8");
+    for (const phrase of [
+      "Treat the user request as a destination under constraints",
+      "Preserve explicit user instructions",
+      "name the conflict before deviating"
+    ]) {
+      if (!content.includes(phrase)) {
+        throw new Error(`${relativePath} must include request-preservation phrase: ${phrase}`);
+      }
+    }
+  }
+}
+
+async function assertInstallMergeContract() {
+  const content = await readFile(path.join(repoRoot, "INSTALL.md"), "utf8");
+  for (const phrase of [
+    "Trigger-rule edits are merge/update-only",
+    "never replace an existing `AGENTS.md` or `CLAUDE.md` wholesale",
+    "preserve all non-PDG content",
+    "edit only the PDG section or append the PDG block"
+  ]) {
+    if (!content.includes(phrase)) {
+      throw new Error(`INSTALL.md must preserve merge/update trigger behavior: ${phrase}`);
     }
   }
 }

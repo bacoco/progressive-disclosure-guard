@@ -32,15 +32,26 @@ function resolveInstall(input) {
     return { action: "ask", question: "Codex only, Claude only, or both?" };
   }
   const writes = [];
+  const triggerRuleEdits = [];
   if (mode === "codex-only" || mode === "dual-agent") {
     writes.push(".agents/skills/progressive-disclosure-guard/SKILL.md");
-    if (!input.skillOnly) writes.push("AGENTS.md");
+    if (!input.skillOnly) {
+      writes.push("AGENTS.md");
+      triggerRuleEdits.push({ file: "AGENTS.md", strategy: "merge-or-update" });
+    }
   }
   if (mode === "claude-only" || mode === "dual-agent") {
     writes.push(".claude/skills/progressive-disclosure-guard/SKILL.md");
-    if (!input.skillOnly) writes.push("CLAUDE.md");
+    if (!input.skillOnly) {
+      writes.push("CLAUDE.md");
+      triggerRuleEdits.push({ file: "CLAUDE.md", strategy: "merge-or-update" });
+    }
   }
-  return { action: "install", mode, writes };
+  const result = { action: "install", mode, writes };
+  if (triggerRuleEdits.length > 0) {
+    result.triggerRuleEdits = triggerRuleEdits;
+  }
+  return result;
 }
 
 function explicitMode(prompt) {

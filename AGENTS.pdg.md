@@ -2,6 +2,8 @@
 
 Invoke the `progressive-disclosure-guard` skill, not a lighter inline summary, before finalizing specs, plans, implementation prompts, architecture reviews, UX critiques, handoff docs, code reviews, install/migration instructions, or substantial code changes.
 
+Treat the user request as a destination under constraints, not as permission to reinterpret the objective. Preserve explicit user instructions; if a requested method threatens the objective, truth, safety, or feasibility, name the conflict before deviating.
+
 Installed skill path:
 
 ```text

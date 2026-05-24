@@ -10,6 +10,38 @@
       "writes": [
         ".agents/skills/progressive-disclosure-guard/SKILL.md",
         "AGENTS.md"
+      ],
+      "triggerRuleEdits": [
+        {
+          "file": "AGENTS.md",
+          "strategy": "merge-or-update"
+        }
+      ]
+    }
+  },
+  {
+    "id": "explicit-dual-trigger-merge",
+    "input": {
+      "prompt": "Install PDG for Claude and Codex."
+    },
+    "expected": {
+      "action": "install",
+      "mode": "dual-agent",
+      "writes": [
+        ".agents/skills/progressive-disclosure-guard/SKILL.md",
+        "AGENTS.md",
+        ".claude/skills/progressive-disclosure-guard/SKILL.md",
+        "CLAUDE.md"
+      ],
+      "triggerRuleEdits": [
+        {
+          "file": "AGENTS.md",
+          "strategy": "merge-or-update"
+        },
+        {
+          "file": "CLAUDE.md",
+          "strategy": "merge-or-update"
+        }
       ]
     }
   },
@@ -42,6 +74,12 @@
       "writes": [
         ".claude/skills/progressive-disclosure-guard/SKILL.md",
         "CLAUDE.md"
+      ],
+      "triggerRuleEdits": [
+        {
+          "file": "CLAUDE.md",
+          "strategy": "merge-or-update"
+        }
       ]
     }
   },
