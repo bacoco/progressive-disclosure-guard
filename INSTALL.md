@@ -151,22 +151,9 @@ Do not edit `AGENTS.md` or `CLAUDE.md` during an update unless the trigger block
 
 Before writing, report the old and new hashes:
 
-```bash
-grep -n "source_hash:" "$target_dir/.agents/skills/progressive-disclosure-guard/SKILL.md" 2>/dev/null || true
-grep -n "source_hash:" "$target_dir/.claude/skills/progressive-disclosure-guard/SKILL.md" 2>/dev/null || true
-grep -n "source_hash:" "$PDG_DIR/pdg.codex.skill.md"
-grep -n "source_hash:" "$PDG_DIR/pdg.claude.skill.md"
-```
+Before writing, confirm the old and new hashes identified during the audit step.
 
-After human approval, replace only the selected generated skill file or files:
-
-```bash
-cp "$PDG_DIR/pdg.codex.skill.md" \
-  "$target_dir/.agents/skills/progressive-disclosure-guard/SKILL.md"
-
-cp "$PDG_DIR/pdg.claude.skill.md" \
-  "$target_dir/.claude/skills/progressive-disclosure-guard/SKILL.md"
-```
+After human approval, follow the **Apply After Human Approval** section to replace the skill files.
 
 For `codex-only` or `claude-only`, run only the matching copy command.
 
