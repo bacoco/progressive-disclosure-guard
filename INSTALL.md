@@ -74,6 +74,15 @@ For an existing local clone:
 PDG_DIR="/absolute/path/to/progressive-disclosure-guard"
 ```
 
+## Choose The Source Ref
+
+Use `main` unless the human explicitly requests a newer release tag that contains the documentation-generation guardrails.
+
+To ensure the source is on the correct ref:
+
+```bash
+git -C "$PDG_DIR" checkout main # or the requested tag
+
 ## Audit The Target Repository
 
 Run inside the target repository:
