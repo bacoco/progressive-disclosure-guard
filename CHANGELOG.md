@@ -13,3 +13,4 @@
 - Added maintainer health checks, CI, install audit fixtures, and release metadata.
 - Added Bercy-derived source inventory, stale-question removal, and review-finding-to-fixture checks.
 - Documented safe updates for existing generated PDG skill installs.
+- Documented that `v0.1.0` predates the documentation-generation guardrails.

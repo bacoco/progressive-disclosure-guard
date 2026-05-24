@@ -113,7 +113,7 @@ Without PDG, `Done` or `verified` can be a vibe. With PDG, the final receipt mus
 
 ## Install With One Prompt
 
-Use one of these prompts inside the repository where you want PDG installed.
+Use one of these prompts inside the repository where you want PDG installed. They read `INSTALL.md` from `main`; do not pin `v0.1.0` when you need the documentation-generation guardrails.
 
 Codex:
 

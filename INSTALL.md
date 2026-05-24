@@ -74,6 +74,12 @@ For an existing local clone:
 PDG_DIR="/absolute/path/to/progressive-disclosure-guard"
 ```
 
+## Choose The Source Ref
+
+Use the default branch unless the human explicitly requests a newer release tag that contains the documentation-generation guardrails.
+
+Do not pin `v0.1.0` when the target needs documentation generation, source inventory, coverage, grounding, regression passes, or existing-skill update behavior. That tag predates those guardrails.
+
 ## Audit The Target Repository
 
 Run inside the target repository:
