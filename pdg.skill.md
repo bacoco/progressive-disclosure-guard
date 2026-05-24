@@ -26,11 +26,12 @@ constitution:
 
 # PDG - Progressive Disclosure Guard
 
-Use this skill before finalizing specs, plans, implementation prompts, architecture reviews, UX critiques, handoff docs, code reviews, install/migration instructions, or substantial code changes.
+## In brief
 
-Do not invoke PDG for typo-only edits, formatting-only edits, read-only lookups, one-command status checks, or low-risk changes that do not affect handoff text, behavior, contracts, source of truth, install steps, verification claims, or generated outputs.
+PDG verifies a deliverable is ready to finalize. It forces three things: (1) identify what exists and must be preserved, (2) classify what is known vs unknown, (3) require real proof before claiming done.
 
-A substantial code change touches more than 3 files, changes a public route or API contract, introduces a store/pipeline/state machine, changes persistence, or modifies behavior other modules depend on.
+Trigger: diff > 3 files, public contract, shared behavior, handoff, install, or verification claim.
+Silent: typo, formatting, read-only lookup, one-command status, no behavior or contract change.
 
 Assume the next implementer is low-context, literal, rushed, and able to satisfy the words while damaging the product.
 
@@ -129,7 +130,9 @@ The goal is not a large receipt. The goal is to make unread evidence impossible 
 
 Before interpreting a spec, review, score, or comparison, open the sources that could confirm or falsify each material claim. A path list, inventory, document outline, or prose summary is not evidence until the referenced source has been opened.
 
-Inspect existing code, scripts, skills, agents, hooks, configs, and tests with `rg` or focused reads. Output `artifacts inspected` and `overlap findings`, classify overlaps as `reuse`, `extend`, `avoid`, `replace`, or `none`, then convert real overlaps into `MUST reuse/extend` and `MUST NOT duplicate`. If inspection is skipped or blocked, mark the claim verdict `Unknown`, cap confidence or score, and name the blocked source.
+Inspect existing code, scripts, skills, agents, hooks, configs, and tests with `rg` or focused reads. Inspection depth: read files named in the diff plus one level of direct dependents (importers, callers, config consumers). Do not recurse beyond that unless a specific risk justifies it. If the direct-dependent set is large, inspect the highest-risk or closest dependents and mark the rest `inspection bounded, residual risk noted`.
+
+Output `artifacts inspected` and `overlap findings`, classify overlaps as `reuse`, `extend`, `avoid`, `replace`, or `none`, then convert real overlaps into `MUST reuse/extend` and `MUST NOT duplicate`. If inspection is skipped or blocked, mark the claim verdict `Unknown`, cap confidence or score, and name the blocked source.
 
 ## Known/Unknown Pass
 
@@ -201,6 +204,12 @@ PDG output: triggered. MUST start with audit only, report exact files, preserve 
 
 Input: `Fix README typo.`
 PDG output: not triggered unless the edit changes install instructions, handoff text, verification claims, or generated output.
+
+Input: `Rename 5 CSS variables for consistency across 8 files.`
+PDG output: triggered (8 files), but minimal pass: grep confirms no external component depends on the old names, then list preserved behavior. Full overlap inspection not needed for cosmetic renames with no behavioral impact.
+
+Input: `Change the default timeout from 30s to 60s in config.ts.`
+PDG output: triggered (1 file, but behavior change other modules depend on). MUST name which callers rely on the timeout value, verify no test assumes 30s, and confirm the change does not mask a real performance issue.
 
 ## Output
 
