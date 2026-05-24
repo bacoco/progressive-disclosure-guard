@@ -5,7 +5,9 @@ import path from "node:path";
 const MAX_LINES = 200;
 const largeJustification = "PDG-LARGE-FILE-JUSTIFICATION:";
 const broadJustification = "PDG-BROAD-FILE-JUSTIFICATION:";
+const binaryAssetJustification = "PDG-BINARY-ASSET-JUSTIFICATION:";
 const broadNames = new Set(["service", "utils", "manager", "handler"]);
+const duplicateAssetExtensions = new Set([".png", ".jpg", ".jpeg", ".webp"]);
 const args = process.argv.slice(2);
 const findings = [];
 
@@ -32,12 +34,14 @@ console.log("PDG static check passed.");
 async function checkPath(target) {
   const info = await stat(target);
   if (info.isDirectory()) {
-    for (const entry of await readdir(target, { withFileTypes: true })) {
+    const entries = await readdir(target, { withFileTypes: true });
+    for (const entry of entries) {
       if (entry.name === ".git" || entry.name === "node_modules") {
         continue;
       }
       await checkPath(path.join(target, entry.name));
     }
+    await checkDuplicateAssetSiblings(target, entries);
     return;
   }
   if (!info.isFile() || info.size > 200_000 || isBinaryLike(target)) {
@@ -98,13 +102,63 @@ async function checkDiff(diff) {
   }
 }
 
+async function checkDuplicateAssetSiblings(directory, entries) {
+  const files = entries.filter((entry) => entry.isFile()).map((entry) => entry.name);
+  const duplicates = duplicateAssetGroups(files);
+  if (duplicates.length === 0 || await directoryHasBinaryJustification(directory)) {
+    return;
+  }
+  const rel = path.relative(process.cwd(), directory) || directory;
+  for (const stem of duplicates) {
+    findings.push(`${rel}: duplicated binary asset formats for ${stem}; add ${binaryAssetJustification}`);
+  }
+}
+
+function duplicateAssetGroups(files) {
+  const groups = new Map();
+  for (const file of files) {
+    const ext = path.extname(file).toLowerCase();
+    if (!duplicateAssetExtensions.has(ext)) {
+      continue;
+    }
+    const stem = path.basename(file, ext);
+    if (!groups.has(stem)) {
+      groups.set(stem, new Set());
+    }
+    groups.get(stem).add(ext);
+  }
+  return [...groups.entries()]
+    .filter(([, exts]) => exts.has(".webp") && [...exts].some((ext) => ext !== ".webp"))
+    .map(([stem]) => stem);
+}
+
+async function directoryHasBinaryJustification(directory) {
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    if (!entry.isFile() || !isSmallTextLike(entry.name)) {
+      continue;
+    }
+    try {
+      const content = await readFile(path.join(directory, entry.name), "utf8");
+      if (content.includes(binaryAssetJustification)) {
+        return true;
+      }
+    } catch {
+      // Ignore unreadable files; the duplicate finding still points at the directory.
+    }
+  }
+  return false;
+}
+
 function hasBroadDumpName(file) {
   const name = path.basename(file, path.extname(file)).toLowerCase();
   return name.split(/[-_.]/).some((part) => broadNames.has(part));
 }
 
 function isDoneClaim(line) {
-  return /\b(verified|done)\b/i.test(line);
+  if (/\balready done\b/i.test(line) || /"verified".*without showing/i.test(line)) {
+    return false;
+  }
+  return /(?<![-\w])(verified|done)(?![-\w])/i.test(line);
 }
 
 function hasVerificationReference(line) {
@@ -113,6 +167,10 @@ function hasVerificationReference(line) {
 
 function isBinaryLike(file) {
   return /\.(png|jpg|jpeg|gif|webp|pdf|zip|gz|tar|ico)$/i.test(file);
+}
+
+function isSmallTextLike(file) {
+  return /\.(md|txt|json|ya?ml|html?|csv)$/i.test(file);
 }
 
 function fail(messages) {

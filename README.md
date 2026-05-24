@@ -49,6 +49,21 @@ Progressive disclosure is not only a documentation rule.
 | Tests | Start with the smallest contract check, then prove the real workflow. |
 | Verification | Report the actual command, route, or user path checked, plus what remains unverified. |
 
+## Documentation Generation Mode
+
+PDG now includes a narrow mode for LLM-generated documentation, specs, portals, API docs, architecture docs, and user guides. The agent should not ask the model to infer, draft, overwrite, and verify in one broad pass.
+
+The expected sequence is:
+
+1. build a small evidence manifest from source files, routes, APIs, env vars, data stores, entry points, and unknowns;
+2. generate an overview or index first, then focused pages or sections, then architecture only when the evidence supports it;
+3. use bounded structured outputs for repeated sections when possible;
+4. preserve human overrides, accepted corrections, and curated source-of-truth sections;
+5. archive or diff prior generated artifacts before replacement;
+6. verify with cheap deterministic checks first, optional rubric-based LLM judge second, and a real preview or workflow for user-visible docs.
+
+Generated or duplicated binary assets also need an explicit `PDG-BINARY-ASSET-JUSTIFICATION:` in an adjacent text file. For example, keeping both `screen.png` and `screen.webp` is justified only when the PNG is an intentional source/fallback asset; otherwise the referenced optimized asset is enough.
+
 ## The PDG Pass
 
 Before an important handoff, review, install instruction, migration plan, or substantial code change, the agent runs a PDG pass.

@@ -50,6 +50,7 @@ Never:
 - claim `verified`, `done`, or `safe` without naming the command, route, or workflow checked;
 - treat "roughly 200 lines" as permission to exceed 200 lines without an explicit justification marker;
 - treat generated files as canonical when a source file and generator exist;
+- overwrite generated documentation, inventories, human overrides, or binary assets without a diff/archive receipt and a named verification path;
 - bulk-load full catalogs, doctrines, folders, fixtures, or skill trees when a focused source will answer.
 
 ## Trigger Boundary
@@ -104,6 +105,19 @@ Bias toward uncertainty. If an item could fit multiple quadrants, classify it as
 
 A solution that works by dumping all knowledge, all domains, all tests, all UI, or all doctrine into one large artifact is a failed implementation unless explicitly requested.
 
+## Documentation Generation Mode
+
+When generating or updating documentation, specs, portals, API docs, architecture docs, or user guides with LLM help:
+
+1. Build a small evidence manifest before drafting. Name the source files, routes, entry points, public APIs, env vars, modules, data stores, and unknowns inspected.
+2. Generate from the manifest in layers: overview or index first, then focused pages or sections, then cross-cutting architecture only when source evidence supports it.
+3. Prefer bounded structured outputs for repeated units. If the LLM returns invalid, incomplete, or unsupported output, fall back to deterministic minimal text and report the gap.
+4. Preserve human overrides, accepted corrections, and manually curated source-of-truth sections. MUST NOT overwrite them silently during regeneration.
+5. Archive or diff prior generated artifacts before replacement when the output is durable or user-facing.
+6. Suggested questions, examples, summaries, architecture claims, limitations, and dependencies MUST be answerable from named sources.
+7. Heavy generated assets and duplicated binary formats require `PDG-BINARY-ASSET-JUSTIFICATION:` in an adjacent text file. Prefer committing only the referenced optimized asset unless a source or fallback asset is intentionally needed.
+8. Verification must include cheap deterministic checks first, optional rubric-based LLM judge second, and a real route, preview, or workflow for user-visible docs.
+
 ## Fallbacks
 
 - Ambiguous trigger boundary: do the two-line trigger check and stop unless PDG clearly triggers.
@@ -155,4 +169,5 @@ Add a section named `PDG pass` with:
 - non-goals and forbidden shortcuts stated;
 - real verification path required or blocked verification reported;
 - generated files treated as generated;
+- for generated docs, evidence manifest, preserved overrides, artifact diff/archive, and doc-quality checks reported;
 - same-agent review labeled `PDG self-check, not independent review`.

@@ -12,6 +12,7 @@ const forbidden = [
 ];
 const requiredSections = [
   "## Invariants",
+  "## Documentation Generation Mode",
   "## Fallbacks",
   "## Examples",
   "## Final Checklist"

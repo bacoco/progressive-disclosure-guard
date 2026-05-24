@@ -19,8 +19,9 @@
   "scripts": {
     "generate": "node scripts/generate-skills.mjs --write",
     "eval": "node evidence/phase-1-static-guard/run-eval.js",
+    "eval:docs": "node evidence/phase-2-doc-generation/run-eval.js",
     "check": "node scripts/check.mjs && node scripts/pdg-check.js",
-    "test": "node scripts/check.mjs && node evidence/phase-1-static-guard/pdg-check.test.js"
+    "test": "node scripts/check.mjs && node evidence/phase-1-static-guard/pdg-check.test.js && node evidence/phase-2-doc-generation/run-eval.js"
   },
   "engines": {
     "node": ">=20"
