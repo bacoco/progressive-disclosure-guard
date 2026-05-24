@@ -12,6 +12,7 @@ const forbidden = [
 ];
 const requiredSections = [
   "## Invariants",
+  "## Skill Invocation Pass",
   "## Overlap Inspection Pass",
   "## Documentation Generation Mode",
   "## Documentation Review Passes",
@@ -23,6 +24,10 @@ const requiredPhrases = [
   "source inventory",
   "before any review, score, approval, implementation decision",
   "from prose alone when code",
+  "Skill Invocation Pass",
+  "check twice",
+  "material unread files",
+  "Unknown",
   "source-grounded claim matrix",
   "overlap findings",
   "stale questions",

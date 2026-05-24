@@ -28,5 +28,11 @@
     "task": "Evaluate a PRD companion that lists source paths before scoring its source coverage.",
     "withoutPdg": "Rated source coverage 14/15 because the document lists many file paths.",
     "withPdg": "PDG triggered: yes. Artifacts inspected: code, scripts, skills, agents, hooks, and configs. Overlap findings: existing checks partially cover the proposal, so reuse/extend before adding new machinery. Source-grounded matrix: claim | source | verdict | impact. Coverage pass: opened the cited hooks and checks before rating. Grounding pass: a listed path is evidence only after direct inspection; unsupported claims marked Unknown and the score lowered. Regression pass: ran `rg CODEBASE_MAP` and `npm test`; residual risk: live reviewer discipline still needs human validation."
+  },
+  {
+    "id": "skill-overload-unread-justification",
+    "task": "Use an evaluation skill to compare a PRD with a PDG companion without drowning in skill doctrine.",
+    "withoutPdg": "Applied the evaluation skill and concluded that the PDG improves the PRD.",
+    "withPdg": "PDG triggered: yes. Skill invocation pass: selected eval-prd-pdg because the task compares PRD alone vs PRD + PDG; second usefulness check: a direct answer would not enforce the scoring rubric; entrypoint read: skills/eval-prd-pdg/SKILL.md; conclusions refused until source inspection. Artifacts inspected: code, scripts, skills, agents, hooks, and configs. Overlap findings: existing reviewer and doctor scripts partially overlap, so extend before duplicating. Source-grounded matrix: claim | source | verdict | impact. Coverage pass: PRD, PDG, hook config, doctor script, and relevant skill files compared. Grounding pass: unsupported claims marked Unknown until source evidence is opened. Unread material files: runtime session logs not read because the fixture tests skill-call behavior, so runtime reviewer discipline remains Unknown. Regression pass: ran `rg eval-prd-pdg` and `npm test`; residual risk: unread-file justification does not prove comprehension."
   }
 ]

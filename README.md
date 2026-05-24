@@ -45,7 +45,7 @@ Progressive disclosure is not only a documentation rule.
 | Code | Keep entry points thin and split orchestration, domain logic, IO, state, prompts, and validation. |
 | Files | Avoid broad `utils`, `service`, or `manager` dumps when a smaller responsibility exists. |
 | APIs and prompts | Fetch or inject summaries first, then expand details only when needed. |
-| Skills | Select one primary skill first, then load additional skills or references only when the task requires them. |
+| Skills | Select one primary skill first, check twice that it is needed, inspect bounded source evidence, and justify material files not read. |
 | Tests | Start with the smallest contract check, then prove the real workflow. |
 | Verification | Report the actual command, route, or user path checked, plus what remains unverified. |
 
@@ -110,6 +110,8 @@ Without PDG, `Generate architecture docs` can invent workers, queues, and servic
 Without PDG, `Update docs after this feature` can cover only the headline page and miss changed env vars, removed behavior, or stale suggested questions. With PDG, the coverage, grounding, and regression passes must each report what was checked.
 
 Without PDG, a review can score a document highly because it lists many source paths while missing existing overlap in scripts, agents, hooks, or configs. With PDG, source-grounded reviews must inspect those artifacts and produce overlap findings plus a `claim` / `source` / `verdict` / `impact` matrix before scoring.
+
+Without PDG, an agent can say it used a skill after reading only the skill prose. With PDG, risky skill calls must name the selected skill, check twice that it is needed, bound the sources to inspect, and justify any material file mentioned but not read by marking the related claim `Unknown`.
 
 Without PDG, `Done` or `verified` can be a vibe. With PDG, the final receipt must name the command, route, install path, preview, or workflow that was actually checked.
 

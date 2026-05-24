@@ -10,13 +10,14 @@ context:
   - Read source-of-truth files before relying on memory.
   - Read relevant code before interpreting prose, inventories, or cited paths.
   - Inspect code, scripts, skills, agents, hooks, and configs before scoring reviews.
+  - For risky skill calls, check skill usefulness twice and justify material unread files.
   - Keep checks bounded; do not recursively invoke PDG on PDG itself.
 ---
 
 <!--
 GENERATED FILE - DO NOT EDIT DIRECTLY
 source: pdg.skill.md
-source_hash: e0fdbe19bf79fb545d9b71738917a6f092cbe11f3d9ccf5d74477a68ff30be73
+source_hash: 722eeab91770148b6b499cfb5f4be07ae8647afdeab7e571c721c13b741b2045
 generated_by: pdg generate-skills
 target: claude
 -->
@@ -43,6 +44,7 @@ Assume the next implementer is low-context, literal, rushed, and able to satisfy
 Always:
 
 - read the named source-of-truth files and nearby code, scripts, skills, agents, hooks, and configs before any review, score, approval, implementation decision, or constraint; do not interpret prose, inventories, or cited paths as evidence until the relevant source has been opened; for reviews, comparisons, or scores, build a source-grounded claim matrix with `claim`, `source`, `verdict`, and `impact`;
+- for risky skill calls, run a bounded skill invocation pass before expanding context; check twice that the selected skill is necessary, name only the minimal sources to inspect, and mark material unread files `Unknown` with a reason before finalizing;
 - name the existing behavior, files, callbacks, routes, stores, pipelines, generated outputs, and install paths that must be preserved;
 - convert dangerous wording into explicit `MUST` / `MUST NOT` constraints;
 - require verification through a real command, public route, install path, or product entry path;
@@ -59,6 +61,8 @@ Never:
 - treat generated files as canonical when a source file and generator exist;
 - score, approve, reject, compare, or interpret a spec/review from prose alone when code, scripts, skills, agents, hooks, configs, or tests could confirm or falsify the claim;
 - treat cited paths, inventories, document structure, or prose summaries as proof before opening the source and checking claimed behavior and overlaps;
+- claim a skill was applied when only the skill prose was read and no task-relevant source files were inspected;
+- use a material file as evidence without either reading it or stating why it stayed unread and which claim remains `Unknown`;
 - overwrite generated documentation, inventories, human overrides, or binary assets without a diff/archive receipt and a named verification path;
 - bulk-load full catalogs, doctrines, folders, fixtures, or skill trees when a focused source will answer.
 
@@ -82,13 +86,35 @@ If the boundary is ambiguous, run only a two-line trigger check: `PDG triggered:
 ## Workflow
 
 1. Decide whether PDG triggers; if not, say why in one line and stop the PDG pass.
-2. Inspect existing artifacts and overlaps before known/unknown classification; for reviews, comparisons, or scores, mark major claims `confirmed`, `partial`, `unsupported`, or `unknown` before rating them.
-3. Classify known knowns, known unknowns, unknown knowns, and unknown unknowns.
-4. Name preserved behavior and source-of-truth files.
-5. Red-team dangerous wording such as `refactor`, `simplify`, `wire`, `reuse`, `support`, `migrate`, `install`, `generate`, `verified`, or `done`.
-6. Convert ambiguity into `MUST`, `MUST NOT`, non-goals, and forbidden shortcuts.
-7. Require regression proof through the real workflow, not only isolated helper existence.
-8. If review is same-agent, label it as self-check and request human validation for risky work.
+2. If a skill drives the work, run the Skill Invocation Pass before expanding context.
+3. Inspect existing artifacts and overlaps before known/unknown classification; for reviews, comparisons, or scores, mark major claims `confirmed`, `partial`, `unsupported`, or `unknown` before rating them.
+4. Classify known knowns, known unknowns, unknown knowns, and unknown unknowns.
+5. Name preserved behavior and source-of-truth files.
+6. Red-team dangerous wording such as `refactor`, `simplify`, `wire`, `reuse`, `support`, `migrate`, `install`, `generate`, `verified`, or `done`.
+7. Convert ambiguity into `MUST`, `MUST NOT`, non-goals, and forbidden shortcuts.
+8. Require regression proof through the real workflow, not only isolated helper existence.
+9. If review is same-agent, label it as self-check and request human validation for risky work.
+
+## Skill Invocation Pass
+
+When a skill is used for work that will produce a decision, review, score, handoff, implementation, install instruction, or durable artifact, start with a short invocation pass instead of dumping the whole skill context.
+
+State:
+
+- selected skill and why it triggered;
+- skill entrypoint read;
+- second usefulness check: why a lighter direct answer or narrower source read is not enough;
+- minimum task-relevant source files that must be inspected before any conclusion;
+- context expansion rule: load references, fixtures, scripts, or extra skills only when the entrypoint or inspected evidence requires them;
+- conclusions refused until inspection is complete.
+
+Before finalizing, apply the unread-file rule:
+
+- for every material file named, cited, proposed, scored, or used as support but not read, give one short reason or mark the related claim `Unknown`;
+- do not list every file read unless it changes the decision;
+- do not carry a large receipt in the main context when a focused justification answers the risk.
+
+The goal is not a large receipt. The goal is to make unread evidence impossible to hide.
 
 ## Overlap Inspection Pass
 
@@ -115,7 +141,7 @@ Bias toward uncertainty. If an item could fit multiple quadrants, classify it as
 - APIs/search/discovery: expose summary/list endpoints first and detail endpoints only on explicit demand.
 - UI work: implement the smallest real workflow surface first, then reveal advanced controls or secondary panels only after the main path works.
 - Prompts/agents: select targeted domains or capabilities before injecting detailed doctrine.
-- Skills: choose one primary skill from name/description first, then load extra skills or references only when the task requires their specific procedure.
+- Skills: choose one primary skill from name/description first, check twice that it is needed, run the Skill Invocation Pass, then load extra skills or references only when inspected evidence requires them.
 - Tests/verification: start with narrow contract checks and the shortest real workflow, then broaden according to named risk. State what was checked and what remains unverified.
 - Reviews: read root context first, then expand only into files that evidence a risk.
 
@@ -172,9 +198,11 @@ PDG output: not triggered unless the edit changes install instructions, handoff 
 Add a section named `PDG pass` with:
 
 - trigger decision;
+- skill invocation pass, if a skill drove the work;
 - artifacts inspected;
 - overlap findings;
 - source-grounded claim matrix;
+- material unread files and `Unknown` claims, if any;
 - known knowns;
 - known unknowns;
 - unknown knowns;
@@ -188,7 +216,9 @@ Add a section named `PDG pass` with:
 ## Final Checklist
 
 - trigger boundary checked;
+- skill invocation pass completed when a skill drove the work;
 - source of truth read or marked `Unknown`;
+- every material file mentioned but unread is justified, or the related claim is marked `Unknown`;
 - overlap inspection completed or marked `Unknown`;
 - source-grounded claim matrix completed before any score, approval, or comparison;
 - preserved behavior named;
