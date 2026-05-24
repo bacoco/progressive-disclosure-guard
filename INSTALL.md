@@ -102,10 +102,11 @@ These commands are read-only.
 If a target skill file already exists, inspect its generated markers before deciding whether it is a conflict or an update:
 
 ```bash
-grep -E "GENERATED FILE - DO NOT EDIT DIRECTLY|source: pdg.skill.md|source_hash:|target: (codex|claude)" \
-  .agents/skills/progressive-disclosure-guard/SKILL.md \
-  .claude/skills/progressive-disclosure-guard/SKILL.md 2>/dev/null || true
-```
+grep -nE "GENERATED FILE - DO NOT EDIT DIRECTLY|source: pdg.skill.md|source_hash:|target: (codex|claude)" \
+  "$target_dir/.agents/skills/progressive-disclosure-guard/SKILL.md" \
+  "$target_dir/.claude/skills/progressive-disclosure-guard/SKILL.md" \
+  "$PDG_DIR/pdg.codex.skill.md" \
+  "$PDG_DIR/pdg.claude.skill.md" 2>/dev/null || true
 
 Treat an existing file as a safe update candidate only when it contains all of these markers:
 
