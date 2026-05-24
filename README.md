@@ -64,6 +64,16 @@ The expected sequence is:
 
 Generated or duplicated binary assets also need an explicit `PDG-BINARY-ASSET-JUSTIFICATION:` in an adjacent text file. For example, keeping both `screen.png` and `screen.webp` is justified only when the PNG is an intentional source/fallback asset; otherwise the referenced optimized asset is enough.
 
+## Documentation Review Passes
+
+After a generated or updated doc draft, PDG expects three passes:
+
+1. **Coverage pass:** compare changed files, routes, APIs, env vars, pages, modules, and removed behavior against the draft so important changes are not silently omitted.
+2. **Grounding pass:** remove or mark any feature, dependency, architecture claim, limitation, example, or suggested question that cannot point to named source evidence.
+3. **Regression pass:** verify the generated output path: links or previews, generated-file drift, preserved human overrides, skipped sections, binary asset justifications, and any real route or install path.
+
+An LLM judge can help the grounding pass, but it is supporting evidence only. The final receipt should name the three passes, or explain which pass was skipped and what risk remains.
+
 ## The PDG Pass
 
 Before an important handoff, review, install instruction, migration plan, or substantial code change, the agent runs a PDG pass.
@@ -96,6 +106,8 @@ The pass now has four explicit guard sections:
 Without PDG, `Refactor auth flow and clean up callbacks` can become a broad rewrite. With PDG, the output must name preserved login/logout routes, session storage, callbacks, forbidden parallel auth paths, and a real login verification path.
 
 Without PDG, `Generate architecture docs` can invent workers, queues, and services because they sound plausible. With PDG, the agent must build an evidence manifest first and omit architecture claims that are not supported by named sources.
+
+Without PDG, `Update docs after this feature` can cover only the headline page and miss changed env vars, removed behavior, or stale suggested questions. With PDG, the coverage, grounding, and regression passes must each report what was checked.
 
 Without PDG, `Done` or `verified` can be a vibe. With PDG, the final receipt must name the command, route, install path, preview, or workflow that was actually checked.
 

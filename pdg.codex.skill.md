@@ -6,7 +6,7 @@ description: Use before finalizing specs, plans, implementation prompts, archite
 <!--
 GENERATED FILE - DO NOT EDIT DIRECTLY
 source: pdg.skill.md
-source_hash: dc04a483d6af62ac70680671af4443daa189699d7c6b75468e3e186bd252ed21
+source_hash: d19a279fe1846beeadad66c629ff82d447aaa35bb08fb96da91eb95273cac819
 generated_by: pdg generate-skills
 target: codex
 -->
@@ -116,6 +116,16 @@ When generating or updating documentation, specs, portals, API docs, architectur
 7. Heavy generated assets and duplicated binary formats require `PDG-BINARY-ASSET-JUSTIFICATION:` in an adjacent text file. Prefer committing only the referenced optimized asset unless a source or fallback asset is intentionally needed.
 8. Verification must include cheap deterministic checks first, optional rubric-based LLM judge second, and a real route, preview, or workflow for user-visible docs.
 
+## Documentation Review Passes
+
+When generated or updated documentation is durable, user-facing, or used by another agent, run three explicit passes after the first draft:
+
+1. **Coverage pass:** compare the evidence manifest, changed files, routes, APIs, env vars, pages, modules, and removed behavior against the draft. Every user-facing or architecture-relevant change must appear in exactly one intended place, or be listed as intentionally undocumented.
+2. **Grounding pass:** every feature, dependency, architecture claim, limitation, default question, example, and suggested next action must point to named source evidence. Unsupported claims are removed, marked `Unknown`, or converted into questions for the human.
+3. **Regression pass:** verify the real generated output path still works. Check links or previews, generated-file drift, preserved human overrides, skipped/removed sections, binary asset justification, and the product route or install path when applicable.
+
+The final receipt must name all three passes. If a pass is skipped, report why and what risk remains. An LLM judge can support the grounding pass, but it must not replace source evidence or real preview/workflow verification.
+
 ## Fallbacks
 
 - Ambiguous trigger boundary: do the two-line trigger check and stop unless PDG clearly triggers.
@@ -168,4 +178,5 @@ Add a section named `PDG pass` with:
 - real verification path required or blocked verification reported;
 - generated files treated as generated;
 - for generated docs, evidence manifest, preserved overrides, artifact diff/archive, and doc-quality checks reported;
+- for generated or updated docs, coverage, grounding, and regression review passes reported or explicitly skipped with residual risk;
 - same-agent review labeled `PDG self-check, not independent review`.
