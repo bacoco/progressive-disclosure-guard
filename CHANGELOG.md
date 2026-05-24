@@ -17,3 +17,4 @@
 - Added source-grounded review scoring guardrails requiring claim/source/verdict/impact evidence before ratings or approvals.
 - Added overlap inspection guardrails for code, scripts, skills, agents, hooks, and configs before known/unknown classification.
 - Clarified the code-before-interpretation rule and made the doc-review fixture checks tolerate equivalent claim-matrix formatting.
+- Added a Skill Invocation Pass so risky skill calls must check skill usefulness twice, bound source inspection, and justify material unread files by marking related claims Unknown.
