@@ -49,6 +49,8 @@ Default install scope:
 - Report exact files before writes.
 - Ask before writing files.
 - Preserve existing `AGENTS.md`, `CLAUDE.md`, skills, workflows, docs, and config.
+- Trigger-rule edits are merge/update-only: never replace an existing `AGENTS.md` or `CLAUDE.md` wholesale.
+- When an instruction file already exists, preserve all non-PDG content and append the missing PDG block or replace only the existing PDG block.
 - If a target skill already exists with different content and is not a generated PDG skill, stop and report the conflict.
 - If a target skill is a generated PDG skill with an older `source_hash`, use the update procedure below.
 - If `AGENTS.md` or `CLAUDE.md` already contains a PDG block, update it instead of duplicating it.
@@ -227,6 +229,7 @@ cat "$PDG_DIR/CLAUDE.pdg.md"
 Rules:
 
 - If the selected instruction file exists, merge the block without removing existing rules.
+- Never overwrite the whole selected instruction file when it already exists; edit only the PDG section or append the PDG block.
 - If it already contains `progressive-disclosure-guard` or a `PDG - Progressive Disclosure Guard` section, update that section instead of duplicating it.
 - If the selected instruction file does not exist, create it only after the human approves the write list.
 - If the human explicitly requested skill-only install, do not edit `AGENTS.md` or `CLAUDE.md`.
