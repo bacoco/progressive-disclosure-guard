@@ -76,9 +76,12 @@ PDG_DIR="/absolute/path/to/progressive-disclosure-guard"
 
 ## Choose The Source Ref
 
-Use the default branch unless the human explicitly requests a newer release tag that contains the documentation-generation guardrails.
+Use `main` unless the human explicitly requests a newer release tag that contains the documentation-generation guardrails.
 
-Do not pin `v0.1.0` when the target needs documentation generation, source inventory, coverage, grounding, regression passes, or existing-skill update behavior. That tag predates those guardrails.
+To ensure the source is on the correct ref:
+
+```bash
+git -C "$PDG_DIR" checkout main # or the requested tag
 
 ## Audit The Target Repository
 
