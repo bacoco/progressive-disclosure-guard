@@ -11,6 +11,7 @@ allowed-tools:
   - Bash
 context:
   - Read source-of-truth files before relying on memory.
+  - Read relevant code before interpreting prose, inventories, or cited paths.
   - Inspect code, scripts, skills, agents, hooks, and configs before scoring reviews.
   - Keep checks bounded; do not recursively invoke PDG on PDG itself.
 constitution:
@@ -36,7 +37,7 @@ Assume the next implementer is low-context, literal, rushed, and able to satisfy
 
 Always:
 
-- read the named source-of-truth files and nearby code, scripts, skills, agents, hooks, and configs before giving constraints; for reviews, comparisons, or scores, build a source-grounded claim matrix with `claim`, `source`, `verdict`, and `impact`;
+- read the named source-of-truth files and nearby code, scripts, skills, agents, hooks, and configs before any review, score, approval, implementation decision, or constraint; do not interpret prose, inventories, or cited paths as evidence until the relevant source has been opened; for reviews, comparisons, or scores, build a source-grounded claim matrix with `claim`, `source`, `verdict`, and `impact`;
 - name the existing behavior, files, callbacks, routes, stores, pipelines, generated outputs, and install paths that must be preserved;
 - convert dangerous wording into explicit `MUST` / `MUST NOT` constraints;
 - require verification through a real command, public route, install path, or product entry path;
@@ -51,6 +52,7 @@ Never:
 - claim `verified`, `done`, or `safe` without naming the command, route, or workflow checked;
 - treat "roughly 200 lines" as permission to exceed 200 lines without an explicit justification marker;
 - treat generated files as canonical when a source file and generator exist;
+- score, approve, reject, compare, or interpret a spec/review from prose alone when code, scripts, skills, agents, hooks, configs, or tests could confirm or falsify the claim;
 - treat cited paths, inventories, document structure, or prose summaries as proof before opening the source and checking claimed behavior and overlaps;
 - overwrite generated documentation, inventories, human overrides, or binary assets without a diff/archive receipt and a named verification path;
 - bulk-load full catalogs, doctrines, folders, fixtures, or skill trees when a focused source will answer.
@@ -83,6 +85,12 @@ If the boundary is ambiguous, run only a two-line trigger check: `PDG triggered:
 7. Require regression proof through the real workflow, not only isolated helper existence.
 8. If review is same-agent, label it as self-check and request human validation for risky work.
 
+## Overlap Inspection Pass
+
+Before interpreting a spec, review, score, or comparison, open the sources that could confirm or falsify each material claim. A path list, inventory, document outline, or prose summary is not evidence until the referenced source has been opened.
+
+Inspect existing code, scripts, skills, agents, hooks, configs, and tests with `rg` or focused reads. Output `artifacts inspected` and `overlap findings`, classify overlaps as `reuse`, `extend`, `avoid`, `replace`, or `none`, then convert real overlaps into `MUST reuse/extend` and `MUST NOT duplicate`. If inspection is skipped or blocked, mark the claim verdict `Unknown`, cap confidence or score, and name the blocked source.
+
 ## Known/Unknown Pass
 
 - **Known knowns:** explicit requirements, existing behavior, named files, routes, callbacks, contracts, tests, constraints, and sources already covered.
@@ -91,10 +99,6 @@ If the boundary is ambiguous, run only a two-line trigger check: `PDG triggered:
 - **Unknown unknowns:** failure modes the implementer is unlikely to check; convert them into regression proof, non-goals, monitoring/logging, or follow-up.
 
 Bias toward uncertainty. If an item could fit multiple quadrants, classify it as unknown rather than known.
-
-## Overlap Inspection Pass
-
-Before known/unknown classification on specs, reviews, or harness work, inspect existing code, scripts, skills, agents, hooks, configs, and tests with `rg` or focused reads. Output `artifacts inspected` and `overlap findings`, classify overlaps as `reuse`, `extend`, `avoid`, `replace`, or `none`, then convert real overlaps into `MUST reuse/extend` and `MUST NOT duplicate`. If skipped, mark overlap risk `Unknown` and cap confidence or score.
 
 ## Enforce Progressive Disclosure Everywhere
 
@@ -165,6 +169,7 @@ Add a section named `PDG pass` with:
 - trigger decision;
 - artifacts inspected;
 - overlap findings;
+- source-grounded claim matrix;
 - known knowns;
 - known unknowns;
 - unknown knowns;

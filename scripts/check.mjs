@@ -21,6 +21,8 @@ const requiredSections = [
 ];
 const requiredPhrases = [
   "source inventory",
+  "before any review, score, approval, implementation decision",
+  "from prose alone when code",
   "source-grounded claim matrix",
   "overlap findings",
   "stale questions",

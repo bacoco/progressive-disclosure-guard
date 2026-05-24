@@ -69,7 +69,7 @@ Generated or duplicated binary assets also need an explicit `PDG-BINARY-ASSET-JU
 After a generated or updated doc draft, PDG expects three passes:
 
 1. **Coverage pass:** compare the source inventory, changed files, routes, APIs, env vars, pages, modules, generated outputs, and removed behavior against the draft.
-2. **Grounding pass:** remove or mark any feature, dependency, architecture claim, limitation, example, or suggested question that cannot point to named source evidence. A source inventory is not proof until the cited files are opened and the claim is checked.
+2. **Grounding pass:** remove or mark any feature, dependency, architecture claim, limitation, example, or suggested question that cannot point to named source evidence. A source inventory is not proof until the cited files are opened and the claim is checked; reviews must read relevant code before interpreting prose, inventories, or cited paths.
 3. **Regression pass:** verify the generated output path: links or previews, generated-file drift, preserved human overrides, skipped sections, binary asset justifications, and any real route or install path.
 
 Every machine-checkable review finding should become a fixture, regression test, or checklist item. An LLM judge can help the grounding pass, but it is supporting evidence only. The final receipt should name the three passes, source exclusions, converted findings, skipped checks, and residual risk.

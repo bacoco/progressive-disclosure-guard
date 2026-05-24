@@ -11,8 +11,8 @@ const criteria = [
   ["grounding", /\bGrounding pass:/],
   ["regression", /\bRegression pass/],
   ["source", /\b(source evidence|source-grounded|manifest|README|\.env|diff)\b/i],
-  ["overlapInspection", /\bArtifacts inspected:.*\b(scripts|skills|agents|hooks|configs)\b.*\bOverlap findings:/i],
-  ["sourceGroundedMatrix", /\bSource-grounded matrix:\s*claim\/source\/verdict\/impact\b/i],
+  ["overlapInspection", /\bArtifacts inspected:.*?\b(code|scripts|skills|agents|hooks|configs)\b.*?\bOverlap findings:/i],
+  ["sourceGroundedMatrix", /\bSource-grounded matrix:.*?\bclaim\b.*?\bsource\b.*?\bverdict\b.*?\bimpact\b/i],
   ["verification", /`[^`]+`|\/[A-Za-z0-9._~:/?#[\]@!$&'()*+,;=-]+/],
   ["risk", /\bresidual risk:/i]
 ];
