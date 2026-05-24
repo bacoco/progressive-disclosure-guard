@@ -18,6 +18,11 @@ const requiredSections = [
   "## Examples",
   "## Final Checklist"
 ];
+const requiredPhrases = [
+  "source inventory",
+  "stale questions",
+  "Every actionable review finding"
+];
 
 execFileSync(process.execPath, ["scripts/generate-skills.mjs"], {
   cwd: repoRoot,
@@ -49,6 +54,11 @@ async function assertSkill(relativePath, options) {
   for (const section of requiredSections) {
     if (!content.includes(section)) {
       throw new Error(`${relativePath} must include ${section}.`);
+    }
+  }
+  for (const phrase of requiredPhrases) {
+    if (!content.includes(phrase)) {
+      throw new Error(`${relativePath} must include Bercy doc-audit phrase: ${phrase}`);
     }
   }
   if (options.generated) {

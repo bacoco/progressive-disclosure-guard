@@ -1,0 +1,26 @@
+[
+  {
+    "id": "source-inventory",
+    "task": "Generate a documentation portal from a repo containing README, API docs, internal notes, screenshots, and generated build output.",
+    "withoutPdg": "Generated all docs from every file found in the repo.",
+    "withPdg": "PDG triggered: yes. Source inventory: 42 files inspected; 18 user/product, 5 architecture, 7 internal-only, 4 generated, 3 binary assets, 5 out of scope. Coverage pass: generated output limited to the 23 eligible sources. Grounding pass: internal notes and generated build output excluded. Regression pass: ran `node scripts/check-docs.js`; residual risk: human should approve source relevance."
+  },
+  {
+    "id": "stale-question-removal",
+    "task": "Update generated docs after removing an export feature that still appears in suggested questions.",
+    "withoutPdg": "Updated the app page but kept the old suggested question.",
+    "withPdg": "PDG triggered: yes. Source inventory: diff shows export route removed and no source evidence remains. Coverage pass: removed the export section and stale question. Grounding pass: no suggested question lacks named evidence. Regression pass: ran `node scripts/check-links.js`; residual risk: none."
+  },
+  {
+    "id": "finding-to-fixture",
+    "task": "A review finds that generated architecture docs can claim a Redis queue when package.json has no Redis dependency.",
+    "withoutPdg": "Noted the review finding in the PR summary.",
+    "withPdg": "PDG triggered: yes. Source inventory: package.json and route files checked. Coverage pass: no queue source found. Grounding pass: Redis queue claim removed. Regression pass: added fixture `hallucinated-queue` so the finding cannot regress, then ran `npm test`; residual risk: live LLM wording still needs human review."
+  },
+  {
+    "id": "skipped-llm-judge",
+    "task": "Review docs without an available LLM judge key.",
+    "withoutPdg": "Skipped review because the judge was unavailable.",
+    "withPdg": "PDG triggered: yes. Source inventory: docs and generated pages listed. Coverage pass: completed manually. Grounding pass: source links checked without LLM judge. Regression pass: preview unavailable, ran `node scripts/check-docs.js`; residual risk: rendered layout and rubric scoring unverified."
+  }
+]

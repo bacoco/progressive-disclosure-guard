@@ -55,11 +55,11 @@ PDG now includes a narrow mode for LLM-generated documentation, specs, portals, 
 
 The expected sequence is:
 
-1. build a small evidence manifest from source files, routes, APIs, env vars, data stores, entry points, and unknowns;
-2. generate an overview or index first, then focused pages or sections, then architecture only when the evidence supports it;
+1. build a source inventory from files, routes, APIs, env vars, data stores, generated outputs, entry points, and unknowns;
+2. classify sources by audience, relevance, safety, stale status, generated status, and binary asset status;
 3. use bounded structured outputs for repeated sections when possible;
 4. preserve human overrides, accepted corrections, and curated source-of-truth sections;
-5. archive or diff prior generated artifacts before replacement;
+5. archive or diff prior generated artifacts before replacement and remove stale questions when their evidence disappeared;
 6. verify with cheap deterministic checks first, optional rubric-based LLM judge second, and a real preview or workflow for user-visible docs.
 
 Generated or duplicated binary assets also need an explicit `PDG-BINARY-ASSET-JUSTIFICATION:` in an adjacent text file. For example, keeping both `screen.png` and `screen.webp` is justified only when the PNG is an intentional source/fallback asset; otherwise the referenced optimized asset is enough.
@@ -68,11 +68,11 @@ Generated or duplicated binary assets also need an explicit `PDG-BINARY-ASSET-JU
 
 After a generated or updated doc draft, PDG expects three passes:
 
-1. **Coverage pass:** compare changed files, routes, APIs, env vars, pages, modules, and removed behavior against the draft so important changes are not silently omitted.
+1. **Coverage pass:** compare the source inventory, changed files, routes, APIs, env vars, pages, modules, generated outputs, and removed behavior against the draft.
 2. **Grounding pass:** remove or mark any feature, dependency, architecture claim, limitation, example, or suggested question that cannot point to named source evidence.
 3. **Regression pass:** verify the generated output path: links or previews, generated-file drift, preserved human overrides, skipped sections, binary asset justifications, and any real route or install path.
 
-An LLM judge can help the grounding pass, but it is supporting evidence only. The final receipt should name the three passes, or explain which pass was skipped and what risk remains.
+Every machine-checkable review finding should become a fixture, regression test, or checklist item. An LLM judge can help the grounding pass, but it is supporting evidence only. The final receipt should name the three passes, source exclusions, converted findings, skipped checks, and residual risk.
 
 ## The PDG Pass
 
