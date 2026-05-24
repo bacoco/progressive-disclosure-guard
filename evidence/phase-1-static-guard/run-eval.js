@@ -11,8 +11,27 @@ const criteria = [
   ["preserve", /\bpreserve\b/i],
   ["must", /\bMUST\b/],
   ["mustNot", /\bMUST NOT\b/],
+  ["missionFrame", /\bMission frame\b/i],
+  ["explicitConstraint", /\bexplicit user constraint\b/i],
+  ["successCriteria", /\bsuccess criteria\b/i],
+  ["noSilentReinterpretation", /\bNo silent reinterpretation\b/i],
   ["verification", /`[^`]+`|\/[A-Za-z0-9._~:/?#[\]@!$&'()*+,;=-]+/]
 ];
+
+const missionFixture = fixtures.find((fixture) => fixture.id === "explicit-constraint-preservation");
+if (!missionFixture) {
+  throw new Error("missing explicit constraint preservation fixture");
+}
+for (const [label, pattern] of [
+  ["mission frame", /\bMission frame\b/i],
+  ["explicit user constraint", /\bexplicit user constraint\b/i],
+  ["preserve explicit instructions", /\bPreserve explicit user instructions\b/i],
+  ["no silent reinterpretation", /\bNo silent reinterpretation\b/i]
+]) {
+  if (!pattern.test(missionFixture.withPdg)) {
+    throw new Error(`explicit constraint preservation fixture missing ${label}`);
+  }
+}
 
 const rows = fixtures.map((fixture) => {
   const without = score(fixture.withoutPdg);

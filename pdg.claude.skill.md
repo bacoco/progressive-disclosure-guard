@@ -17,7 +17,7 @@ context:
 <!--
 GENERATED FILE - DO NOT EDIT DIRECTLY
 source: pdg.skill.md
-source_hash: 722eeab91770148b6b499cfb5f4be07ae8647afdeab7e571c721c13b741b2045
+source_hash: 78576fa6c83192fb494731ce3e97d0c8d0f4d1ae452b39e3db2d10c0291ea6f7
 generated_by: pdg generate-skills
 target: claude
 -->
@@ -82,6 +82,20 @@ Stay silent when all of these are true:
 - no final answer needs to assert safety beyond the command or fact just observed.
 
 If the boundary is ambiguous, run only a two-line trigger check: `PDG triggered: yes/no` and `reason: ...`. Continue with a full PDG pass only when the answer is yes.
+
+## Mission Frame
+
+Before expanding a task, identify:
+
+- the requested outcome;
+- explicit user constraints;
+- forbidden outcomes;
+- success criteria;
+- facts that are known, unknown, or unverifiable.
+
+Treat the request as a destination under constraints, not as permission to invent a new objective.
+
+Preserve explicit user instructions. If the requested path conflicts with safety, truth, feasibility, or the stated objective, name the conflict before changing method.
 
 ## Workflow
 
@@ -216,6 +230,8 @@ Add a section named `PDG pass` with:
 ## Final Checklist
 
 - trigger boundary checked;
+- requested outcome, explicit constraints, forbidden outcomes, and success criteria identified;
+- no silent reinterpretation of the user request;
 - skill invocation pass completed when a skill drove the work;
 - source of truth read or marked `Unknown`;
 - every material file mentioned but unread is justified, or the related claim is marked `Unknown`;

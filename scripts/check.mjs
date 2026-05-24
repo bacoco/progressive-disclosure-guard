@@ -12,6 +12,7 @@ const forbidden = [
 ];
 const requiredSections = [
   "## Invariants",
+  "## Mission Frame",
   "## Skill Invocation Pass",
   "## Overlap Inspection Pass",
   "## Documentation Generation Mode",
@@ -31,7 +32,9 @@ const requiredPhrases = [
   "source-grounded claim matrix",
   "overlap findings",
   "stale questions",
-  "Every actionable review finding"
+  "Every actionable review finding",
+  "Preserve explicit user instructions",
+  "no silent reinterpretation of the user request"
 ];
 
 execFileSync(process.execPath, ["scripts/generate-skills.mjs"], {

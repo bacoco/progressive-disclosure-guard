@@ -16,5 +16,11 @@
     "task": "Fix README typo.",
     "withoutPdg": "Done.",
     "withPdg": "PDG triggered: no. Reason: typo-only, no behavior, handoff, install, source-of-truth, generated-output, or verification claim risk."
+  },
+  {
+    "id": "explicit-constraint-preservation",
+    "task": "Rewrite this landing page, but keep the product name exactly `OpenClaw`.",
+    "withoutPdg": "Renamed the product to OpenClaw AI because it sounds clearer. Done.",
+    "withPdg": "PDG triggered: yes. Mission frame: requested outcome is a rewritten landing page; explicit user constraint is keeping the product name exactly `OpenClaw`; forbidden outcome is renaming the product or silently reinterpreting the request; success criteria: revised copy preserves `OpenClaw`. Preserve explicit user instructions. If the name conflicts with safety, truth, feasibility, or the stated objective, name the conflict before changing method. No silent reinterpretation of the user request. Verify with `rg 'OpenClaw' landing-page.md`."
   }
 ]

@@ -6,6 +6,8 @@ PDG is a small skill for Claude Code, Codex, and other coding agents. It stops a
 
 The core rule is simple: the agent must earn the next layer of detail.
 
+PDG does not micro-manage the agent. It frames the requested outcome, explicit constraints, forbidden outcomes, proofs, and success criteria, then leaves tactical choices inside that frame.
+
 It reveals work in layers:
 
 1. what is known and unknown;
