@@ -49,6 +49,31 @@ Progressive disclosure is not only a documentation rule.
 | Tests | Start with the smallest contract check, then prove the real workflow. |
 | Verification | Report the actual command, route, or user path checked, plus what remains unverified. |
 
+## Documentation Generation Mode
+
+PDG now includes a narrow mode for LLM-generated documentation, specs, portals, API docs, architecture docs, and user guides. The agent should not ask the model to infer, draft, overwrite, and verify in one broad pass.
+
+The expected sequence is:
+
+1. build a source inventory from files, routes, APIs, env vars, data stores, generated outputs, entry points, and unknowns;
+2. classify sources by audience, relevance, safety, stale status, generated status, and binary asset status;
+3. use bounded structured outputs for repeated sections when possible;
+4. preserve human overrides, accepted corrections, and curated source-of-truth sections;
+5. archive or diff prior generated artifacts before replacement and remove stale questions when their evidence disappeared;
+6. verify with cheap deterministic checks first, optional rubric-based LLM judge second, and a real preview or workflow for user-visible docs.
+
+Generated or duplicated binary assets also need an explicit `PDG-BINARY-ASSET-JUSTIFICATION:` in an adjacent text file. For example, keeping both `screen.png` and `screen.webp` is justified only when the PNG is an intentional source/fallback asset; otherwise the referenced optimized asset is enough.
+
+## Documentation Review Passes
+
+After a generated or updated doc draft, PDG expects three passes:
+
+1. **Coverage pass:** compare the source inventory, changed files, routes, APIs, env vars, pages, modules, generated outputs, and removed behavior against the draft.
+2. **Grounding pass:** remove or mark any feature, dependency, architecture claim, limitation, example, or suggested question that cannot point to named source evidence.
+3. **Regression pass:** verify the generated output path: links or previews, generated-file drift, preserved human overrides, skipped sections, binary asset justifications, and any real route or install path.
+
+Every machine-checkable review finding should become a fixture, regression test, or checklist item. An LLM judge can help the grounding pass, but it is supporting evidence only. The final receipt should name the three passes, source exclusions, converted findings, skipped checks, and residual risk.
+
 ## The PDG Pass
 
 Before an important handoff, review, install instruction, migration plan, or substantial code change, the agent runs a PDG pass.
@@ -75,6 +100,16 @@ The pass now has four explicit guard sections:
 - `Fallbacks`: bounded responses for ambiguous triggers, missing sources, blocked verification, no second reviewer, and generated drift.
 - `Examples`: concrete triggered and non-triggered inputs.
 - `Final Checklist`: the short receipt that prevents silent weakening before final output.
+
+## Examples
+
+Without PDG, `Refactor auth flow and clean up callbacks` can become a broad rewrite. With PDG, the output must name preserved login/logout routes, session storage, callbacks, forbidden parallel auth paths, and a real login verification path.
+
+Without PDG, `Generate architecture docs` can invent workers, queues, and services because they sound plausible. With PDG, the agent must build an evidence manifest first and omit architecture claims that are not supported by named sources.
+
+Without PDG, `Update docs after this feature` can cover only the headline page and miss changed env vars, removed behavior, or stale suggested questions. With PDG, the coverage, grounding, and regression passes must each report what was checked.
+
+Without PDG, `Done` or `verified` can be a vibe. With PDG, the final receipt must name the command, route, install path, preview, or workflow that was actually checked.
 
 ## Install With One Prompt
 
@@ -117,7 +152,10 @@ pdg.codex.skill.md
 pdg.claude.skill.md
 AGENTS.pdg.md
 CLAUDE.pdg.md
+LICENSE
+CHANGELOG.md
 scripts/
+evidence/
 ```
 
 - `pdg.skill.md`: canonical shared source.
@@ -125,10 +163,11 @@ scripts/
 - `pdg.claude.skill.md`: Claude Code install file.
 - `AGENTS.pdg.md`: optional Codex trigger block for project instructions.
 - `CLAUDE.pdg.md`: optional Claude Code trigger block for project instructions.
+- `LICENSE` and `CHANGELOG.md`: release metadata.
 - `scripts/`: generation and drift checks.
 - `evidence/`: maintainer-only proof artifacts; not part of the installed skill copy.
 
-PDG is now the source. Fuckia consumes a pinned copy and maps it into Fuckia's internal paths.
+PDG is the canonical source for the `progressive-disclosure-guard` skill. Downstream governance kits may vendor it, but project-specific workflows should stay out of PDG.
 
 ## Single-Agent Validation
 
@@ -148,25 +187,12 @@ The human approval sentence is:
 Approved after human validation.
 ```
 
-## Relationship To Fuckia
-
-PDG is the standalone product.
-
-Fuckia is a larger optional governance and collaboration kit for repositories that use Claude Code, Codex, GitHub, Linear, review separation, and stricter workflow checks. Fuckia vendors PDG, but PDG does not depend on Fuckia.
-
-Use PDG alone when you only need progressive disclosure. Use Fuckia when you want the full collaboration and governance layer around it.
-
-Source direction:
-
-- PDG owns the `progressive-disclosure-guard` skill.
-- Fuckia consumes `pdg.skill.md`, then generates its own Claude and Codex outputs.
-- Fuckia-specific workflows must not be added to the PDG skill.
-
 ## Maintainers
 
 ```bash
 npm test
 npm run generate
+npm run health
 ```
 
 Generated skill files must stay in sync with `pdg.skill.md`.

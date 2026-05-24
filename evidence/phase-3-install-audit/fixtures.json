@@ -1,0 +1,69 @@
+[
+  {
+    "id": "explicit-codex",
+    "input": {
+      "prompt": "Install PDG here for Codex."
+    },
+    "expected": {
+      "action": "install",
+      "mode": "codex-only",
+      "writes": [
+        ".agents/skills/progressive-disclosure-guard/SKILL.md",
+        "AGENTS.md"
+      ]
+    }
+  },
+  {
+    "id": "explicit-dual-skill-only",
+    "input": {
+      "prompt": "Install PDG for Claude and Codex, skill-only.",
+      "skillOnly": true
+    },
+    "expected": {
+      "action": "install",
+      "mode": "dual-agent",
+      "writes": [
+        ".agents/skills/progressive-disclosure-guard/SKILL.md",
+        ".claude/skills/progressive-disclosure-guard/SKILL.md"
+      ]
+    }
+  },
+  {
+    "id": "marker-claude",
+    "input": {
+      "prompt": "Install PDG.",
+      "markers": {
+        "claudeMd": true
+      }
+    },
+    "expected": {
+      "action": "install",
+      "mode": "claude-only",
+      "writes": [
+        ".claude/skills/progressive-disclosure-guard/SKILL.md",
+        "CLAUDE.md"
+      ]
+    }
+  },
+  {
+    "id": "ambiguous-no-markers",
+    "input": {
+      "prompt": "Install PDG."
+    },
+    "expected": {
+      "action": "ask",
+      "question": "Codex only, Claude only, or both?"
+    }
+  },
+  {
+    "id": "existing-skill-conflict",
+    "input": {
+      "prompt": "Install PDG for Codex.",
+      "existingSkillConflict": true
+    },
+    "expected": {
+      "action": "stop",
+      "reason": "skill-conflict"
+    }
+  }
+]

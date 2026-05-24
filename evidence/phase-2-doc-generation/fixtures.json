@@ -1,0 +1,26 @@
+[
+  {
+    "id": "unsupported-architecture",
+    "task": "Generate architecture documentation for a repo with no queue or worker evidence.",
+    "withoutPdg": "Add an architecture page with API, worker, Redis queue, and database. Verified.",
+    "withPdg": "PDG triggered: yes. Evidence manifest: README.md, package.json, src/routes.ts. Unknown: background workers. MUST NOT claim Redis, queues, or workers without source evidence. Generate overview first, omit unsupported architecture, and verify with `npm test` plus `/docs/architecture` preview if created."
+  },
+  {
+    "id": "human-override",
+    "task": "Regenerate docs after a product rename; existing docs include a manually corrected limitation.",
+    "withoutPdg": "Regenerate every page from scratch and replace the old limitation text.",
+    "withPdg": "PDG triggered: yes. Source-of-truth files: docs/product.md and static/apps/app.html. MUST preserve human overrides and accepted corrections unless a source file contradicts them. Archive/diff the generated page before replacement. Required proof: show the diff and run `node scripts/check-docs.js`."
+  },
+  {
+    "id": "duplicate-binary-assets",
+    "task": "Commit generated screenshots as both PNG and WebP.",
+    "withoutPdg": "Add screenshots/home.png and screenshots/home.webp.",
+    "withPdg": "PDG triggered: yes. MUST justify duplicated binary formats with PDG-BINARY-ASSET-JUSTIFICATION or keep only the referenced optimized asset. Verify references in `static/apps/home.html` and report which binary is source, fallback, or generated output."
+  },
+  {
+    "id": "valid-doc-receipt",
+    "task": "Finish a generated user guide for a public settings page.",
+    "withoutPdg": "Done.",
+    "withPdg": "PDG triggered: yes. Evidence manifest: src/settings/page.tsx, README.md, .env.example. Generated layers: index then settings guide. Preserved overrides: docs/settings.md manual warning. Checks: `npm test`, `node scripts/check-links.js`, preview route `/settings`. LLM judge: not run."
+  }
+]

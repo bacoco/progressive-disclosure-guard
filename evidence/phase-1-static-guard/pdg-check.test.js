@@ -12,8 +12,12 @@ const root = await mkdtemp(path.join(tmpdir(), "pdg-check-test-"));
 try {
   const clean = path.join(root, "clean");
   const bad = path.join(root, "bad");
+  const assetsOk = path.join(clean, "assets");
+  const assetsBad = path.join(bad, "assets");
   await mkdir(clean, { recursive: true });
   await mkdir(bad, { recursive: true });
+  await mkdir(assetsOk, { recursive: true });
+  await mkdir(assetsBad, { recursive: true });
 
   await writeFile(path.join(clean, "auth-flow.md"), [
     "# Auth Flow",
@@ -28,6 +32,15 @@ try {
     "Done and verified.",
     ...Array.from({ length: 205 }, (_, index) => `line ${index + 1}`)
   ].join("\n"), "utf8");
+  await writeFile(path.join(assetsOk, "screen.png"), "png", "utf8");
+  await writeFile(path.join(assetsOk, "screen.webp"), "webp", "utf8");
+  await writeFile(path.join(assetsOk, "ASSETS.md"), [
+    "# Assets",
+    "",
+    "PDG-BINARY-ASSET-JUSTIFICATION: screen.png is the editable source; screen.webp is the rendered asset."
+  ].join("\n"), "utf8");
+  await writeFile(path.join(assetsBad, "hero.png"), "png", "utf8");
+  await writeFile(path.join(assetsBad, "hero.webp"), "webp", "utf8");
 
   const cleanRun = run(clean);
   assertStatus(cleanRun, 0, "clean fixture should pass");
@@ -38,6 +51,24 @@ try {
   assertIncludes(badRun.stderr, "exceeds 200", "bad fixture large-file output");
   assertIncludes(badRun.stderr, "service/utils/manager/handler", "bad fixture broad-name output");
   assertIncludes(badRun.stderr, "verified/done claim", "bad fixture verification output");
+  assertIncludes(badRun.stderr, "duplicated binary asset formats", "bad fixture binary output");
+
+  const diffPath = path.join(root, "assets.diff");
+  await writeFile(diffPath, [
+    "diff --git a/screens/home.png b/screens/home.png",
+    "new file mode 100644",
+    "--- /dev/null",
+    "+++ b/screens/home.png",
+    "+png",
+    "diff --git a/screens/home.webp b/screens/home.webp",
+    "new file mode 100644",
+    "--- /dev/null",
+    "+++ b/screens/home.webp",
+    "+webp"
+  ].join("\n"), "utf8");
+  const diffRun = runDiff(diffPath);
+  assertNonZero(diffRun.status, "asset diff fixture should fail");
+  assertIncludes(diffRun.stderr, "duplicated binary asset formats", "asset diff output");
 
   console.log("PDG static check tests passed.");
 } finally {
@@ -46,6 +77,13 @@ try {
 
 function run(target) {
   return spawnSync(process.execPath, [checker, target], {
+    cwd: repoRoot,
+    encoding: "utf8"
+  });
+}
+
+function runDiff(diffPath) {
+  return spawnSync(process.execPath, [checker, "--diff", diffPath], {
     cwd: repoRoot,
     encoding: "utf8"
   });

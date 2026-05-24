@@ -14,7 +14,7 @@ context:
 <!--
 GENERATED FILE - DO NOT EDIT DIRECTLY
 source: pdg.skill.md
-source_hash: 3465c41b42f0bc87a79d1f3515b88ced076fd6436b487d513030c152c26cc07b
+source_hash: a3406c1d41cbd9c73781b0f8d53ab4df3e42794560f5216f3c002821a8845147
 generated_by: pdg generate-skills
 target: claude
 -->
@@ -55,6 +55,7 @@ Never:
 - claim `verified`, `done`, or `safe` without naming the command, route, or workflow checked;
 - treat "roughly 200 lines" as permission to exceed 200 lines without an explicit justification marker;
 - treat generated files as canonical when a source file and generator exist;
+- overwrite generated documentation, inventories, human overrides, or binary assets without a diff/archive receipt and a named verification path;
 - bulk-load full catalogs, doctrines, folders, fixtures, or skill trees when a focused source will answer.
 
 ## Trigger Boundary
@@ -109,6 +110,31 @@ Bias toward uncertainty. If an item could fit multiple quadrants, classify it as
 
 A solution that works by dumping all knowledge, all domains, all tests, all UI, or all doctrine into one large artifact is a failed implementation unless explicitly requested.
 
+## Documentation Generation Mode
+
+When generating or updating documentation, specs, portals, API docs, architecture docs, or user guides with LLM help:
+
+1. Build a source inventory before drafting. Name inspected files, routes, entry points, APIs, env vars, modules, data stores, generated outputs, and unknowns.
+2. Classify sources by audience, relevance, and safety: user/product, architecture, operator, internal-only, stale, secret-bearing, generated, binary asset, or out of scope.
+3. Generate from the inventory in layers: overview or index first, focused pages or sections second, cross-cutting architecture only when source evidence supports it.
+4. Prefer bounded structured outputs for repeated units. If the LLM output is invalid, incomplete, or unsupported, fall back to deterministic minimal text and report the gap.
+5. Preserve human overrides, accepted corrections, and curated source-of-truth sections. MUST NOT overwrite them silently during regeneration.
+6. Archive or diff prior generated artifacts before replacement when the output is durable or user-facing.
+7. Suggested questions, examples, summaries, architecture claims, limitations, and dependencies MUST be answerable from named sources.
+8. Removed behavior and stale questions MUST be removed from generated docs unless explicitly retained as historical notes.
+9. Heavy generated assets and duplicated binary formats require `PDG-BINARY-ASSET-JUSTIFICATION:` in an adjacent text file. Prefer committing only the referenced optimized asset unless a source or fallback asset is intentionally needed.
+10. Verification must include cheap deterministic checks first, optional rubric-based LLM judge second, and a real route, preview, or workflow for user-visible docs.
+
+## Documentation Review Passes
+
+When generated or updated documentation is durable, user-facing, or used by another agent, run three explicit passes after the first draft:
+
+1. **Coverage pass:** compare inventory, changed files, routes, APIs, env vars, pages, modules, removed behavior, and generated outputs against the draft. Every relevant change appears in one intended place, or is listed as intentionally undocumented.
+2. **Grounding pass:** every feature, dependency, architecture claim, limitation, default question, example, and suggested next action points to named source evidence. Unsupported claims are removed, marked `Unknown`, or converted into questions for the human.
+3. **Regression pass:** verify the real generated output path still works. Check links or previews, generated-file drift, preserved human overrides, stale removals, binary asset justification, and the product route or install path when applicable.
+
+Every actionable review finding that is machine-checkable MUST become a fixture, regression test, or checklist item before final. The final receipt must name the three passes, inventory counts or exclusions, review findings converted to proof, skipped checks, and residual risk. An LLM judge can support grounding, but it must not replace source evidence or real workflow verification.
+
 ## Fallbacks
 
 - Ambiguous trigger boundary: do the two-line trigger check and stop unless PDG clearly triggers.
@@ -160,4 +186,6 @@ Add a section named `PDG pass` with:
 - non-goals and forbidden shortcuts stated;
 - real verification path required or blocked verification reported;
 - generated files treated as generated;
+- for generated docs, evidence manifest, preserved overrides, artifact diff/archive, and doc-quality checks reported;
+- for generated or updated docs, coverage, grounding, and regression review passes reported or explicitly skipped with residual risk;
 - same-agent review labeled `PDG self-check, not independent review`.

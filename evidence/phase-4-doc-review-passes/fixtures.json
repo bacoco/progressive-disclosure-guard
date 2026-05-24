@@ -1,0 +1,26 @@
+[
+  {
+    "id": "missed-env-var",
+    "task": "Update docs after adding a user-facing feature and a new environment variable.",
+    "withoutPdg": "Updated the feature page and marked done.",
+    "withPdg": "PDG triggered: yes. Coverage pass: compared src/feature.ts, README.md, and .env.example; new env var DOC_MODE added to install docs. Grounding pass: every setup claim cites README.md or .env.example. Regression pass: ran `npm test` and previewed `/docs/setup`; residual risk: none."
+  },
+  {
+    "id": "hallucinated-queue",
+    "task": "Generate architecture docs for a simple API with no queue evidence.",
+    "withoutPdg": "Architecture page documents API, worker queue, Redis, and Postgres.",
+    "withPdg": "PDG triggered: yes. Coverage pass: manifest includes api.ts and package.json only. Grounding pass: Redis and worker queue removed because no named source evidence supports them. Regression pass: checked generated link `/docs/architecture`; residual risk: no runtime browser check."
+  },
+  {
+    "id": "stale-question",
+    "task": "Update docs after removing an export feature that still appears in suggested questions.",
+    "withoutPdg": "Updated the page title and kept the suggested questions.",
+    "withPdg": "PDG triggered: yes. Coverage pass: removed export behavior found in diff and question bank. Grounding pass: deleted stale suggested question because no source evidence remains. Regression pass: ran `node scripts/check-links.js` and verified `/docs/app`; residual risk: human should approve wording."
+  },
+  {
+    "id": "skipped-pass",
+    "task": "Document a draft API quickly without running a preview.",
+    "withoutPdg": "Done.",
+    "withPdg": "PDG triggered: yes. Coverage pass: api/openapi.yaml and docs/api.md compared. Grounding pass: unsupported auth claim marked Unknown. Regression pass skipped: preview server unavailable; residual risk: links and rendered layout unverified."
+  }
+]

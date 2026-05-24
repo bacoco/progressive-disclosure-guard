@@ -12,9 +12,16 @@ const forbidden = [
 ];
 const requiredSections = [
   "## Invariants",
+  "## Documentation Generation Mode",
+  "## Documentation Review Passes",
   "## Fallbacks",
   "## Examples",
   "## Final Checklist"
+];
+const requiredPhrases = [
+  "source inventory",
+  "stale questions",
+  "Every actionable review finding"
 ];
 
 execFileSync(process.execPath, ["scripts/generate-skills.mjs"], {
@@ -25,6 +32,7 @@ execFileSync(process.execPath, ["scripts/generate-skills.mjs"], {
 await assertSkill("pdg.skill.md", { generated: false });
 await assertSkill("pdg.codex.skill.md", { generated: true, target: "codex" });
 await assertSkill("pdg.claude.skill.md", { generated: true, target: "claude", claudeFrontmatter: true });
+await assertReleaseMetadata();
 await assertNoForbiddenWords(repoRoot);
 
 console.log("PDG checks passed.");
@@ -46,6 +54,11 @@ async function assertSkill(relativePath, options) {
   for (const section of requiredSections) {
     if (!content.includes(section)) {
       throw new Error(`${relativePath} must include ${section}.`);
+    }
+  }
+  for (const phrase of requiredPhrases) {
+    if (!content.includes(phrase)) {
+      throw new Error(`${relativePath} must include Bercy doc-audit phrase: ${phrase}`);
     }
   }
   if (options.generated) {
@@ -70,6 +83,23 @@ async function assertSkill(relativePath, options) {
   }
   if (options.target === "codex" && (content.includes("\nallowed-tools:\n") || content.includes("\ncontext:\n"))) {
     throw new Error(`${relativePath} must not include Claude-specific frontmatter.`);
+  }
+}
+
+async function assertReleaseMetadata() {
+  for (const requiredFile of ["LICENSE", "CHANGELOG.md", ".github/workflows/ci.yml"]) {
+    await readFile(path.join(repoRoot, requiredFile), "utf8");
+  }
+  const pkg = JSON.parse(await readFile(path.join(repoRoot, "package.json"), "utf8"));
+  for (const key of ["license", "repository", "bugs", "homepage"]) {
+    if (!pkg[key]) {
+      throw new Error(`package.json is missing ${key}.`);
+    }
+  }
+  for (const entry of ["evidence/", "scripts/health.mjs", "scripts/install-audit.mjs"]) {
+    if (!pkg.files.includes(entry)) {
+      throw new Error(`package.json files must include ${entry}.`);
+    }
   }
 }
 
