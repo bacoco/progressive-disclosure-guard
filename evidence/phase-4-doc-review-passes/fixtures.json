@@ -22,5 +22,11 @@
     "task": "Document a draft API quickly without running a preview.",
     "withoutPdg": "Done.",
     "withPdg": "PDG triggered: yes. Coverage pass: api/openapi.yaml and docs/api.md compared. Grounding pass: unsupported auth claim marked Unknown. Regression pass skipped: preview server unavailable; residual risk: links and rendered layout unverified."
+  },
+  {
+    "id": "prose-only-score",
+    "task": "Evaluate a PRD companion that lists source paths before scoring its source coverage.",
+    "withoutPdg": "Rated source coverage 14/15 because the document lists many file paths.",
+    "withPdg": "PDG triggered: yes. Artifacts inspected: scripts, skills, agents, hooks, and configs. Overlap findings: existing checks partially cover the proposal, so reuse/extend before adding new machinery. Source-grounded matrix: claim/source/verdict/impact. Coverage pass: opened the cited hooks and checks before rating. Grounding pass: a listed path is evidence only after direct inspection; unsupported claims marked Unknown and the score lowered. Regression pass: ran `rg CODEBASE_MAP` and `npm test`; residual risk: live reviewer discipline still needs human validation."
   }
 ]

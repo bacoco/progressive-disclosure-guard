@@ -10,7 +10,9 @@ const criteria = [
   ["coverage", /\bCoverage pass:/],
   ["grounding", /\bGrounding pass:/],
   ["regression", /\bRegression pass/],
-  ["source", /\b(source evidence|manifest|README|\.env|diff)\b/i],
+  ["source", /\b(source evidence|source-grounded|manifest|README|\.env|diff)\b/i],
+  ["overlapInspection", /\bArtifacts inspected:.*\b(scripts|skills|agents|hooks|configs)\b.*\bOverlap findings:/i],
+  ["sourceGroundedMatrix", /\bSource-grounded matrix:\s*claim\/source\/verdict\/impact\b/i],
   ["verification", /`[^`]+`|\/[A-Za-z0-9._~:/?#[\]@!$&'()*+,;=-]+/],
   ["risk", /\bresidual risk:/i]
 ];
@@ -23,6 +25,14 @@ const rows = fixtures.map((fixture) => {
 
 if (rows.some((row) => row.delta <= 0 || !row.withPdg.matched.includes("coverage") || !row.withPdg.matched.includes("grounding") || !row.withPdg.matched.includes("regression"))) {
   throw new Error("doc-review fixtures must include coverage, grounding, and regression pass markers");
+}
+
+const proseScore = rows.find((row) => row.id === "prose-only-score");
+if (!proseScore?.withPdg.matched.includes("sourceGroundedMatrix")) {
+  throw new Error("prose-only-score fixture must include a source-grounded claim matrix");
+}
+if (!proseScore.withPdg.matched.includes("overlapInspection")) {
+  throw new Error("prose-only-score fixture must include overlap inspection");
 }
 
 const report = renderReport(rows);
