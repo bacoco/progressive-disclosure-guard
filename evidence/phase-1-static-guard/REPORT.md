@@ -9,7 +9,8 @@ This is a deterministic fixture evaluation, not an empirical LLM benchmark.
 | auth-refactor | 0 | 6 | 6 |
 | install-pdg | 0 | 6 | 6 |
 | readme-typo | 0 | 2 | 2 |
-| **Total** | **0** | **14** | **14** |
+| explicit-constraint-preservation | 0 | 7 | 7 |
+| **Total** | **0** | **21** | **21** |
 
 Measured difference: the PDG-conditioned fixture outputs include more trigger, source, preservation, MUST/MUST NOT, and verification markers than the non-PDG fixture outputs.
 

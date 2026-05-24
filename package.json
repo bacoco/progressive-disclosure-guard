@@ -39,7 +39,7 @@
     "eval:install": "node scripts/install-audit.mjs",
     "health": "node scripts/health.mjs",
     "check": "node scripts/check.mjs && node scripts/pdg-check.js pdg.skill.md README.md INSTALL.md scripts/check.mjs scripts/generate-skills.mjs scripts/health.mjs scripts/install-audit.mjs scripts/pdg-check.js",
-    "test": "node scripts/check.mjs && node evidence/phase-1-static-guard/pdg-check.test.js && node evidence/phase-2-doc-generation/run-eval.js && node evidence/phase-4-doc-review-passes/run-eval.js && node evidence/phase-5-bercy-doc-audit/run-eval.js && node scripts/install-audit.mjs"
+    "test": "node scripts/check.mjs && node evidence/phase-1-static-guard/run-eval.js && node evidence/phase-1-static-guard/pdg-check.test.js && node evidence/phase-2-doc-generation/run-eval.js && node evidence/phase-4-doc-review-passes/run-eval.js && node evidence/phase-5-bercy-doc-audit/run-eval.js && node scripts/install-audit.mjs"
   },
   "engines": {
     "node": ">=20"
