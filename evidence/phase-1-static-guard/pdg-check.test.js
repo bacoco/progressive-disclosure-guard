@@ -53,6 +53,23 @@ try {
   assertIncludes(badRun.stderr, "verified/done claim", "bad fixture verification output");
   assertIncludes(badRun.stderr, "duplicated binary asset formats", "bad fixture binary output");
 
+  const diffPath = path.join(root, "assets.diff");
+  await writeFile(diffPath, [
+    "diff --git a/screens/home.png b/screens/home.png",
+    "new file mode 100644",
+    "--- /dev/null",
+    "+++ b/screens/home.png",
+    "+png",
+    "diff --git a/screens/home.webp b/screens/home.webp",
+    "new file mode 100644",
+    "--- /dev/null",
+    "+++ b/screens/home.webp",
+    "+webp"
+  ].join("\n"), "utf8");
+  const diffRun = runDiff(diffPath);
+  assertNonZero(diffRun.status, "asset diff fixture should fail");
+  assertIncludes(diffRun.stderr, "duplicated binary asset formats", "asset diff output");
+
   console.log("PDG static check tests passed.");
 } finally {
   await rm(root, { recursive: true, force: true });
@@ -60,6 +77,13 @@ try {
 
 function run(target) {
   return spawnSync(process.execPath, [checker, target], {
+    cwd: repoRoot,
+    encoding: "utf8"
+  });
+}
+
+function runDiff(diffPath) {
+  return spawnSync(process.execPath, [checker, "--diff", diffPath], {
     cwd: repoRoot,
     encoding: "utf8"
   });

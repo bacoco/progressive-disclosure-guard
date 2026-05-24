@@ -91,6 +91,14 @@ The pass now has four explicit guard sections:
 - `Examples`: concrete triggered and non-triggered inputs.
 - `Final Checklist`: the short receipt that prevents silent weakening before final output.
 
+## Examples
+
+Without PDG, `Refactor auth flow and clean up callbacks` can become a broad rewrite. With PDG, the output must name preserved login/logout routes, session storage, callbacks, forbidden parallel auth paths, and a real login verification path.
+
+Without PDG, `Generate architecture docs` can invent workers, queues, and services because they sound plausible. With PDG, the agent must build an evidence manifest first and omit architecture claims that are not supported by named sources.
+
+Without PDG, `Done` or `verified` can be a vibe. With PDG, the final receipt must name the command, route, install path, preview, or workflow that was actually checked.
+
 ## Install With One Prompt
 
 Use one of these prompts inside the repository where you want PDG installed.
@@ -132,7 +140,10 @@ pdg.codex.skill.md
 pdg.claude.skill.md
 AGENTS.pdg.md
 CLAUDE.pdg.md
+LICENSE
+CHANGELOG.md
 scripts/
+evidence/
 ```
 
 - `pdg.skill.md`: canonical shared source.
@@ -140,10 +151,11 @@ scripts/
 - `pdg.claude.skill.md`: Claude Code install file.
 - `AGENTS.pdg.md`: optional Codex trigger block for project instructions.
 - `CLAUDE.pdg.md`: optional Claude Code trigger block for project instructions.
+- `LICENSE` and `CHANGELOG.md`: release metadata.
 - `scripts/`: generation and drift checks.
 - `evidence/`: maintainer-only proof artifacts; not part of the installed skill copy.
 
-PDG is now the source. Fuckia consumes a pinned copy and maps it into Fuckia's internal paths.
+PDG is the canonical source for the `progressive-disclosure-guard` skill. Downstream governance kits may vendor it, but project-specific workflows should stay out of PDG.
 
 ## Single-Agent Validation
 
@@ -163,25 +175,12 @@ The human approval sentence is:
 Approved after human validation.
 ```
 
-## Relationship To Fuckia
-
-PDG is the standalone product.
-
-Fuckia is a larger optional governance and collaboration kit for repositories that use Claude Code, Codex, GitHub, Linear, review separation, and stricter workflow checks. Fuckia vendors PDG, but PDG does not depend on Fuckia.
-
-Use PDG alone when you only need progressive disclosure. Use Fuckia when you want the full collaboration and governance layer around it.
-
-Source direction:
-
-- PDG owns the `progressive-disclosure-guard` skill.
-- Fuckia consumes `pdg.skill.md`, then generates its own Claude and Codex outputs.
-- Fuckia-specific workflows must not be added to the PDG skill.
-
 ## Maintainers
 
 ```bash
 npm test
 npm run generate
+npm run health
 ```
 
 Generated skill files must stay in sync with `pdg.skill.md`.

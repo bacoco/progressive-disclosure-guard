@@ -44,9 +44,7 @@ async function checkPath(target) {
     await checkDuplicateAssetSiblings(target, entries);
     return;
   }
-  if (!info.isFile() || info.size > 200_000 || isBinaryLike(target)) {
-    return;
-  }
+  if (!info.isFile() || info.size > 200_000 || isBinaryLike(target)) return;
   await checkFile(target, await readFile(target, "utf8"));
 }
 
@@ -68,6 +66,8 @@ async function checkFile(file, content) {
 
 async function checkDiff(diff) {
   const newFiles = new Map();
+  const touched = [];
+  const justified = new Set();
   let current = null;
   let isNewFile = false;
   for (const line of diff.split(/\r?\n/)) {
@@ -76,6 +76,7 @@ async function checkDiff(diff) {
       isNewFile = false;
     } else if (line.startsWith("+++ b/")) {
       current = line.slice("+++ b/".length);
+      touched.push(current);
       if (!newFiles.has(current)) {
         newFiles.set(current, []);
       }
@@ -83,9 +84,8 @@ async function checkDiff(diff) {
       isNewFile = true;
     } else if (current && line.startsWith("+") && !line.startsWith("+++")) {
       const added = line.slice(1);
-      if (isNewFile) {
-        newFiles.get(current).push(added);
-      }
+      if (added.includes(binaryAssetJustification)) justified.add(path.dirname(current));
+      if (isNewFile) newFiles.get(current).push(added);
       if (hasBroadDumpName(current) && !added.includes(broadJustification)) {
         findings.push(`${current}: added broad service/utils/manager/handler file needs ${broadJustification}`);
       }
@@ -100,6 +100,7 @@ async function checkDiff(diff) {
       findings.push(`${file}: new file has ${lines.length} added lines; add ${largeJustification}`);
     }
   }
+  checkDuplicateAssetNames(touched, (dir) => justified.has(dir));
 }
 
 async function checkDuplicateAssetSiblings(directory, entries) {
@@ -111,6 +112,20 @@ async function checkDuplicateAssetSiblings(directory, entries) {
   const rel = path.relative(process.cwd(), directory) || directory;
   for (const stem of duplicates) {
     findings.push(`${rel}: duplicated binary asset formats for ${stem}; add ${binaryAssetJustification}`);
+  }
+}
+
+function checkDuplicateAssetNames(files, hasJustification) {
+  const byDir = new Map();
+  for (const file of files) {
+    const dir = path.dirname(file);
+    byDir.set(dir, [...(byDir.get(dir) || []), path.basename(file)]);
+  }
+  for (const [dir, names] of byDir) {
+    if (hasJustification(dir)) continue;
+    for (const stem of duplicateAssetGroups(names)) {
+      findings.push(`${dir}: duplicated binary asset formats for ${stem}; add ${binaryAssetJustification}`);
+    }
   }
 }
 

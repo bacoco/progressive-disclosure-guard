@@ -3,7 +3,16 @@
   "version": "0.1.0",
   "private": false,
   "description": "PDG progressive disclosure guardrails for AI coding agents.",
+  "license": "MIT",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bacoco/progressive-disclosure-guard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bacoco/progressive-disclosure-guard/issues"
+  },
+  "homepage": "https://github.com/bacoco/progressive-disclosure-guard#readme",
   "files": [
     "pdg.skill.md",
     "pdg.codex.skill.md",
@@ -12,16 +21,23 @@
     "CLAUDE.pdg.md",
     "README.md",
     "INSTALL.md",
+    "CHANGELOG.md",
+    "LICENSE",
+    "evidence/",
     "scripts/generate-skills.mjs",
     "scripts/check.mjs",
+    "scripts/health.mjs",
+    "scripts/install-audit.mjs",
     "scripts/pdg-check.js"
   ],
   "scripts": {
     "generate": "node scripts/generate-skills.mjs --write",
     "eval": "node evidence/phase-1-static-guard/run-eval.js",
     "eval:docs": "node evidence/phase-2-doc-generation/run-eval.js",
-    "check": "node scripts/check.mjs && node scripts/pdg-check.js",
-    "test": "node scripts/check.mjs && node evidence/phase-1-static-guard/pdg-check.test.js && node evidence/phase-2-doc-generation/run-eval.js"
+    "eval:install": "node scripts/install-audit.mjs",
+    "health": "node scripts/health.mjs",
+    "check": "node scripts/check.mjs && node scripts/pdg-check.js pdg.skill.md README.md INSTALL.md scripts/check.mjs scripts/generate-skills.mjs scripts/health.mjs scripts/install-audit.mjs scripts/pdg-check.js",
+    "test": "node scripts/check.mjs && node evidence/phase-1-static-guard/pdg-check.test.js && node evidence/phase-2-doc-generation/run-eval.js && node scripts/install-audit.mjs"
   },
   "engines": {
     "node": ">=20"
