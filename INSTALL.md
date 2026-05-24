@@ -6,6 +6,8 @@ The human is inside the target repository and asked you to install **PDG - Progr
 
 Normal installation does not require Node.js or npm.
 
+PDG-LARGE-FILE-JUSTIFICATION: `INSTALL.md` is the single procedural source for install and update flows; splitting it would make the agent follow cross-file instructions during the riskiest step.
+
 ## Install Modes
 
 Install exactly one mode:
@@ -47,7 +49,8 @@ Default install scope:
 - Report exact files before writes.
 - Ask before writing files.
 - Preserve existing `AGENTS.md`, `CLAUDE.md`, skills, workflows, docs, and config.
-- If a target skill already exists with different content, stop and report the conflict.
+- If a target skill already exists with different content and is not a generated PDG skill, stop and report the conflict.
+- If a target skill is a generated PDG skill with an older `source_hash`, use the update procedure below.
 - If `AGENTS.md` or `CLAUDE.md` already contains a PDG block, update it instead of duplicating it.
 - If evidence is missing, write `Unknown`, verify, ask the human, or stop.
 
@@ -96,6 +99,23 @@ test -f "$PDG_DIR/CLAUDE.pdg.md"
 
 These commands are read-only.
 
+If a target skill file already exists, inspect its generated markers before deciding whether it is a conflict or an update:
+
+```bash
+grep -E "GENERATED FILE - DO NOT EDIT DIRECTLY|source: pdg.skill.md|source_hash:|target: (codex|claude)" \
+  .agents/skills/progressive-disclosure-guard/SKILL.md \
+  .claude/skills/progressive-disclosure-guard/SKILL.md 2>/dev/null || true
+```
+
+Treat an existing file as a safe update candidate only when it contains all of these markers:
+
+- `GENERATED FILE - DO NOT EDIT DIRECTLY`
+- `source: pdg.skill.md`
+- `source_hash:`
+- the expected `target: codex` or `target: claude`
+
+If the existing file is missing those markers, report it as a local customization conflict and stop before writing.
+
 ## Report Before Writes
 
 Report these facts to the human:
@@ -109,11 +129,65 @@ Report these facts to the human:
 - existing `.claude/skills`;
 - exact files PDG wants to create;
 - exact existing files PDG will preserve;
+- exact existing generated PDG skill files PDG will update;
+- old and new `source_hash` values for each generated skill update;
 - exact `AGENTS.md` and/or `CLAUDE.md` PDG trigger block changes;
 - any conflict that blocks writing;
 - exact command or copy operation you want to run next.
 
 Stop after this report.
+
+## Update Existing PDG Install
+
+Use this path when the target already has generated PDG skill files and the source hash differs from the current PDG repository.
+
+An update may replace only generated PDG skill files:
+
+- Codex: `.agents/skills/progressive-disclosure-guard/SKILL.md`
+- Claude Code: `.claude/skills/progressive-disclosure-guard/SKILL.md`
+
+Do not edit `AGENTS.md` or `CLAUDE.md` during an update unless the trigger block itself changed or the human explicitly asked for trigger-rule edits.
+
+Before writing, report the old and new hashes:
+
+```bash
+grep -n "source_hash:" "$target_dir/.agents/skills/progressive-disclosure-guard/SKILL.md" 2>/dev/null || true
+grep -n "source_hash:" "$target_dir/.claude/skills/progressive-disclosure-guard/SKILL.md" 2>/dev/null || true
+grep -n "source_hash:" "$PDG_DIR/pdg.codex.skill.md"
+grep -n "source_hash:" "$PDG_DIR/pdg.claude.skill.md"
+```
+
+After human approval, replace only the selected generated skill file or files:
+
+```bash
+cp "$PDG_DIR/pdg.codex.skill.md" \
+  "$target_dir/.agents/skills/progressive-disclosure-guard/SKILL.md"
+
+cp "$PDG_DIR/pdg.claude.skill.md" \
+  "$target_dir/.claude/skills/progressive-disclosure-guard/SKILL.md"
+```
+
+For `codex-only` or `claude-only`, run only the matching copy command.
+
+After copying, verify that each selected installed file is byte-identical to the generated source and that the expected new hash is present.
+
+Codex:
+
+```bash
+diff -q "$PDG_DIR/pdg.codex.skill.md" \
+  "$target_dir/.agents/skills/progressive-disclosure-guard/SKILL.md"
+grep -n "source_hash:" "$target_dir/.agents/skills/progressive-disclosure-guard/SKILL.md"
+```
+
+Claude Code:
+
+```bash
+diff -q "$PDG_DIR/pdg.claude.skill.md" \
+  "$target_dir/.claude/skills/progressive-disclosure-guard/SKILL.md"
+grep -n "source_hash:" "$target_dir/.claude/skills/progressive-disclosure-guard/SKILL.md"
+```
+
+Report any skipped trigger-rule edits as intentional preservation.
 
 ## Apply After Human Approval
 
