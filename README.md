@@ -69,7 +69,7 @@ Generated or duplicated binary assets also need an explicit `PDG-BINARY-ASSET-JU
 After a generated or updated doc draft, PDG expects three passes:
 
 1. **Coverage pass:** compare the source inventory, changed files, routes, APIs, env vars, pages, modules, generated outputs, and removed behavior against the draft.
-2. **Grounding pass:** remove or mark any feature, dependency, architecture claim, limitation, example, or suggested question that cannot point to named source evidence.
+2. **Grounding pass:** remove or mark any feature, dependency, architecture claim, limitation, example, or suggested question that cannot point to named source evidence. A source inventory is not proof until the cited files are opened and the claim is checked; reviews must read relevant code before interpreting prose, inventories, or cited paths.
 3. **Regression pass:** verify the generated output path: links or previews, generated-file drift, preserved human overrides, skipped sections, binary asset justifications, and any real route or install path.
 
 Every machine-checkable review finding should become a fixture, regression test, or checklist item. An LLM judge can help the grounding pass, but it is supporting evidence only. The final receipt should name the three passes, source exclusions, converted findings, skipped checks, and residual risk.
@@ -108,6 +108,8 @@ Without PDG, `Refactor auth flow and clean up callbacks` can become a broad rewr
 Without PDG, `Generate architecture docs` can invent workers, queues, and services because they sound plausible. With PDG, the agent must build an evidence manifest first and omit architecture claims that are not supported by named sources.
 
 Without PDG, `Update docs after this feature` can cover only the headline page and miss changed env vars, removed behavior, or stale suggested questions. With PDG, the coverage, grounding, and regression passes must each report what was checked.
+
+Without PDG, a review can score a document highly because it lists many source paths while missing existing overlap in scripts, agents, hooks, or configs. With PDG, source-grounded reviews must inspect those artifacts and produce overlap findings plus a `claim` / `source` / `verdict` / `impact` matrix before scoring.
 
 Without PDG, `Done` or `verified` can be a vibe. With PDG, the final receipt must name the command, route, install path, preview, or workflow that was actually checked.
 

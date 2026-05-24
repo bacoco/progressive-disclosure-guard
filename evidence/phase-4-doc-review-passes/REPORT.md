@@ -8,6 +8,7 @@ This deterministic fixture evaluation checks that generated-documentation work n
 | hallucinated-queue | 0 | 7 | 7 |
 | stale-question | 0 | 7 | 7 |
 | skipped-pass | 0 | 6 | 6 |
-| **Total** | **0** | **27** | **27** |
+| prose-only-score | 1 | 9 | 8 |
+| **Total** | **1** | **36** | **35** |
 
 What stays unproven: these fixtures do not prove live LLM behavior; they protect the documented review-pass contract from disappearing.

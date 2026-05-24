@@ -6,7 +6,7 @@ description: Use before finalizing specs, plans, implementation prompts, archite
 <!--
 GENERATED FILE - DO NOT EDIT DIRECTLY
 source: pdg.skill.md
-source_hash: a3406c1d41cbd9c73781b0f8d53ab4df3e42794560f5216f3c002821a8845147
+source_hash: e0fdbe19bf79fb545d9b71738917a6f092cbe11f3d9ccf5d74477a68ff30be73
 generated_by: pdg generate-skills
 target: codex
 -->
@@ -33,7 +33,7 @@ Assume the next implementer is low-context, literal, rushed, and able to satisfy
 
 Always:
 
-- read the named source-of-truth files before giving constraints;
+- read the named source-of-truth files and nearby code, scripts, skills, agents, hooks, and configs before any review, score, approval, implementation decision, or constraint; do not interpret prose, inventories, or cited paths as evidence until the relevant source has been opened; for reviews, comparisons, or scores, build a source-grounded claim matrix with `claim`, `source`, `verdict`, and `impact`;
 - name the existing behavior, files, callbacks, routes, stores, pipelines, generated outputs, and install paths that must be preserved;
 - convert dangerous wording into explicit `MUST` / `MUST NOT` constraints;
 - require verification through a real command, public route, install path, or product entry path;
@@ -48,6 +48,8 @@ Never:
 - claim `verified`, `done`, or `safe` without naming the command, route, or workflow checked;
 - treat "roughly 200 lines" as permission to exceed 200 lines without an explicit justification marker;
 - treat generated files as canonical when a source file and generator exist;
+- score, approve, reject, compare, or interpret a spec/review from prose alone when code, scripts, skills, agents, hooks, configs, or tests could confirm or falsify the claim;
+- treat cited paths, inventories, document structure, or prose summaries as proof before opening the source and checking claimed behavior and overlaps;
 - overwrite generated documentation, inventories, human overrides, or binary assets without a diff/archive receipt and a named verification path;
 - bulk-load full catalogs, doctrines, folders, fixtures, or skill trees when a focused source will answer.
 
@@ -71,12 +73,19 @@ If the boundary is ambiguous, run only a two-line trigger check: `PDG triggered:
 ## Workflow
 
 1. Decide whether PDG triggers; if not, say why in one line and stop the PDG pass.
-2. Classify known knowns, known unknowns, unknown knowns, and unknown unknowns.
-3. Name preserved behavior and source-of-truth files.
-4. Red-team dangerous wording such as `refactor`, `simplify`, `wire`, `reuse`, `support`, `migrate`, `install`, `generate`, `verified`, or `done`.
-5. Convert ambiguity into `MUST`, `MUST NOT`, non-goals, and forbidden shortcuts.
-6. Require regression proof through the real workflow, not only isolated helper existence.
-7. If review is same-agent, label it as self-check and request human validation for risky work.
+2. Inspect existing artifacts and overlaps before known/unknown classification; for reviews, comparisons, or scores, mark major claims `confirmed`, `partial`, `unsupported`, or `unknown` before rating them.
+3. Classify known knowns, known unknowns, unknown knowns, and unknown unknowns.
+4. Name preserved behavior and source-of-truth files.
+5. Red-team dangerous wording such as `refactor`, `simplify`, `wire`, `reuse`, `support`, `migrate`, `install`, `generate`, `verified`, or `done`.
+6. Convert ambiguity into `MUST`, `MUST NOT`, non-goals, and forbidden shortcuts.
+7. Require regression proof through the real workflow, not only isolated helper existence.
+8. If review is same-agent, label it as self-check and request human validation for risky work.
+
+## Overlap Inspection Pass
+
+Before interpreting a spec, review, score, or comparison, open the sources that could confirm or falsify each material claim. A path list, inventory, document outline, or prose summary is not evidence until the referenced source has been opened.
+
+Inspect existing code, scripts, skills, agents, hooks, configs, and tests with `rg` or focused reads. Output `artifacts inspected` and `overlap findings`, classify overlaps as `reuse`, `extend`, `avoid`, `replace`, or `none`, then convert real overlaps into `MUST reuse/extend` and `MUST NOT duplicate`. If inspection is skipped or blocked, mark the claim verdict `Unknown`, cap confidence or score, and name the blocked source.
 
 ## Known/Unknown Pass
 
@@ -123,7 +132,7 @@ When generating or updating documentation, specs, portals, API docs, architectur
 When generated or updated documentation is durable, user-facing, or used by another agent, run three explicit passes after the first draft:
 
 1. **Coverage pass:** compare inventory, changed files, routes, APIs, env vars, pages, modules, removed behavior, and generated outputs against the draft. Every relevant change appears in one intended place, or is listed as intentionally undocumented.
-2. **Grounding pass:** every feature, dependency, architecture claim, limitation, default question, example, and suggested next action points to named source evidence. Unsupported claims are removed, marked `Unknown`, or converted into questions for the human.
+2. **Grounding pass:** every feature, dependency, architecture claim, limitation, default question, example, and suggested next action points to named source evidence. Inventory alone is not grounding; unsupported claims are removed, marked `Unknown`, or converted into questions for the human.
 3. **Regression pass:** verify the real generated output path still works. Check links or previews, generated-file drift, preserved human overrides, stale removals, binary asset justification, and the product route or install path when applicable.
 
 Every actionable review finding that is machine-checkable MUST become a fixture, regression test, or checklist item before final. The final receipt must name the three passes, inventory counts or exclusions, review findings converted to proof, skipped checks, and residual risk. An LLM judge can support grounding, but it must not replace source evidence or real workflow verification.
@@ -131,18 +140,12 @@ Every actionable review finding that is machine-checkable MUST become a fixture,
 ## Fallbacks
 
 - Ambiguous trigger boundary: do the two-line trigger check and stop unless PDG clearly triggers.
-- Source of truth missing: write `Unknown`, ask for the source, or inspect a named file; do not proceed from memory as if it were fact.
+- Source of truth missing: write `Unknown`, ask for the source, inspect a named file, or lower the score; do not proceed from memory as if it were fact.
 - Verification blocked: report the exact blocked command or route, why it is blocked, and the narrower check that was still possible.
 - No second reviewer: label the result `PDG self-check, not independent review`; provide the human validation card.
 - Generated output drift: update only the canonical source or generator, regenerate, and do not hand-edit generated variants.
 
-Human validation card:
-
-- changed files:
-- real workflow or command to inspect:
-- expected result:
-- risk the human is accepting:
-- exact approval sentence: `Approved after human validation.`
+Human validation card: changed files; real workflow or command to inspect; expected result; risk the human is accepting; exact approval sentence: `Approved after human validation.`
 
 ## Examples
 
@@ -160,6 +163,9 @@ PDG output: not triggered unless the edit changes install instructions, handoff 
 Add a section named `PDG pass` with:
 
 - trigger decision;
+- artifacts inspected;
+- overlap findings;
+- source-grounded claim matrix;
 - known knowns;
 - known unknowns;
 - unknown knowns;
@@ -174,6 +180,8 @@ Add a section named `PDG pass` with:
 
 - trigger boundary checked;
 - source of truth read or marked `Unknown`;
+- overlap inspection completed or marked `Unknown`;
+- source-grounded claim matrix completed before any score, approval, or comparison;
 - preserved behavior named;
 - dangerous wording constrained with `MUST` / `MUST NOT`;
 - non-goals and forbidden shortcuts stated;
