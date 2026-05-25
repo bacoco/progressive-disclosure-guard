@@ -46,12 +46,13 @@ Always:
 - label same-agent review as `PDG self-check, not independent review`.
 - for any new file over 200 lines, require `PDG-LARGE-FILE-JUSTIFICATION:` with why the file must stay dense;
 - for any broad `service`, `utils`, `manager`, or `handler` file, require `PDG-BROAD-FILE-JUSTIFICATION:` with the single responsibility it owns.
+- for risky tasks, treat the user request as a mission under constraints: mission, objective lock, constraints, success criteria, source of truth, smallest useful step, verification path, and deliverable.
 
 Never:
 
 - replace a working route, store, hook, pipeline, state machine, prompt path, persistence contract, or install flow without end-to-end verification;
 - create a parallel engine, store, router, workflow, generator, or doctrine file when an existing one should be extended;
-- claim `verified`, `done`, or `safe` without naming the command, route, or workflow checked;
+- claim `done`, `safe`, `verified`, `tested`, `working`, `installed`, or `updated` without naming the command, route, preview, install path, workflow, source, or artifact checked;
 - treat "roughly 200 lines" as permission to exceed 200 lines without an explicit justification marker;
 - treat generated files as canonical when a source file and generator exist;
 - score, approve, reject, compare, or interpret a spec/review from prose alone when code, scripts, skills, agents, hooks, configs, or tests could confirm or falsify the claim;
@@ -82,15 +83,59 @@ If the boundary is ambiguous, run only a two-line trigger check: `PDG triggered:
 
 Before expanding a task, identify:
 
-- the requested outcome;
+- the mission;
+- the objective lock;
 - explicit user constraints;
 - forbidden outcomes;
 - success criteria;
+- source of truth;
+- smallest useful step;
+- verification path;
+- deliverable;
 - facts that are known, unknown, or unverifiable.
 
-Treat the request as a destination under constraints, not as permission to invent a new objective.
+Treat the request as a mission under constraints, not as rails and not as permission to invent a new objective.
 
 Preserve explicit user instructions. If the requested path conflicts with safety, truth, feasibility, or the stated objective, name the conflict before changing method.
+
+Freedom of method is not permission to silently change the mission.
+
+## Mission Brief
+
+For risky tasks, frame the work as:
+
+- Mission: what must be achieved;
+- Objective Lock: what must not drift;
+- Constraints: explicit limits, forbidden outcomes, and non-goals;
+- Success Criteria: observable completion signals;
+- Progressive Disclosure Gates: known/unknown/assumed, source of truth, preserved behavior, smallest useful step, verification path, final receipt;
+- Deviation Protocol: how any departure from the literal request is declared;
+- Verification Protocol: how completion claims are proven;
+- Deliverable: the final format expected by the user.
+
+Do not turn the mission brief into a giant plan. Use the smallest frame that prevents hidden drift.
+
+## Deviation Protocol
+
+No silent deviation from explicit user choices is allowed.
+
+If you depart from the literal request, use this exact format before acting on the departure:
+
+```text
+DEVIATION: I am doing X instead of Y because Z.
+```
+
+The real objective can justify a different method only when the deviation is visible, bounded, and still respects higher constraints.
+
+## Verification Protocol
+
+Do not claim `done`, `safe`, `verified`, `tested`, `working`, `installed`, or `updated` unless you name the real command, route, preview, install path, workflow, source, or artifact checked.
+
+If verification is not possible, write:
+
+```text
+NOT VERIFIED: [reason]
+```
 
 ## Workflow
 
@@ -207,6 +252,7 @@ For documentation chatbots, PDG MUST require the chatbot to consume PDD artifact
 - Ambiguous trigger boundary: do the two-line trigger check and stop unless PDG clearly triggers.
 - Source of truth missing: write `Unknown`, ask for the source, inspect a named file, or lower the score; do not proceed from memory as if it were fact.
 - Verification blocked: report the exact blocked command or route, why it is blocked, and the narrower check that was still possible.
+- Verification not run: write `NOT VERIFIED: [reason]` and do not claim `done`, `safe`, `verified`, `tested`, `working`, `installed`, or `updated`.
 - No second reviewer: label the result `PDG self-check, not independent review`; provide the human validation card.
 - Generated output drift: update only the canonical source or generator, regenerate, and do not hand-edit generated variants.
 

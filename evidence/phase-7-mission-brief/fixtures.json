@@ -1,0 +1,20 @@
+[
+  {
+    "id": "risky-code-change",
+    "task": "Refactor a risky authentication workflow without losing callbacks.",
+    "withoutPdg": "I will refactor auth, clean up callbacks, and report when done.",
+    "withPdg": "PDG triggered: yes. Mission Brief: Mission: refactor the auth workflow. Objective Lock: preserve login/logout routes, callbacks, session storage, and existing tests. Constraints: MUST NOT create a parallel auth pipeline. Success Criteria: current login flow still works. Progressive Disclosure Gates: known/unknown/assumed, source of truth, preserved behavior, smallest useful step, verification path, final receipt. Deviation Protocol: DEVIATION: I am doing X instead of Y because Z. Verification Protocol: run the named auth test or route check before claiming verified. Deliverable: diff summary and residual risk."
+  },
+  {
+    "id": "explicit-method-conflict",
+    "task": "User asks for one direct implementation path, but the path is unsafe.",
+    "withoutPdg": "I will use a safer approach and continue.",
+    "withPdg": "PDG triggered: yes. Mission Brief: Mission: achieve the requested outcome safely. Objective Lock: do not silently change the user choice. Constraints: preserve explicit user instructions unless they are unsafe, impossible, contradictory, or misleading. Success Criteria: user sees the conflict before the method changes. Progressive Disclosure Gates: known/unknown/assumed, source of truth, preserved behavior, smallest useful step, verification path, final receipt. Deviation Protocol: DEVIATION: I am doing X instead of Y because Z. Verification Protocol: NOT VERIFIED: blocked until the user accepts the safer path. Deliverable: short decision request."
+  },
+  {
+    "id": "completion-claim",
+    "task": "Finish a documentation update and avoid fake verification.",
+    "withoutPdg": "The docs are updated and verified.",
+    "withPdg": "PDG triggered: yes. Mission Brief: Mission: update durable documentation. Objective Lock: do not claim completion without proof. Constraints: MUST name the source of truth and must not invent coverage. Success Criteria: docs link resolves and generated outputs are current. Progressive Disclosure Gates: known/unknown/assumed, source of truth, preserved behavior, smallest useful step, verification path, final receipt. Deviation Protocol: DEVIATION: I am doing X instead of Y because Z. Verification Protocol: do not claim done, safe, verified, tested, working, installed, or updated without naming the command, route, preview, install path, workflow, source, or artifact checked. Deliverable: final receipt."
+  }
+]

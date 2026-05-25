@@ -12,9 +12,12 @@ const criteria = [
   ["receipts", /\bRequired PDD receipts:/i],
   ["sourceInventory", /\bsource inventory\b/i],
   ["sourceMap", /\bsource map\b/i],
+  ["manifest", /\bmanifest\b/i],
   ["coverage", /\bcoverage\b/i],
   ["grounding", /\bgrounding\b/i],
   ["regression", /\bregression\b/i],
+  ["staleRemoval", /\bstale-removal receipt\b|\bstale removals\b/i],
+  ["humanOverrides", /\bpreserved human overrides\b|\bpreserving human overrides\b/i],
   ["mustNotParallel", /\bMUST NOT\b.*\b(parallel documentation engine|outside PDD|manual editing)\b/i],
   ["verification", /\bVerification:/i],
   ["risk", /\bresidual risk:/i]
@@ -28,9 +31,19 @@ const rows = fixtures.map((fixture) => {
 
 for (const row of rows) {
   const required = ["trigger", "pddAvailable", "pddEngine", "receipts", "verification", "risk"];
-  if (row.delta <= 0 || required.some((name) => !row.withPdg.matched.includes(name))) {
+  if (row.delta <= 0 || required.some((name) => !row.withPdg.matched.includes(name)) || !row.withPdg.matched.includes("manifest")) {
     throw new Error(`PDD contract fixture failed required markers: ${row.id}`);
   }
+}
+
+const staleFixture = rows.find((row) => row.id === "update-pdd-doc");
+if (!staleFixture?.withPdg.matched.includes("staleRemoval")) {
+  throw new Error("update-pdd-doc fixture must require a stale-removal receipt");
+}
+
+const overrideFixture = rows.find((row) => row.id === "convert-existing-doc");
+if (!overrideFixture?.withPdg.matched.includes("humanOverrides")) {
+  throw new Error("convert-existing-doc fixture must preserve human overrides");
 }
 
 const report = renderReport(rows);

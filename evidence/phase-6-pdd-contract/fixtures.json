@@ -15,7 +15,7 @@
     "id": "update-pdd-doc",
     "task": "Update an existing PDD documentation set after code removed a feature.",
     "withoutPdg": "Update the main page and leave the old suggested question.",
-    "withPdg": "PDG triggered: yes. PDD available: yes. Update through PDD using current evidence. Required PDD receipts: source inventory, source map, coverage, grounding, regression, stale-removal receipt. MUST remove stale questions when source evidence disappeared. Verification: run `pdd update` and `pdd review`; residual risk: generated prose still needs human review."
+    "withPdg": "PDG triggered: yes. PDD available: yes. Update through PDD using current evidence. Required PDD receipts: source inventory, source map, manifest, coverage, grounding, regression, stale-removal receipt. MUST remove stale questions when source evidence disappeared. Verification: run `pdd update` and `pdd review`; residual risk: generated prose still needs human review."
   },
   {
     "id": "chatbot-over-pdd",
