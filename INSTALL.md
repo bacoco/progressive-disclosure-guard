@@ -84,6 +84,7 @@ To ensure the source is on the correct ref:
 
 ```bash
 git -C "$PDG_DIR" checkout main # or the requested tag
+```
 
 ## Audit The Target Repository
 
@@ -118,6 +119,7 @@ grep -nE "GENERATED FILE - DO NOT EDIT DIRECTLY|source: pdg.skill.md|source_hash
   "$target_dir/.claude/skills/progressive-disclosure-guard/SKILL.md" \
   "$PDG_DIR/pdg.codex.skill.md" \
   "$PDG_DIR/pdg.claude.skill.md" 2>/dev/null || true
+```
 
 Treat an existing file as a safe update candidate only when it contains all of these markers:
 

@@ -1,5 +1,7 @@
 # PDG - Progressive Disclosure Guard
 
+<!-- PDG-LARGE-FILE-JUSTIFICATION: README.md is the public index for PDG, PDD, Marc Aurelus, Mission Brief, installation, and maintainer checks; detailed content stays in linked docs. -->
+
 **A Marc Aurelus mission harness for AI agents.**
 
 Do not prompt the agent. Brief the mission.

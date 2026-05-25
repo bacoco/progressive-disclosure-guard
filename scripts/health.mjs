@@ -2,6 +2,7 @@
 import { spawnSync } from "node:child_process";
 
 const checks = [
+  ["npm", ["run", "check"]],
   ["npm", ["test"]],
   ["npm", ["pack", "--dry-run"]]
 ];
