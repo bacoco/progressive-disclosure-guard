@@ -45,7 +45,11 @@ const requiredPhrases = [
   "NOT VERIFIED: [reason]",
   "Freedom of method is not permission to silently change the mission",
   "Preserve explicit user instructions",
-  "no silent reinterpretation of the user request"
+  "no silent reinterpretation of the user request",
+  "one level of direct dependents",
+  "inspection bounded, residual risk noted",
+  "Rename 5 CSS variables",
+  "Change the default timeout from 30s to 60s"
 ];
 
 execFileSync(process.execPath, ["scripts/generate-skills.mjs"], {

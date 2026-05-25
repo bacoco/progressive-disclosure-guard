@@ -174,7 +174,11 @@ The goal is not a large receipt. The goal is to make unread evidence impossible 
 
 Before interpreting a spec, review, score, or comparison, open the sources that could confirm or falsify each material claim. A path list, inventory, document outline, or prose summary is not evidence until the referenced source has been opened.
 
-Inspect existing code, scripts, skills, agents, hooks, configs, and tests with `rg` or focused reads. Output `artifacts inspected` and `overlap findings`, classify overlaps as `reuse`, `extend`, `avoid`, `replace`, or `none`, then convert real overlaps into `MUST reuse/extend` and `MUST NOT duplicate`. If inspection is skipped or blocked, mark the claim verdict `Unknown`, cap confidence or score, and name the blocked source.
+Inspect existing code, scripts, skills, agents, hooks, configs, and tests with `rg` or focused reads.
+
+Inspection depth starts with files named in the diff plus one level of direct dependents: importers, callers, config consumers, generated outputs, or install paths. Do not recurse beyond that unless a specific risk justifies it. If the direct-dependent set is large, inspect the highest-risk or closest dependents and mark the rest `inspection bounded, residual risk noted`.
+
+Output `artifacts inspected` and `overlap findings`, classify overlaps as `reuse`, `extend`, `avoid`, `replace`, or `none`, then convert real overlaps into `MUST reuse/extend` and `MUST NOT duplicate`. If inspection is skipped or blocked, mark the claim verdict `Unknown`, cap confidence or score, and name the blocked source.
 
 ## Known/Unknown Pass
 
@@ -268,6 +272,12 @@ PDG output: triggered. MUST start with audit only, report exact files, preserve 
 
 Input: `Fix README typo.`
 PDG output: not triggered unless the edit changes install instructions, handoff text, verification claims, or generated output.
+
+Input: `Rename 5 CSS variables for consistency across 8 files.`
+PDG output: triggered because the diff touches more than 3 files, but minimal pass is enough if `rg` shows no external component depends on the old names and preserved behavior is listed. Full overlap inspection is not needed for cosmetic renames with no behavioral impact.
+
+Input: `Change the default timeout from 30s to 60s in config.ts.`
+PDG output: triggered even if the diff is one file, because it changes behavior other modules depend on. MUST name callers or config consumers, verify no test assumes 30s, and confirm the change does not mask a performance issue.
 
 ## Output
 
