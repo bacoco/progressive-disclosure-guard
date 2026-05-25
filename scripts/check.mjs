@@ -17,6 +17,7 @@ const requiredSections = [
   "## Overlap Inspection Pass",
   "## Documentation Generation Mode",
   "## Documentation Review Passes",
+  "## PDD Mode",
   "## Fallbacks",
   "## Examples",
   "## Final Checklist"
@@ -33,6 +34,8 @@ const requiredPhrases = [
   "overlap findings",
   "stale questions",
   "Every actionable review finding",
+  "PDD is an external documentation engine contract",
+  "PDD receipts",
   "Preserve explicit user instructions",
   "no silent reinterpretation of the user request"
 ];

@@ -181,6 +181,27 @@ When generated or updated documentation is durable, user-facing, or used by anot
 
 Every actionable review finding that is machine-checkable MUST become a fixture, regression test, or checklist item before final. The final receipt must name the three passes, inventory counts or exclusions, review findings converted to proof, skipped checks, and residual risk. An LLM judge can support grounding, but it must not replace source evidence or real workflow verification.
 
+## PDD Mode
+
+When durable documentation must be created, converted, updated, reviewed, indexed, or consumed by a documentation chatbot, and PDD is available in the repository or toolchain, use PDD as the documentation engine.
+
+PDD is an external documentation engine contract, not a PDG dependency. PDG MUST NOT import, vendor, or reimplement PDD runtime behavior.
+
+Require PDD receipts before claiming completion:
+
+- source inventory;
+- source map;
+- manifest;
+- coverage receipt;
+- grounding receipt;
+- regression receipt;
+- stale-removal receipt when behavior disappeared;
+- preserved human overrides when existing documentation is regenerated or converted.
+
+For existing docs, the correct PDG instruction is not merely "do not invent docs by hand". It is: convert or update the durable documentation through the PDD model so the output has PDD artifacts, evidence mapping, stale removal, and regression proof.
+
+For documentation chatbots, PDG MUST require the chatbot to consume PDD artifacts or APIs. The chatbot MUST NOT create a parallel documentation engine, scanner, generator, source map, or review contract when PDD is available.
+
 ## Fallbacks
 
 - Ambiguous trigger boundary: do the two-line trigger check and stop unless PDG clearly triggers.

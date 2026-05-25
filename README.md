@@ -91,6 +91,21 @@ After a generated or updated doc draft, PDG expects three passes:
 
 Every machine-checkable review finding should become a fixture, regression test, or checklist item. An LLM judge can help the grounding pass, but it is supporting evidence only. The final receipt should name the three passes, source exclusions, converted findings, skipped checks, and residual risk.
 
+## PDD Mode
+
+PDD is the documentation engine. PDG is the guardrail.
+
+When durable documentation must be created, converted, updated, reviewed,
+indexed, or consumed by a documentation chatbot, PDG should route the work to
+PDD when PDD is available in the repository or toolchain.
+
+PDG requires PDD receipts before completion claims: source inventory, source
+map, manifest, coverage, grounding, regression, stale removals, and preserved
+human overrides.
+
+PDG does not vendor or reimplement PDD. A chatbot over PDD should consume PDD
+artifacts or APIs instead of creating its own documentation engine.
+
 ## The PDG Pass
 
 Before an important handoff, review, install instruction, migration plan, or substantial code change, the agent runs a PDG pass.
