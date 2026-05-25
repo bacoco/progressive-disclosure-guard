@@ -17,7 +17,7 @@ context:
 <!--
 GENERATED FILE - DO NOT EDIT DIRECTLY
 source: pdg.skill.md
-source_hash: 78576fa6c83192fb494731ce3e97d0c8d0f4d1ae452b39e3db2d10c0291ea6f7
+source_hash: 1e0a96511d0e79d44d0c2588a2a7661ba64fece5a7c8ef3b287688ee0acf45a9
 generated_by: pdg generate-skills
 target: claude
 -->
@@ -185,6 +185,27 @@ When generated or updated documentation is durable, user-facing, or used by anot
 3. **Regression pass:** verify the real generated output path still works. Check links or previews, generated-file drift, preserved human overrides, stale removals, binary asset justification, and the product route or install path when applicable.
 
 Every actionable review finding that is machine-checkable MUST become a fixture, regression test, or checklist item before final. The final receipt must name the three passes, inventory counts or exclusions, review findings converted to proof, skipped checks, and residual risk. An LLM judge can support grounding, but it must not replace source evidence or real workflow verification.
+
+## PDD Mode
+
+When durable documentation must be created, converted, updated, reviewed, indexed, or consumed by a documentation chatbot, and PDD is available in the repository or toolchain, use PDD as the documentation engine.
+
+PDD is an external documentation engine contract, not a PDG dependency. PDG MUST NOT import, vendor, or reimplement PDD runtime behavior.
+
+Require PDD receipts before claiming completion:
+
+- source inventory;
+- source map;
+- manifest;
+- coverage receipt;
+- grounding receipt;
+- regression receipt;
+- stale-removal receipt when behavior disappeared;
+- preserved human overrides when existing documentation is regenerated or converted.
+
+For existing docs, the correct PDG instruction is not merely "do not invent docs by hand". It is: convert or update the durable documentation through the PDD model so the output has PDD artifacts, evidence mapping, stale removal, and regression proof.
+
+For documentation chatbots, PDG MUST require the chatbot to consume PDD artifacts or APIs. The chatbot MUST NOT create a parallel documentation engine, scanner, generator, source map, or review contract when PDD is available.
 
 ## Fallbacks
 

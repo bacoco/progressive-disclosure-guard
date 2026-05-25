@@ -18,3 +18,4 @@
 - Added overlap inspection guardrails for code, scripts, skills, agents, hooks, and configs before known/unknown classification.
 - Clarified the code-before-interpretation rule and made the doc-review fixture checks tolerate equivalent claim-matrix formatting.
 - Added a Skill Invocation Pass so risky skill calls must check skill usefulness twice, bound source inspection, and justify material unread files by marking related claims Unknown.
+- Added the PDD documentation engine contract so durable docs route through PDD when available without making PDD a PDG runtime dependency.

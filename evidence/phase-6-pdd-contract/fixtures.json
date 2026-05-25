@@ -1,0 +1,26 @@
+[
+  {
+    "id": "generate-new-doc",
+    "task": "Generate durable documentation for a repository where PDD is available.",
+    "withoutPdg": "Draft pages directly from the README and mark the docs done.",
+    "withPdg": "PDG triggered: yes. PDD available: yes. Use PDD as the documentation engine. Required PDD receipts: source inventory, source map, manifest, coverage, grounding, regression. MUST NOT generate durable documentation outside PDD. Verification: run `pdd inventory`, `pdd generate`, and `pdd review`; residual risk: human wording review still required."
+  },
+  {
+    "id": "convert-existing-doc",
+    "task": "Convert existing hand-written docs so they become PDD documentation.",
+    "withoutPdg": "Edit the docs manually and add a source list.",
+    "withPdg": "PDG triggered: yes. PDD available: yes. Convert the existing docs through PDD, preserving human overrides. Required PDD receipts: source inventory, source map, manifest, coverage, grounding, regression, preserved human overrides. MUST NOT treat conversion as ordinary manual editing. Verification: run `pdd convert` and `pdd review`; residual risk: human should approve moved sections."
+  },
+  {
+    "id": "update-pdd-doc",
+    "task": "Update an existing PDD documentation set after code removed a feature.",
+    "withoutPdg": "Update the main page and leave the old suggested question.",
+    "withPdg": "PDG triggered: yes. PDD available: yes. Update through PDD using current evidence. Required PDD receipts: source inventory, source map, coverage, grounding, regression, stale-removal receipt. MUST remove stale questions when source evidence disappeared. Verification: run `pdd update` and `pdd review`; residual risk: generated prose still needs human review."
+  },
+  {
+    "id": "chatbot-over-pdd",
+    "task": "Build a chatbot over a PDD repository.",
+    "withoutPdg": "Add a scanner, generator, source map, and retrieval pipeline inside the chatbot repo.",
+    "withPdg": "PDG triggered: yes. PDD available: yes. The chatbot must consume PDD artifacts or APIs. Required PDD receipts: source inventory, source map, manifest, coverage, grounding, regression. MUST NOT create a parallel documentation engine in the chatbot. Verification: run chat smoke against PDD artifacts; residual risk: UI behavior not proven without browser test."
+  }
+]
