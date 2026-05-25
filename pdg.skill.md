@@ -191,6 +191,7 @@ Bias toward uncertainty. If an item could fit multiple quadrants, classify it as
 
 ## Enforce Progressive Disclosure Everywhere
 
+- Apply the smallest PDG pass that covers the named risk; expand only when inspected evidence shows broader behavior, contract, source-of-truth, or generated-output risk.
 - Docs/specs/plans: use an index or top-level plan that points to phase, decision, domain, or implementation files when the topic is broad.
 - Code: expose a narrow entry point first, then split orchestration, domain logic, IO, state, persistence, rendering, prompt construction, and validation by responsibility.
 - New files must stay at or below 200 lines unless they include `PDG-LARGE-FILE-JUSTIFICATION:`.

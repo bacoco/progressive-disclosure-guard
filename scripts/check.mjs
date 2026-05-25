@@ -46,6 +46,7 @@ const requiredPhrases = [
   "Freedom of method is not permission to silently change the mission",
   "Preserve explicit user instructions",
   "no silent reinterpretation of the user request",
+  "smallest PDG pass that covers the named risk",
   "one level of direct dependents",
   "inspection bounded, residual risk noted",
   "Rename 5 CSS variables",
