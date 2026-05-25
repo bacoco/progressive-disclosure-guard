@@ -13,6 +13,9 @@ const forbidden = [
 const requiredSections = [
   "## Invariants",
   "## Mission Frame",
+  "## Mission Brief",
+  "## Deviation Protocol",
+  "## Verification Protocol",
   "## Skill Invocation Pass",
   "## Overlap Inspection Pass",
   "## Documentation Generation Mode",
@@ -36,6 +39,10 @@ const requiredPhrases = [
   "Every actionable review finding",
   "PDD is an external documentation engine contract",
   "PDD receipts",
+  "mission under constraints",
+  "DEVIATION: I am doing X instead of Y because Z.",
+  "NOT VERIFIED: [reason]",
+  "Freedom of method is not permission to silently change the mission",
   "Preserve explicit user instructions",
   "no silent reinterpretation of the user request"
 ];
@@ -52,6 +59,7 @@ await assertReleaseMetadata();
 await assertTriggerTemplates();
 await assertInstallMergeContract();
 await assertReadmeOperatingPrinciple();
+await assertDocumentationFiles();
 await assertNoForbiddenWords(repoRoot);
 
 console.log("PDG checks passed.");
@@ -77,7 +85,7 @@ async function assertSkill(relativePath, options) {
   }
   for (const phrase of requiredPhrases) {
     if (!content.includes(phrase)) {
-      throw new Error(`${relativePath} must include Bercy doc-audit phrase: ${phrase}`);
+      throw new Error(`${relativePath} must include required phrase: ${phrase}`);
     }
   }
   if (options.generated) {
@@ -115,7 +123,7 @@ async function assertReleaseMetadata() {
       throw new Error(`package.json is missing ${key}.`);
     }
   }
-  for (const entry of ["evidence/", "scripts/health.mjs", "scripts/install-audit.mjs"]) {
+  for (const entry of ["docs/", "templates/", "evidence/", "scripts/health.mjs", "scripts/install-audit.mjs"]) {
     if (!pkg.files.includes(entry)) {
       throw new Error(`package.json files must include ${entry}.`);
     }
@@ -126,9 +134,11 @@ async function assertTriggerTemplates() {
   for (const relativePath of ["AGENTS.pdg.md", "CLAUDE.pdg.md"]) {
     const content = await readFile(path.join(repoRoot, relativePath), "utf8");
     for (const phrase of [
-      "Treat the user request as a destination under constraints",
+      "Treat the user request as a mission under constraints",
       "Preserve explicit user instructions",
-      "name the conflict before deviating"
+      "name the conflict before deviating",
+      "DEVIATION: I am doing X instead of Y because Z.",
+      "Do not claim done, safe, verified, tested, installed, updated, or working"
     ]) {
       if (!content.includes(phrase)) {
         throw new Error(`${relativePath} must include request-preservation phrase: ${phrase}`);
@@ -154,13 +164,62 @@ async function assertInstallMergeContract() {
 async function assertReadmeOperatingPrinciple() {
   const content = await readFile(path.join(repoRoot, "README.md"), "utf8");
   for (const phrase of [
+    "A Marc Aurelus mission harness for AI agents",
+    "Do not prompt the agent. Brief the mission",
+    "Your mission, should you choose to accept it",
     "Treat my requests as objectives under constraints",
     "Respect my explicit request first",
     "distinguish what is known, unknown, and assumed",
-    "Be free in method, but faithful to the objective"
+    "Be free in method, but faithful to the objective",
+    "docs/marc-aurelus-doctrine.md",
+    "templates/mission-brief.md",
+    "docs/pdd-contract.md"
   ]) {
     if (!content.includes(phrase)) {
       throw new Error(`README.md must include objective-under-constraints principle: ${phrase}`);
+    }
+  }
+}
+
+async function assertDocumentationFiles() {
+  const requiredFiles = [
+    "docs/marc-aurelus-doctrine.md",
+    "docs/mission-brief.md",
+    "templates/mission-brief.md",
+    "docs/vibe-coding-laws.md",
+    "docs/failure-atlas.md",
+    "docs/pdd-contract.md"
+  ];
+
+  for (const relativePath of requiredFiles) {
+    const content = await readFile(path.join(repoRoot, relativePath), "utf8");
+    if (!content.trim().startsWith("# ")) {
+      throw new Error(`${relativePath} must start with a Markdown title.`);
+    }
+  }
+
+  const missionTemplate = await readFile(path.join(repoRoot, "templates/mission-brief.md"), "utf8");
+  for (const phrase of [
+    "## Mission",
+    "## Objective Lock",
+    "## Constraints",
+    "## Success Criteria",
+    "## Progressive Disclosure Gates",
+    "## Deviation Protocol",
+    "## Verification Protocol",
+    "## Deliverable",
+    "DEVIATION: I am doing X instead of Y because Z.",
+    "NOT VERIFIED: [reason]"
+  ]) {
+    if (!missionTemplate.includes(phrase)) {
+      throw new Error(`templates/mission-brief.md must include ${phrase}`);
+    }
+  }
+
+  const pddContract = await readFile(path.join(repoRoot, "docs/pdd-contract.md"), "utf8");
+  for (const phrase of ["manifest", "stale-removal receipt", "preserved human overrides", "must not import, vendor, duplicate, or reimplement PDD runtime behavior"]) {
+    if (!pddContract.includes(phrase)) {
+      throw new Error(`docs/pdd-contract.md must include ${phrase}`);
     }
   }
 }

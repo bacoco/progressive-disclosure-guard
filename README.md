@@ -1,155 +1,164 @@
 # PDG - Progressive Disclosure Guard
 
-Treat my requests as objectives under constraints, not merely as rails to follow.
+**A Marc Aurelus mission harness for AI agents.**
 
-Respect my explicit request first. Depart from it only if it is contradictory, impossible, unsafe, misleading, or if another method clearly serves the stated objective better. If you depart from it, say so briefly.
+Do not prompt the agent. Brief the mission.
 
-For every request:
+PDG turns vague agent work into governed missions: objective, constraints,
+source evidence, smallest useful step, visible deviations, and real
+verification.
+
+Your mission, should you choose to accept it:
+achieve the goal, obey the laws, expose every deviation.
+
+This message will not self-destruct.
+Your hidden assumptions will.
+
+The readable name is **PDG - Progressive Disclosure Guard**. The stable skill
+slug and repository name stay `progressive-disclosure-guard`.
+
+## What PDG Is
+
+PDG is a small guardrail for Claude Code, Codex, and other coding agents.
+
+It forces progressive disclosure: the agent must earn the next layer of detail
+instead of jumping into one giant plan, one giant file, one vague refactor, or
+one fake verification.
+
+Treat my requests as objectives under constraints, not merely as rails to
+follow.
+
+Respect my explicit request first. Depart from it only if it is contradictory,
+impossible, unsafe, misleading, or if another method clearly serves the stated
+objective better. If you depart from it, declare the deviation.
+
+For every risky request, PDG asks the agent to:
 
 - identify the real objective;
 - respect the explicit constraints;
 - distinguish what is known, unknown, and assumed;
 - choose the best method within the framework;
+- expose deviations before acting on them;
 - verify the limits before answering;
 - produce the most useful, clear, and reliable result possible.
 
 Be free in method, but faithful to the objective.
+Freedom of method is not permission to silently change the mission.
 
-**Progressive disclosure for AI coding agents.**
+## The Marc Aurelus Doctrine
 
-PDG is a small skill for Claude Code, Codex, and other coding agents. It stops an agent from turning a change into one giant plan, one giant file, one vague refactor, or one fake verification.
+Marc Aurelus is the product doctrine behind PDG:
 
-The core rule is simple: the agent must earn the next layer of detail.
+- do not command the agent, brief the mission;
+- a prompt is not a rail;
+- a prompt is a mission under constraints;
+- the agent has freedom of method, not freedom to silently change the mission;
+- the goal is not perfect agents;
+- the goal is visible drift and verifiable work.
 
-PDG does not micro-manage the agent. It frames the requested outcome, explicit constraints, forbidden outcomes, proofs, and success criteria, then leaves tactical choices inside that frame.
+See [`docs/marc-aurelus-doctrine.md`](docs/marc-aurelus-doctrine.md).
 
-It reveals work in layers:
+## Mission Brief
 
-1. what is known and unknown;
-2. what existing behavior must survive;
-3. which docs, specs, plans, files, routes, stores, prompts, and tests are in scope;
-4. the smallest useful implementation step;
-5. code split by responsibility instead of dumped into broad files;
-6. narrow tests first, then real workflow verification;
-7. a clear receipt of what was checked and what remains unverified.
+Mission Brief is the practical interface.
 
-The readable name is **PDG - Progressive Disclosure Guard**. The stable skill slug is `progressive-disclosure-guard`.
+Use it when a task is risky, multi-step, delegated, persistent, or likely to
+drift across sessions.
 
-PDG is intentionally bounded. It should stay silent for typo-only edits, formatting-only edits, read-only lookups, one-command status checks, or low-risk changes with no handoff, behavior, contract, source-of-truth, install, generated-output, or verification risk.
+The short form:
 
-## Why It Exists
+- Mission;
+- Objective Lock;
+- Constraints;
+- Success Criteria;
+- Progressive Disclosure Gates;
+- Deviation Protocol;
+- Verification Protocol;
+- Deliverable.
 
-AI coding agents often fail by adding too much too early:
+Template: [`templates/mission-brief.md`](templates/mission-brief.md)
 
-- a spec that hides decisions in a wall of text;
-- a plan that says "refactor" without naming what must stay working;
-- a code change that creates a parallel pipeline beside the real one;
-- a new helper, store, route, or prompt path that bypasses the product path;
-- tests that prove a helper exists but not that the user workflow still works;
-- a final answer that says "verified" without showing the real verification path.
+Guide: [`docs/mission-brief.md`](docs/mission-brief.md)
 
-PDG makes those shortcuts visible and blocks them before they become regressions.
+## What PDG Guards Against
 
-## What PDG Applies To
+- premature architecture;
+- giant plans;
+- giant files;
+- fake verification;
+- silent scope drift;
+- source-of-truth bypass;
+- generated-output mismatch;
+- multi-agent busywork;
+- undocumented PDD/documentation claims;
+- parallel engines, stores, routers, workflows, or prompt paths.
 
-Progressive disclosure is not only a documentation rule.
+The deeper failure model is in [`docs/failure-atlas.md`](docs/failure-atlas.md).
+The short governance constitution is in
+[`docs/vibe-coding-laws.md`](docs/vibe-coding-laws.md).
 
-| Surface | What PDG forces |
-| --- | --- |
-| Docs | Start with a clear index, then link to focused detail files. |
-| Specs | Separate known facts, open decisions, non-goals, and acceptance criteria. |
-| Plans | Name allowed files, forbidden files, preserved behavior, and verification gates. |
-| Code | Keep entry points thin and split orchestration, domain logic, IO, state, prompts, and validation. |
-| Files | Avoid broad `utils`, `service`, or `manager` dumps when a smaller responsibility exists. |
-| APIs and prompts | Fetch or inject summaries first, then expand details only when needed. |
-| Skills | Select one primary skill first, check twice that it is needed, inspect bounded source evidence, and justify material files not read. |
-| Tests | Start with the smallest contract check, then prove the real workflow. |
-| Verification | Report the actual command, route, or user path checked, plus what remains unverified. |
+## When PDG Triggers
 
-## Documentation Generation Mode
+PDG should trigger on:
 
-PDG now includes a narrow mode for LLM-generated documentation, specs, portals, API docs, architecture docs, and user guides. The agent should not ask the model to infer, draft, overwrite, and verify in one broad pass.
+- risky tasks;
+- code changes;
+- refactors;
+- specs, plans, handoffs, reviews, and implementation prompts;
+- durable documentation;
+- generated outputs;
+- install or migration instructions;
+- behavior changes;
+- tests and verification claims;
+- multi-step or multi-agent work.
 
-The expected sequence is:
+PDG should stay silent or minimal for:
 
-1. build a source inventory from files, routes, APIs, env vars, data stores, generated outputs, entry points, and unknowns;
-2. classify sources by audience, relevance, safety, stale status, generated status, and binary asset status;
-3. use bounded structured outputs for repeated sections when possible;
-4. preserve human overrides, accepted corrections, and curated source-of-truth sections;
-5. archive or diff prior generated artifacts before replacement and remove stale questions when their evidence disappeared;
-6. verify with cheap deterministic checks first, optional rubric-based LLM judge second, and a real preview or workflow for user-visible docs.
+- typo-only edits;
+- formatting-only edits;
+- read-only lookups;
+- one-command status checks;
+- small questions with no handoff, behavior, contract, source-of-truth,
+  generated-output, install, or verification risk.
 
-Generated or duplicated binary assets also need an explicit `PDG-BINARY-ASSET-JUSTIFICATION:` in an adjacent text file. For example, keeping both `screen.png` and `screen.webp` is justified only when the PNG is an intentional source/fallback asset; otherwise the referenced optimized asset is enough.
+## The PDG Pass
 
-## Documentation Review Passes
+Before an important handoff, review, install instruction, migration plan, or
+substantial code change, the agent runs a PDG pass.
 
-After a generated or updated doc draft, PDG expects three passes:
+It asks:
 
-1. **Coverage pass:** compare the source inventory, changed files, routes, APIs, env vars, pages, modules, generated outputs, and removed behavior against the draft.
-2. **Grounding pass:** remove or mark any feature, dependency, architecture claim, limitation, example, or suggested question that cannot point to named source evidence. A source inventory is not proof until the cited files are opened and the claim is checked; reviews must read relevant code before interpreting prose, inventories, or cited paths.
-3. **Regression pass:** verify the generated output path: links or previews, generated-file drift, preserved human overrides, skipped sections, binary asset justifications, and any real route or install path.
-
-Every machine-checkable review finding should become a fixture, regression test, or checklist item. An LLM judge can help the grounding pass, but it is supporting evidence only. The final receipt should name the three passes, source exclusions, converted findings, skipped checks, and residual risk.
+- What could a rushed implementer misread and still claim they followed?
+- Which existing behavior, callback, route, store, pipeline, workflow,
+  generated file, or persistence contract must be preserved?
+- Did this change create a parallel implementation instead of extending the
+  real one?
+- Are vague words like "refactor", "simplify", "wire", "reuse", or "clean up"
+  constrained by `MUST` and `MUST NOT` language?
+- Do tests and verification exercise the real product entry path?
 
 ## PDD Mode
 
-PDD is the documentation engine. PDG is the guardrail.
+PDG is the guardrail.
+PDD is the documentation engine or external documentation contract.
 
 When durable documentation must be created, converted, updated, reviewed,
 indexed, or consumed by a documentation chatbot, PDG should route the work to
 PDD when PDD is available in the repository or toolchain.
 
-PDG requires PDD receipts before completion claims: source inventory, source
-map, manifest, coverage, grounding, regression, stale removals, and preserved
-human overrides.
+PDG must not vendor, import, duplicate, or reimplement PDD runtime behavior when
+PDD is external.
 
-PDG does not vendor or reimplement PDD. A chatbot over PDD should consume PDD
-artifacts or APIs instead of creating its own documentation engine.
+PDD receipts may include source inventory, source map, manifest, coverage,
+grounding, regression, stale-removal, and preserved human overrides.
 
-## The PDG Pass
+See [`docs/pdd-contract.md`](docs/pdd-contract.md).
 
-Before an important handoff, review, install instruction, migration plan, or substantial code change, the agent runs a PDG pass.
+## Installation
 
-It asks:
-
-- What could a rushed implementer misread and still claim they followed?
-- Which existing behavior, callback, route, store, pipeline, workflow, generated file, or persistence contract must be preserved?
-- Did this change create a parallel implementation instead of extending the real one?
-- Are vague words like "refactor", "simplify", "wire", "reuse", or "clean up" constrained by `MUST` and `MUST NOT` language?
-- Do tests and verification exercise the real product entry path?
-
-Then it turns ambiguity into constraints:
-
-- `MUST preserve ...`
-- `MUST call/use ...`
-- `MUST NOT replace ...`
-- `MUST NOT create a parallel engine/pipeline/store/router ...`
-- `MUST NOT remove working code unless the replacement is wired and verified end-to-end ...`
-
-The pass now has four explicit guard sections:
-
-- `Invariants`: always/never rules for source of truth, preserved behavior, generated files, and real verification.
-- `Fallbacks`: bounded responses for ambiguous triggers, missing sources, blocked verification, no second reviewer, and generated drift.
-- `Examples`: concrete triggered and non-triggered inputs.
-- `Final Checklist`: the short receipt that prevents silent weakening before final output.
-
-## Examples
-
-Without PDG, `Refactor auth flow and clean up callbacks` can become a broad rewrite. With PDG, the output must name preserved login/logout routes, session storage, callbacks, forbidden parallel auth paths, and a real login verification path.
-
-Without PDG, `Generate architecture docs` can invent workers, queues, and services because they sound plausible. With PDG, the agent must build an evidence manifest first and omit architecture claims that are not supported by named sources.
-
-Without PDG, `Update docs after this feature` can cover only the headline page and miss changed env vars, removed behavior, or stale suggested questions. With PDG, the coverage, grounding, and regression passes must each report what was checked.
-
-Without PDG, a review can score a document highly because it lists many source paths while missing existing overlap in scripts, agents, hooks, or configs. With PDG, source-grounded reviews must inspect those artifacts and produce overlap findings plus a `claim` / `source` / `verdict` / `impact` matrix before scoring.
-
-Without PDG, an agent can say it used a skill after reading only the skill prose. With PDG, risky skill calls must name the selected skill, check twice that it is needed, bound the sources to inspect, and justify any material file mentioned but not read by marking the related claim `Unknown`.
-
-Without PDG, `Done` or `verified` can be a vibe. With PDG, the final receipt must name the command, route, install path, preview, or workflow that was actually checked.
-
-## Install With One Prompt
-
-Use one of these prompts inside the repository where you want PDG installed. They read `INSTALL.md` from `main`; do not pin `v0.1.0` when you need the documentation-generation guardrails.
+Use one of these prompts inside the repository where you want PDG installed.
+They read `INSTALL.md` from `main`; do not pin `v0.1.0` when you need the
+documentation-generation guardrails.
 
 Codex:
 
@@ -176,9 +185,11 @@ Default PDG installation writes two things for each selected agent:
 - Codex trigger block: `AGENTS.md`
 - Claude Code trigger block: `CLAUDE.md`
 
-Use a skill-only install only when the human explicitly says not to edit agent instruction files.
+Use a skill-only install only when the human explicitly says not to edit agent
+instruction files.
 
-It does not install broad project governance, GitHub workflows, Linear templates, or Claude/Codex collaboration workflows.
+It does not install broad project governance, GitHub workflows, Linear
+templates, or Claude/Codex collaboration workflows.
 
 ## Files
 
@@ -188,47 +199,37 @@ pdg.codex.skill.md
 pdg.claude.skill.md
 AGENTS.pdg.md
 CLAUDE.pdg.md
+docs/
+templates/
+evidence/
+scripts/
 LICENSE
 CHANGELOG.md
-scripts/
-evidence/
 ```
 
 - `pdg.skill.md`: canonical shared source.
-- `pdg.codex.skill.md`: Codex install file.
-- `pdg.claude.skill.md`: Claude Code install file.
+- `pdg.codex.skill.md`: generated Codex install file.
+- `pdg.claude.skill.md`: generated Claude Code install file.
 - `AGENTS.pdg.md`: optional Codex trigger block for project instructions.
 - `CLAUDE.pdg.md`: optional Claude Code trigger block for project instructions.
-- `LICENSE` and `CHANGELOG.md`: release metadata.
-- `scripts/`: generation and drift checks.
-- `evidence/`: maintainer-only proof artifacts; not part of the installed skill copy.
+- `docs/`: Marc Aurelus, Mission Brief, PDD contract, laws, and failure model.
+- `templates/`: reusable mission brief template.
+- `evidence/`: maintainer-only proof artifacts; not part of the installed skill
+  copy.
+- `scripts/`: generation, drift checks, install audit, and health checks.
 
-PDG is the canonical source for the `progressive-disclosure-guard` skill. Downstream governance kits may vendor it, but project-specific workflows should stay out of PDG.
-
-## Single-Agent Validation
-
-PDG does not let an AI present its own self-check as independent review.
-
-If there is no second AI reviewer, the author AI may run a `PDG self-check`, but it must label it `self-check, not independent review`.
-
-Risky work still needs one of these:
-
-- human approval;
-- another AI/session review;
-- `Ready for human validation` with a short validation card.
-
-The human approval sentence is:
-
-```text
-Approved after human validation.
-```
+PDG is the canonical source for the `progressive-disclosure-guard` skill.
+Downstream governance kits may vendor it, but project-specific workflows should
+stay out of PDG.
 
 ## Maintainers
 
 ```bash
-npm test
 npm run generate
+npm test
+git diff --check
 npm run health
 ```
 
 Generated skill files must stay in sync with `pdg.skill.md`.
+Do not hand-edit `pdg.codex.skill.md` or `pdg.claude.skill.md`.
