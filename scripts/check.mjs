@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+// PDG-LARGE-FILE-JUSTIFICATION: this script is the single deterministic repository health contract for generated skills, install docs, package metadata, and release guardrails.
 import { execFileSync } from "node:child_process";
 import { readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
@@ -60,6 +61,7 @@ await assertTriggerTemplates();
 await assertInstallMergeContract();
 await assertReadmeOperatingPrinciple();
 await assertDocumentationFiles();
+await assertMarkdownFenceBalance();
 await assertNoForbiddenWords(repoRoot);
 
 console.log("PDG checks passed.");
@@ -220,6 +222,43 @@ async function assertDocumentationFiles() {
   for (const phrase of ["manifest", "stale-removal receipt", "preserved human overrides", "must not import, vendor, duplicate, or reimplement PDD runtime behavior"]) {
     if (!pddContract.includes(phrase)) {
       throw new Error(`docs/pdd-contract.md must include ${phrase}`);
+    }
+  }
+}
+
+async function assertMarkdownFenceBalance() {
+  for (const file of await walk(repoRoot)) {
+    if (file.includes(`${path.sep}.git${path.sep}`) || file.includes(`${path.sep}node_modules${path.sep}`)) {
+      continue;
+    }
+    if (!file.toLowerCase().endsWith(".md")) {
+      continue;
+    }
+
+    const relativePath = path.relative(repoRoot, file);
+    const lines = (await readFile(file, "utf8")).split(/\r?\n/);
+    let openFence = null;
+
+    for (const [index, line] of lines.entries()) {
+      if (!line.startsWith("```")) {
+        continue;
+      }
+
+      if (openFence === null) {
+        openFence = { line: index + 1, marker: line };
+        continue;
+      }
+
+      if (line.trim() === "```") {
+        openFence = null;
+        continue;
+      }
+
+      throw new Error(`${relativePath}:${index + 1} opens a new Markdown fence before closing ${openFence.marker} from line ${openFence.line}.`);
+    }
+
+    if (openFence) {
+      throw new Error(`${relativePath}:${openFence.line} has an unclosed Markdown fence.`);
     }
   }
 }

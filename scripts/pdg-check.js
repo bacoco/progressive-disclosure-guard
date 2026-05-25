@@ -170,7 +170,12 @@ function hasBroadDumpName(file) {
 }
 
 function isDoneClaim(line) {
-  if (/\balready done\b/i.test(line) || /"verified".*without showing/i.test(line)) {
+  if (
+    /\balready done\b/i.test(line) ||
+    /"verified".*without showing/i.test(line) ||
+    /\bNOT VERIFIED\b/i.test(line) ||
+    /\bDo not claim\b/i.test(line)
+  ) {
     return false;
   }
   return /(?<![-\w])(verified|done)(?![-\w])/i.test(line);
