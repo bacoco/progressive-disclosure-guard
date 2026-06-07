@@ -6,7 +6,7 @@ description: Use before finalizing specs, plans, implementation prompts, archite
 <!--
 GENERATED FILE - DO NOT EDIT DIRECTLY
 source: pdg.skill.md
-source_hash: 3455a35ffdb081aa080b384dfc9007196a830b4b8817503f3424527713dfab57
+source_hash: 7472f1bb95cd5b4e7e29d3185cee7fab01800ef2b948293ee14775394f2ae4d3
 generated_by: pdg generate-skills
 target: codex
 -->
@@ -228,7 +228,7 @@ Every actionable review finding that is machine-checkable MUST become a fixture,
 
 ## PDD Mode
 
-When durable documentation must be created, converted, updated, reviewed, indexed, or consumed by a documentation chatbot, and PDD is available in the repository or toolchain, use PDD as the documentation engine.
+When durable documentation must be created, converted, updated, reviewed, indexed, consumed by a documentation chatbot, or used by an investigative retrieval layer, and PDD is available in the repository or toolchain, use PDD as the documentation engine.
 
 PDD is an external documentation engine contract, not a PDG dependency. PDG MUST NOT import, vendor, or reimplement PDD runtime behavior.
 
@@ -237,15 +237,30 @@ Require PDD receipts before claiming completion:
 - source inventory;
 - source map;
 - manifest;
+- disclosure contract;
 - coverage receipt;
 - grounding receipt;
 - regression receipt;
 - stale-removal receipt when behavior disappeared;
 - preserved human overrides when existing documentation is regenerated or converted.
 
+Generated docs are a disclosure surface, not the source of truth. Treat
+generated docs as orientation, then verify claims against PDD artifacts before
+answering.
+
+For documentation chatbots or investigative retrieval layers over PDD, require
+the consumer to inspect `disclosure.json`, `source-map.json`, `inventory.json`,
+review receipts, overrides, stale removals, and original source evidence before
+presenting an evidence-backed answer. If the required evidence is missing,
+stale, contradictory, or unmapped, the consumer must return an answerability state
+instead of forcing a final answer.
+
 For existing docs, the correct PDG instruction is not merely "do not invent docs by hand". It is: convert or update the durable documentation through the PDD model so the output has PDD artifacts, evidence mapping, stale removal, and regression proof.
 
-For documentation chatbots, PDG MUST require the chatbot to consume PDD artifacts or APIs. The chatbot MUST NOT create a parallel documentation engine, scanner, generator, source map, or review contract when PDD is available.
+For documentation chatbots and investigative retrieval layers, PDG MUST require
+the consumer to consume PDD artifacts or APIs. The consumer MUST NOT create a
+parallel documentation engine, scanner, generator, source map, or review
+contract when PDD is available.
 
 ## Fallbacks
 

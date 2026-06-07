@@ -22,5 +22,11 @@
     "task": "Build a chatbot over a PDD repository.",
     "withoutPdg": "Add a scanner, generator, source map, and retrieval pipeline inside the chatbot repo.",
     "withPdg": "PDG triggered: yes. PDD available: yes. The chatbot must consume PDD artifacts or APIs. Required PDD receipts: source inventory, source map, manifest, coverage, grounding, regression. MUST NOT create a parallel documentation engine in the chatbot. Verification: run chat smoke against PDD artifacts; residual risk: UI behavior not proven without browser test."
+  },
+  {
+    "id": "iar-over-pdd",
+    "task": "Build an investigative retrieval layer over PDD artifacts.",
+    "withoutPdg": "Treat generated Markdown as the source of truth and add a new scanner, source map, and answer engine inside PDG.",
+    "withPdg": "PDG triggered: yes. PDD available: yes. The investigative retrieval layer must consume PDD artifacts or APIs and treat generated docs as orientation, not source of truth. Required PDD receipts: source inventory, source map, manifest, disclosure contract, coverage, grounding, regression, preserved human overrides, stale-removal receipt. MUST NOT create a parallel documentation engine, scanner, generator, source map, or review contract inside PDG. Verification: inspect `disclosure.json`, `source-map.json`, `inventory.json`, and `review/grounding.json`; return an answerability state when evidence is missing or contradictory; residual risk: live retrieval quality requires separate evaluation."
   }
 ]

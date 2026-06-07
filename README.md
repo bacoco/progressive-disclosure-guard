@@ -145,14 +145,18 @@ PDG is the guardrail.
 PDD is the documentation engine or external documentation contract.
 
 When durable documentation must be created, converted, updated, reviewed,
-indexed, or consumed by a documentation chatbot, PDG should route the work to
-PDD when PDD is available in the repository or toolchain.
+indexed, consumed by a documentation chatbot, or used by an investigative
+retrieval layer, PDG should route the work to PDD when PDD is available in the
+repository or toolchain.
 
 PDG must not vendor, import, duplicate, or reimplement PDD runtime behavior when
 PDD is external.
 
-PDD receipts may include source inventory, source map, manifest, coverage,
-grounding, regression, stale-removal, and preserved human overrides.
+PDD receipts may include source inventory, source map, manifest, disclosure
+contract, coverage, grounding, regression, stale-removal, and preserved human
+overrides. Generated docs are a disclosure layer; retrieval consumers should
+treat generated docs as orientation and return an answerability state when
+evidence is missing, stale, contradictory, or unmapped.
 
 See [`docs/pdd-contract.md`](docs/pdd-contract.md).
 
