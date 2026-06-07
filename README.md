@@ -144,6 +144,17 @@ It asks:
 PDG is the guardrail.
 PDD is the documentation engine or external documentation contract.
 
+Related repositories:
+
+- [PDD - Progressive Disclosure Documentation](https://github.com/bacoco/progressive-disclosure-documentation):
+  produces `.pdd/` artifacts.
+- [PDD-IAR - Investigative Autoregressive Retrieval](https://github.com/bacoco/progressive-disclosure-iar):
+  consumes `.pdd/` artifacts to investigate original source evidence.
+
+PDG has no runtime dependency on either repository. It defines the guardrails
+that tell agents when to require PDD artifacts and how PDD-IAR-style consumers
+must use them.
+
 When durable documentation must be created, converted, updated, reviewed,
 indexed, consumed by a documentation chatbot, or used by an investigative
 retrieval layer, PDG should route the work to PDD when PDD is available in the

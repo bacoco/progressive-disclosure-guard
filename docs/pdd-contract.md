@@ -3,6 +3,13 @@
 PDG is the guardrail.
 PDD is the documentation engine or external documentation contract.
 
+Related repositories:
+
+- [PDD](https://github.com/bacoco/progressive-disclosure-documentation)
+  produces the `.pdd/` artifact contract.
+- [PDD-IAR](https://github.com/bacoco/progressive-disclosure-iar)
+  consumes the `.pdd/` artifact contract for investigative retrieval.
+
 PDG must not import, vendor, duplicate, or reimplement PDD runtime behavior unless
 explicitly decided later.
 
