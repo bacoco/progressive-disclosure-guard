@@ -40,6 +40,9 @@ const requiredPhrases = [
   "Every actionable review finding",
   "PDD is an external documentation engine contract",
   "PDD receipts",
+  "disclosure contract",
+  "answerability state",
+  "generated docs as orientation",
   "mission under constraints",
   "DEVIATION: I am doing X instead of Y because Z.",
   "NOT VERIFIED: [reason]",
@@ -224,7 +227,7 @@ async function assertDocumentationFiles() {
   }
 
   const pddContract = await readFile(path.join(repoRoot, "docs/pdd-contract.md"), "utf8");
-  for (const phrase of ["manifest", "stale-removal receipt", "preserved human overrides", "must not import, vendor, duplicate, or reimplement PDD runtime behavior"]) {
+  for (const phrase of ["manifest", "disclosure contract", "answerability state", "generated docs as orientation", "stale-removal receipt", "preserved human overrides", "must not import, vendor, duplicate, or reimplement PDD runtime behavior"]) {
     if (!pddContract.includes(phrase)) {
       throw new Error(`docs/pdd-contract.md must include ${phrase}`);
     }

@@ -16,6 +16,9 @@ const criteria = [
   ["coverage", /\bcoverage\b/i],
   ["grounding", /\bgrounding\b/i],
   ["regression", /\bregression\b/i],
+  ["disclosure", /\bdisclosure contract\b|\bdisclosure\.json\b/i],
+  ["answerability", /\banswerability state\b|\banswerability gate\b|\banswerable\b/i],
+  ["orientation", /\bgenerated docs as orientation\b|\borient(?:ation)? on generated docs\b/i],
   ["staleRemoval", /\bstale-removal receipt\b|\bstale removals\b/i],
   ["humanOverrides", /\bpreserved human overrides\b|\bpreserving human overrides\b/i],
   ["mustNotParallel", /\bMUST NOT\b.*\b(parallel documentation engine|outside PDD|manual editing)\b/i],
@@ -44,6 +47,13 @@ if (!staleFixture?.withPdg.matched.includes("staleRemoval")) {
 const overrideFixture = rows.find((row) => row.id === "convert-existing-doc");
 if (!overrideFixture?.withPdg.matched.includes("humanOverrides")) {
   throw new Error("convert-existing-doc fixture must preserve human overrides");
+}
+
+const iarFixture = rows.find((row) => row.id === "iar-over-pdd");
+for (const marker of ["disclosure", "answerability", "orientation", "grounding"]) {
+  if (!iarFixture?.withPdg.matched.includes(marker)) {
+    throw new Error(`iar-over-pdd fixture must require ${marker}`);
+  }
 }
 
 const report = renderReport(rows);

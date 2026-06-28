@@ -8,6 +8,7 @@ This deterministic fixture evaluation protects the PDD-as-external-engine contra
 | convert-existing-doc | 0 | 14 | 14 |
 | update-pdd-doc | 0 | 13 | 13 |
 | chatbot-over-pdd | 1 | 13 | 12 |
-| **Total** | **1** | **53** | **52** |
+| iar-over-pdd | 1 | 18 | 17 |
+| **Total** | **2** | **71** | **69** |
 
 What stays unproven: fixtures protect wording; they do not prove a live PDD runtime or chatbot integration.
